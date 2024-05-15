@@ -1,0 +1,78 @@
+.container-fluid{
+    margin:100px;
+    margin-left: 10%;
+    /* background-image: url(assets/default.png); */
+    height: 300px;
+    width: 1000px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    padding: 55px;
+    padding-top: 5px;
+    font-family: Helvetica;
+    font-size: 13px;
+}
+.navButton{
+    padding: 5px;
+    border: 1px solid rgb(213,120,23);
+    color:white;
+    float: right;
+    background-color: rgb(213,120,23);
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+  .localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+}
+.datarow:last-child{
+    border-bottom: 1px solid;
+}
+th{
+    background-color: rgb(213,120,23);
+    text-align: left;
+    color: white;
+    height: 20px;
+    border: 1px solid rgb(213,120,23);
+}
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+th:nth-child(1){
+    width: 300px;
+}
+h2{
+    margin-left: 30px;
+    color: gray;
+}

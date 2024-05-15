@@ -1,0 +1,114 @@
+.reqStyl{
+    width: 315px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 40px;
+}
+
+.ecContainer{
+    padding-left: 45px;
+    font-size: 14px;  
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.widthInc{
+    height:27px;
+    border-radius: 5px;
+    border: 1px solid;
+    width: 250px;
+    padding: 0px;
+    margin-top: 10px;
+    display: block;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+h2{
+    color: gray;
+}
+
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+th{
+    background-color: gray;
+    text-align: left;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+    margin-top:10px;
+}
+.datarow:last-child{
+    border-bottom: 1px solid black;
+}
+
+#addQues td,th{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid #c8c8c8;
+    padding:.25em .5em;
+}
+#addQues tr:nth-child(even){
+    background-color:white ;   
+    color:black;
+} 
+
+ thead {
+    background-color: gray;
+  
+    color: white;
+  
+    border: 1px solid gray;
+}
+.adddiv{
+    border-collapse: collapse;
+    margin-left: 20px;
+}
+.previouFun {
+    position: relative;
+    margin-left: 20px;
+    margin-top: 30px;
+    width: 100%;
+    padding-bottom: 22px;
+}
+.btn2{
+    border-radius: 5px;
+    width:130px;
+    height: 35px;
+    color: white;
+    margin-left: 75%;
+    background-color: rgb(213,120,23);
+}
+button:disabled{
+    border-color: rgb(213,120,23);
+    background-color: gray;
+}
+label{
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+.selQues{
+    margin-left: 35px;
+}

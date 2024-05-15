@@ -1,0 +1,205 @@
+<!-- <div class="example-container">
+  <form class="example-form" #updateConsultForm="ngForm" (ngSubmit)="updateConslt(updateConsultForm.value)" >
+    <h3>Update Consultant</h3><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" (click)="enablefields(displayMode)"></i>
+      <div class="userCreation">
+
+            <div class="custStyl">
+                    <label>Consultant name</label> 
+                    <input type="text" [(ngModel)]="selectedcnslnt.firmName" list="firms" class="inpStyl" ngModel name="firmName" [disabled]="displayMode" placeholder="Type Consultant Name"/>
+                    <datalist id="firms">
+                        <option *ngFor="let firm of firmList" >{{firm.firmName}} </option>
+                    </datalist>
+                  </div>
+          <div class="custStyl">
+              <label>Contact Person Name</label> 
+              <input type="text" [(ngModel)]="selectedcnslnt.spocName" class="inpStyl" ngModel name="spocName" [disabled]="displayMode" placeholder="Type Contact Person Name"/>
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label> 
+                <input type="number" [(ngModel)]="selectedcnslnt.contactNumber" class="inpStyl" ngModel name="contactNumber" [disabled]="displayMode" placeholder="Type Contact Number"/>
+              </div>
+              <div class="custStyl">
+                  <label>Email Id</label> 
+                  <input type="email" [(ngModel)]="selectedcnslnt.emailId" class="inpStyl" ngModel name="emailId" [disabled]="displayMode" placeholder="Type Email Id"/>
+              </div>
+              <div class="custStyl">
+                  <label>Address</label> 
+                  <textarea [(ngModel)]="selectedcnslnt.address"  class="textAreaStyl" ngModel name="address" [disabled]="displayMode" placeholder="Type Address"></textarea>
+              </div>
+              <div class="custStyl">
+                  <label>City</label> 
+                  <input type="text" [(ngModel)]="selectedcnslnt.city" class="inpStyl" ngModel name="city" [disabled]="displayMode" placeholder="Type City "/>
+              </div>
+              <div class="custStyl">
+                  <label>State</label> 
+                  <input type="text" [(ngModel)]="selectedcnslnt.state" class="inpStyl" ngModel name="state" [disabled]="displayMode" placeholder="Type State"/>
+              </div>
+              <div class="custStyl">
+                  <label>Country</label> 
+                  <input type="text" [(ngModel)]="selectedcnslnt.country" class="inpStyl" ngModel name="country" [disabled]="displayMode" placeholder="Type Country"/>
+              </div>
+              <div class="custStyl">
+                  <label>Pincode</label> 
+                  <input type="number" [(ngModel)]="selectedcnslnt.pincode" class="inpStyl" ngModel name="pincode" [disabled]="displayMode" placeholder="Type Pincode"/>
+              </div>
+              <div class="checkStyl">
+                  <input type="checkbox" [(ngModel)]="selectedcnslnt.spocActive" class="checkBoxStyl" ngModel name="spocActive" [disabled]="displayMode" value="Active">
+                  <label class="valStyl">Is Contact Person Active?</label>
+              </div>
+              <div class="checkStyl">
+                <input type="checkbox" [(ngModel)]="selectedcnslnt.firmActive" class="checkBoxStyl" ngModel name="firmActive" [disabled]="displayMode" value="Active">
+                <label class="valStyl">Is Consultant Active?</label>
+            </div>
+              <div class="btn1">
+                  <button class="btn2Style" type="reset">Reset</button> 
+                  <button class="btn2" type="submit">Sumbit</button>                  
+              </div>
+
+              <div>
+                
+              </div>
+      </div>
+  </form>
+</div>       -->
+
+<div class="example-container">
+    <h2>Update Consultant</h2>
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <form class="example-form" *ngIf="hideprogress" #updateConsultForm="ngForm" (ngSubmit)="updateConslt(updateConsultForm.value)">
+
+        <i class="fa fa-pencil-square-o fa-lg"  style="color:rgb(213,120,23)" aria-hidden="true" (click)="enablefields(displayMode)"></i>
+        <div class="userCreation">
+
+            <div class="custStyl">
+                <label>Consultant name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" [(ngModel)]="selectedcnslnt.firmName" list="firms" class="inpStyl" ngModel name="firmName" #firmName="ngModel"
+                    [ngClass]="{'bordercolor': firmName.errors && firmName.dirty}" required [disabled]="displayMode" placeholder="Type Consultant Name"
+                />
+                <datalist id="firms">
+                    <option *ngFor="let firm of firmList">{{firm.firmName}} </option>
+                </datalist>
+            </div>
+            <div class="custStyl">
+                <label>Contact Person Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" [(ngModel)]="selectedcnslnt.spocName" class="inpStyl" ngModel name="spocName" #spocName="ngModel" [ngClass]="{'bordercolor': spocName.errors && spocName.dirty}"
+                [pattern]="emptyTextPattern" required [disabled]="displayMode" placeholder="Type Contact Person Name" />
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label>
+                <input type="number" [(ngModel)]="selectedcnslnt.contactNumber" class="inpStyl" [pattern]="mobnumPattern" ngModel name="contactNumber"
+                    #contactNumber="ngModel" [ngClass]="{'bordercolor': contactNumber.errors && contactNumber.dirty}" [disabled]="displayMode"
+                    placeholder="Type Contact Number" />
+            </div>
+            <div *ngIf="contactNumber.errors?.pattern" style="margin:10px; color:red;">
+                Contact number should be of 10 digits
+            </div>
+            <div class="custStyl">
+                <label>Email Id
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="email" [(ngModel)]="selectedcnslnt.emailId" class="inpStyl" required [pattern]="emailPattern" ngModel name="emailId"
+                    #emailId="ngModel" [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }" [disabled]="displayMode"
+                    placeholder="Type Email Id" />
+            </div>
+            <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+                Please enter valid Email Id
+            </div>
+            <div class="custStyl">
+                <label>Address</label>
+                <textarea [(ngModel)]="selectedcnslnt.address" class="textAreaStyl" minlength="15" ngModel name="address" #address="ngModel"
+                [ngClass]="{'bordercolor': address.errors && address.dirty}" [disabled]="displayMode" placeholder="Type Address"></textarea>
+            </div>
+            <div *ngIf="address.errors?.pattern" style="margin:10px; color:red;">
+                Minimum length must be 15 characters
+            </div>
+
+            <div class="custStyl">
+                <label>Country
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" [(ngModel)]="selectedcnslnt.country" ngModel name="country" value="country.locationName" [ngClass]="{'bordercolor': country.errors && country.dirty}"
+                    required [disabled]="displayMode" #country="ngModel" (blur)="selectedCountry(country.value)">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let country of countries" [selected]="country.defaultVal">{{country.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>States
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" [(ngModel)]="selectedcnslnt.state" ngModel name="state" value="states.locationName" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                    required [disabled]="displayMode" #state="ngModel" (blur)="selectedStates(state.value)">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let states of StatesList" [selected]="states.defaultVal">{{states.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>Districts
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" [(ngModel)]="selectedcnslnt.district" ngModel name="district" value="district.locationName" #district="ngModel"
+                    [ngClass]="{'bordercolor': district.errors && district.dirty}" required [disabled]="displayMode">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let district of DistrictsList" [selected]="district.defaultVal">{{district.locationName}}</option>
+                </select>
+            </div>
+
+
+            <div *ngIf="disableDropdown" class="custStyl">
+                <label>State
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" [(ngModel)]="selectedcnslnt.state" class="inpStyl" ngModel name="state" #state="ngModel" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                [pattern]="emptyTextPattern" required [disabled]="displayMode" placeholder="Type State" />
+            </div>
+            <div class="custStyl">
+                <label>City
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" [(ngModel)]="selectedcnslnt.city" class="inpStyl" ngModel name="city" #city="ngModel" [ngClass]="{'bordercolor': city.errors && city.dirty}"
+                [pattern]="emptyTextPattern" [disabled]="displayMode" required placeholder="Type City " />
+            </div>
+            <!-- <div class="custStyl">
+                    <label>Country<span class="asterisk_input">*</span></label> 
+                    <input type="text" [(ngModel)]="selectedcnslnt.country" class="inpStyl" ngModel name="country" #country="ngModel"
+                    [ngClass]="{'bordercolor': country.errors && country.dirty}" required [disabled]="displayMode" placeholder="Type Country"/>
+                </div> -->
+            <div class="custStyl">
+                <label>Pincode</label>
+                <input type="number" [(ngModel)]="selectedcnslnt.pincode" class="inpStyl" ngModel name="pincode" #pincode="ngModel" [ngClass]="{'bordercolor': pincode.errors && pincode.dirty}"
+                [pattern]="emptyTextPattern" min="0" [disabled]="displayMode" placeholder="Type Pincode" />
+            </div>
+            <div class="checkStyl">
+                <input type="checkbox" [(ngModel)]="selectedcnslnt.spocActive" class="checkBoxStyl" ngModel name="spocActive" [disabled]="displayMode"
+                    value="Active">
+                <label class="valStyl">Is Contact Person Active?</label>
+            </div>
+            <div class="checkStyl">
+                <input type="checkbox" [(ngModel)]="selectedcnslnt.firmActive" class="checkBoxStyl" ngModel name="firmActive" [disabled]="displayMode"
+                    value="Active">
+                <label class="valStyl">Is Consultant Active?</label>
+            </div>
+            <div hidden class="custStyl">
+                <label hidden>Modified By</label>
+                <input hidden type="text" [(ngModel)]="modifiedById" ngModel name="modifiedById" class="inpStyl" />
+            </div>
+            <div class="btn1">
+                <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+                <button [disabled]="!updateConsultForm.form.valid" class="btn2" type="submit">Sumbit</button>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+        <div style="margin-left:50%; margin-top: 20%">
+            <p-progressSpinner [hidden]="hidespinner"></p-progressSpinner>
+        </div>
+    </form>
+</div>

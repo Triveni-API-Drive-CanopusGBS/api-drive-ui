@@ -1,0 +1,304 @@
+<div class="treeContainer">
+    <p-treeTable [value]="dummy" [scrollable]="true" scrollHeight="330px" [columns]="cols" [style]="{height:'330px'}">
+
+        <ng-template pTemplate="caption" style="padding:25px;padding-left:0px;text-align:left;">
+            <button style="background-color:steelblue;padding:5px;margin-right:20px;" (click)="showTreeGrid()">Remove Cost
+            </button>
+            <b>Quotation Number &nbsp;-&nbsp;{{quotNumber}}</b>
+            <select name="listOfC" [(ngModel)]="selectedCnum" #listOfC (change)="getTree(listOfC.value)">
+                <option *ngFor="let c of availableCs">
+                    {{c.cNum}}
+                </option>
+            </select>
+            <button style="margin-left:100px;background-color:steelblue;padding:5px;" (click)="saveCProject()">Save</button>
+            <label style="margin:15px;color:red;font-size:12px;display:block;">{{showsucMsg}}</label>
+        </ng-template>
+
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" style="width:200px;padding:3px;">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template>
+            <tr>
+                <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'childMaterialCode'" pInputText type="text" (input)="dt.filter($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'wbsElementNo'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'materialDesc'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'prodOrder'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'overheadCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'rawMaterialCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'shopCoverCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'subContrCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'ubo'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'semiFinished'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'turbineInstrumentCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'total'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search" *ngSwitchCase="'misl'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr>
+                <td>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    <input type="checkbox"> {{rowData.childMaterialCode}}
+                </td>
+                <td>{{rowData.wbsElementNo}}</td>
+                <td>{{rowData.materialDesc}}</td>
+                <td>{{rowData.prodOrder}}</td>
+                <td (click)="showOvhCost(rowData)">{{rowData.overheadCost}}</td>
+                <td>{{rowData.rawMaterialCost}}</td>
+                <td (click)="shopConvPop(rowData)">{{rowData.shopCoverCost}}</td>
+                <td>{{rowData.subContrCost}}</td>
+                <td>{{rowData.ubo}}</td>
+                <td>{{rowData.semiFinished}}</td>
+                <td>{{rowData.turbineInstrumentCost}}</td>
+                <td>{{rowData.total}}</td>
+                <td>{{rowData.misl}}</td>
+
+            </tr>
+        </ng-template>
+        <!-- <ng-template pTemplate="frozenbody" let-rowNode let-rowData="rowData">
+            <tr>
+                <td>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    <input type="checkbox">
+                    {{rowData.childMaterialCode}}
+                </td>
+            </tr>            
+        </ng-template> -->
+
+    </p-treeTable>
+    <!-- {{dummy.f2FForm.id}} -->
+</div>
+<p-dialog header="Shop Conversion Cost" [(visible)]="dialogStatus" showEffect="fade" appendTo="body" [modal]="true" [responsive]="true"
+    [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white'}">
+
+    <div style="margin-top:10px;">
+        <table id="overHead">
+            <tr>
+                <th>Component Number</th>
+                <th>Operation</th>
+                <th>Sub Operation</th>
+                <th>Operation Description</th>
+                <th>Work Center</th>
+                <th> Labour Cost</th>
+                <th>Operation Time</th>
+                <th>Total Cost</th>
+            </tr>
+            <tr *ngFor="let shopConvDetail of shopConvDetails ; let i=index">
+                <td class="tabletdstyle"> {{shopConvDetail.cNum }}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.operation}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.subOperation}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.zDesc}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.workCenter}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.assemblyCost}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.totalHours}}</td>
+                <td class="tabletdstyle"> {{shopConvDetail.totalCost}}</td>
+            </tr>
+        </table>
+    </div>
+    <p-footer>
+        <button type="button" pButton class="fa fa-close" (click)="closeDialog()" class="ui-button-secondary">Close</button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Overhead Cost" [(visible)]="dialogState" showEffect="fade" appendTo="body" [modal]="true" [responsive]="true"
+    [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white'}">
+
+    <div>
+        <table id="overHead">
+            <tr>
+                <th>Component Number</th>
+                <th>WBS Element Number</th>
+                <th>Prod Order</th>
+                <th>Cost Element</th>
+                <th>Parent Material Code</th>
+                <th>Material Desc</th>
+                <th>Amount</th>
+            </tr>
+            <tr *ngFor="let overHeadCostDetail of OverHeadCostDetails ; let i=index">
+                <td class="tabletdstyle"> {{overHeadCostDetail.cNum }}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.wbsElementNo}}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.prodOrd}}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.costElement}}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.parentMaterialCode}}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.materialDesc}}</td>
+                <td class="tabletdstyle"> {{overHeadCostDetail.amount}}</td>
+            </tr>
+        </table>
+    </div>
+    <p-footer>
+        <button type="button" pButton class="fa fa-close" (click)="closeDialog()" class="ui-button-secondary">Close</button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="latestCdialog" showEffect="fade" appendTo="body" [modal]="true" [responsive]="true"
+    [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white'}">
+
+    <div>
+        <label style="margin:25px;margin-left:15px;display:block;font-weight:bold;">The latest C project is - {{latestC}} and below is one line BOM</label>
+        <table id="overHead" style="border-collapse:collapse;">
+            <tr>
+                <th>Raw Material</th>
+                <th>UBO</th>
+                <th>Semi Finished</th>
+                <th>Sub Contract</th>
+                <th>Shop Conversion</th>
+                <th>Turbine Instrument</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td class="tabletdstyle"> {{latestCdata.rawMaterialCost}}</td>
+                <td class="tabletdstyle"> {{latestCdata.ubo}}</td>
+                <td class="tabletdstyle"> {{latestCdata.semiFinished}}</td>
+                <td class="tabletdstyle"> {{latestCdata.subContrCost}}</td>
+                <td class="tabletdstyle"> {{latestCdata.shopCoverCost}}</td>
+                <td class="tabletdstyle"> {{latestCdata.turbineInstrumentCost}}</td>
+                <td class="tabletdstyle"> {{latestCdata.total}}</td>
+            </tr>
+        </table>
+        <label style="margin:15px;display:block;">Click 'proceed' if you want to go with {{selectedCnum}}</label>
+        <label style="margin:15px;color:red;font-size:12px;display:block;">{{latestCmsg}}</label>
+    </div>
+    <p-footer>
+        <button type="button" pButton class="fa fa-close" (click)="proceed()" class="ui-button-secondary">Proceed</button>
+        <button type="button" pButton class="fa fa-close" (click)="closeDialog()" class="ui-button-secondary">Close</button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="F2F Tree" [(visible)]="displayTree" showEffect="fade" appendTo="body" [modal]="true" [responsive]="true"
+    [width]="1000" [minWidth]="200" [height]="600" [minY]="20" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white'}">
+
+    <div class="treetable">
+        <p-table #dt [columns]="cols" [value]="f2fDataList" [paginator]="true" [rows]="5" [(selection)]="selectedLines" dataKey="childMaterialCode">
+
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3em">
+                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
+                    </th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="secondHeader"></th>
+                    <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'childMaterialCode'" pInputText type="text" (input)="dt.filter($event.target.value, 'contains')">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'wbsElementNo'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'materialDesc'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'prodOrder'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'overheadCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'rawMaterialCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'shopCoverCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'subContrCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'ubo'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'semiFinished'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'turbineInstrumentCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'total'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input class="localIp" placeholder="Search" *ngSwitchCase="'misl'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+
+                <tr class="datarow" [pSelectableRow]="rowData">
+                    <td>
+                        <!-- <p-tableCheckbox checked (click)="selectLines($event,rowData)" [(ngModel)]="!checkedStatus" [value]="rowData"></p-tableCheckbox> -->
+                        <input type="checkbox" (click)="selectLines($event,rowData)" [checked]="rowData.flag" [disabled]="rowData.disableFlg">
+                    </td>
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <!-- <p-table hidden #dt [columns]="cols" [value]="selectedLines" [paginator]="true" [rows]="5" >
+            <ng-template pTemplate="caption">
+                <div class="ui-helper-clearfix">
+                    <label>Removed Lines:</label>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+
+                <tr class="datarow" [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table> -->
+        <label style="margin:5px;margin-left:30px;">Selected Lines </label>
+
+        <table *ngIf="selectedLines.length!=0" style="border-collapse:collapse;margin-left:20px;padding:4px;">
+            <tr>
+                <th *ngFor="let col of cols">
+                    {{col.header}}
+                </th>
+            </tr>
+            <tr *ngFor="let selectedLine of selectedLines">
+                <td>
+                    {{selectedLine.childMaterialCode}}
+                </td>
+                <td>
+                    {{selectedLine.wbsElementNo}}
+                </td>
+                <td>
+                    {{selectedLine.materialDesc}}
+                </td>
+                <td>
+                    {{selectedLine.prodOrder}}
+                </td>
+                <td>
+                    {{selectedLine.overheadCost}}
+                </td>
+                <td>
+                    {{selectedLine.rawMaterialCost}}
+                </td>
+                <td>
+                    {{selectedLine.shopCoverCost}}
+                </td>
+                <td>
+                    {{selectedLine.subContrCost}}
+                </td>
+                <td>
+                    {{selectedLine.semiFinished}}
+                </td>
+                <td>
+                    {{selectedLine.turbineInstrumentCost}}
+                </td>
+                <td>
+                    {{selectedLine.turbineInstrumentCost}}
+                </td>
+                <td>
+                    {{selectedLine.total}}
+                </td>
+                <td>
+                    {{selectedLine.misl}}
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <p-footer>
+        <button type="button" pButton class="fa fa-close" (click)="removeLines()" class="ui-button-secondary">Remove Lines</button>
+        <button type="button" pButton class="fa fa-close" (click)="closeDialog()" class="ui-button-secondary">Close</button>
+    </p-footer>
+</p-dialog>

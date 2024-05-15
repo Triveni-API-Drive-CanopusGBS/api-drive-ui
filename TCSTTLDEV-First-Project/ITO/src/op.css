@@ -1,0 +1,38 @@
+.test {
+  background-color: #d57817 333;
+  font-size: 25px;
+}
+
+.headerbtn {
+  display: inline-block;
+  width: auto;
+  padding: 5px;
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  margin-left: 10px;
+}
+
+.headerbtn:hover {
+  display: inline-block;
+  width: auto;
+  padding: 5px;
+  font-size: 14px;
+  background-color: transparent;
+  border: 1px solid darkgoldenrod;
+  color: darkgoldenrod;
+  margin-left: 10px;
+}
+
+.LrHsel {
+  font-family: Helvetica, sans-serif;
+  padding: 6px;
+  margin: 10px;
+  border-radius: 6px;
+}
+
+li {
+  list-style: none;
+}
+
+/*# sourceMappingURL=op.css.map */

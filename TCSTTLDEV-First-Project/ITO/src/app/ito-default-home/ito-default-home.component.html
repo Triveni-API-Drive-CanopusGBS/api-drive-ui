@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <h1 style="font-size: 17px;">Welcome to Admin ITO Tool </h1> 
+    <!-- <button class="navButton" routerLink="/MyWorkFlow" routerLinkActive="active">Go to Worklist</button> -->
+    <!-- <div style="display:inline-block;padding:10px;">
+        <canvas style="display:inline-block" id="newCanv">
+
+        </canvas> 
+    </div>-->
+<div class="othersGrid">
+    <h2 style="font-size: 15px;">All Requests</h2>
+    <p-table [style]="{width:'94%','margin-left':'3%'}" #dtUpAll [columns]="colss" [value]="allRequests" [paginator]="true" [rows]="7">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'displayReqNumber'" pInputText type="text" (input)="dtUpAll.filterGlobal($event.target.value, 'contains')">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'createdBy'" pInputText type="text" (input)="dtUpAll.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'assignedToName'" pInputText type="text" (input)="dtUpAll.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'modifiedDate'" pInputText type="text" (input)="dtUpAll.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'statusName'" pInputText type="text" (input)="dtUpAll.filter($event.target.value, col.field, col.filterMatchMode)">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr class="datarow" [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+  </div>
+</div>

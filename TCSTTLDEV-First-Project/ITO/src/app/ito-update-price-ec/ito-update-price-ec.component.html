@@ -1,0 +1,322 @@
+<h2 style=" margin-left: 35px; color: black; font-size: 15px;">
+    Update Cost - Erection & Commission
+</h2>
+<button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans"  (click)="bulkUpd()">Bulk Update</button>
+<div class="ecContainer">
+    <div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <div *ngIf="!hideprogress">
+    <p-tabView [activeIndex]="tabIndex" (onChange)="handleChange($event)">
+        <p-tabPanel header=" Update Cost" leftIcon="fa fa-pencil-square-o" [disabled]="exist">
+            <p-table *ngIf="ecPriceList.length>0" #dt [columns]="cols" [value]="ecPriceList" selectionMode="multiple" [(selection)]="selectedData1"
+                    (onRowSelect)="onRowSelect($event)"  [paginator]="true" [rows]="15" [style]="{width:'1350px'}">
+                <ng-template pTemplate="caption">
+                    <div class="ui-helper-clearfix">
+                        <i type="button" class="fa fa-file-excel-o" label="All EC Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                            Export to Excel</i>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+
+                        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input class="localIp" leftIcon="fa fa-search" placeholder="Search here.." *ngSwitchCase="'frameDesc'" pInputText type="text"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineDesign'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condensingType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'ecType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'typeOfCharge'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'loadingName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'lodgingName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'previousPrice'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                                (keyup)="searchSet(dt,$event.target.value)">
+                        </th>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr class="datarow" #tr id="{{rowData.ecId}}" [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns; let i=index;">
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                <div class="ui-g ui-fluid" >
+                  <div class="ui-g-12">
+                    <div class="ui-g-4">
+                      <label for="vin">Percentage</label>
+                    </div>
+                    <div class="ui-g-8">
+                      <input pInputText style="padding:5px;" [(ngModel)]="percentage" />
+                    </div>
+                  </div>
+                  </div>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                    <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+                  </div>
+                  </p-dialog>
+            <p-dialog header="Update Price - EC" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="650">
+                <div class="ui-g ui-fluid" *ngIf="selectedData">
+                    <div class="custStyl">
+                        <label>
+                            <b>Frame : </b>
+                        </label>
+                        <label>{{selectedData.frameDesc}}</label>
+                    </div>
+                    <div class="custStyl">
+                        <label>
+                            <b>Power : </b>
+                        </label>
+                        <label>{{selectedData.maxPower}}</label>
+                    </div>
+                    <div class="custStyl">
+                        <label>
+                            <b>Turbine Design : </b>
+                        </label>
+                        <label>{{selectedData.turbineDesign}}</label>
+                    </div>
+                    <div class="custStyl">
+                        <label>
+                            <b>Turbine Type : </b>
+                        </label>
+                        <label>{{selectedData.turbineType}}</label>
+                    </div>
+                    <div class="custStyl" *ngIf="dispCondTyp">
+                        <label>
+                            <b>Condensing Type : </b>
+                        </label>
+                        <label>{{selectedData.condensingType}}</label>
+                    </div>
+                    <div class="custStyl">
+                        <label>
+                            <b>Type of Charge : </b>
+                        </label>
+                        <label>{{selectedData.typeOfCharge}}</label>
+                    </div>
+                    <div class="custStyl" *ngIf="dispUnloading">
+                        <label>
+                            <b>Unloading : </b>
+                        </label>
+                        <label>{{selectedData.loadingName}}</label>
+                    </div>
+                    <div class="custStyl">
+                        <label>
+                            <b>Lodging & Boarding : </b>
+                        </label>
+                        <label>{{selectedData.lodgingName}}</label>
+                    </div>
+                    <div class="custStyl" *ngIf="selectedData.previousPrice>0">
+                        <label>
+                            <b>Previous Cost : </b>
+                        </label>
+                        <label> {{selectedData.previousPrice}}</label>
+                    </div>
+                    <div class="reqStyl">
+                        <label>
+                            <b>Cost : </b>
+                        </label>
+                        <input class="priceField" placeholder="Enter Cost" [(ngModel)]="selectedData.price" />
+                    </div>
+                </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                    </div>
+                </p-footer>
+            </p-dialog>
+
+
+        </p-tabPanel>
+
+        <!-- Add Price code starts -->
+
+        <p-tabPanel header="Add Cost" leftIcon="fa fa-plus-square" [disabled]="addNew">
+            <form #ecPriceForm="ngForm" *ngIf="enableSel">
+                <div class="reqStyl">
+                    <label>Type of Blade
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="turbineCate" required #turbineCate="ngModel" (change)="turbineDesnSel(turbineCate.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbineCate.categoryDetCode" *ngFor="let turbineCate of turbineCategoryList">{{turbineCate.categoryDetDesc}}</option>
+                    </select>
+                </div>
+                <div class="reqStyl">
+                    <label>Turbine Type
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="typeOfTurbine" required value="turbine.categoryDetDesc" #typeOfTurbine="ngModel" (change)="TOTSel(typeOfTurbine.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbine.categoryDetCode" *ngFor="let turbine of turbineTypesList">{{turbine.categoryDetDesc}}</option>
+                    </select>
+                </div>
+
+
+                <div class="reqStyl">
+                    <label>Frames
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="frames" required #frames="ngModel" (change)="FrameSel(frames.value,ecPriceForm.value,ecPriceForm)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="frame.frameId" *ngFor="let frame of frameList">{{frame.framePowerDesc}}</option>
+                    </select>
+                </div>
+            </form>
+            <br>
+            <br>
+            <br>
+            <p-table *ngIf="newFrame.length>0" #dt [value]="columns" selectionMode="multiple" [(selection)]="selNewData" [style]="{width:'1350px'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Frame</th>
+                        <th>Power</th>
+                        <th>Turbine Design</th>
+                        <th>Turbine Type</th>
+                        <th>Condensing Type</th>
+                        <!-- <th>EC Type</th> -->
+                        <th>Type of Charge</th>
+                        <th>Unloading</th>
+                        <th>Lodging & Boarding</th>
+                        <th icon="fa fa-pencil-square-o">Cost</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr class="datarow" id="{{rowData.ecId}}" [pSelectableRow]="rowData">
+                        <td>{{rowData.frameDesc}}</td>
+                        <td>{{rowData.maxPower}}</td>
+                        <td>{{rowData.turbineDesign}}</td>
+                        <td>{{rowData.turbineType}}</td>
+                        <td>{{rowData.condensingType}}</td>
+                        <!-- <td>{{rowData.ecType}}</td> -->
+                        <td>{{rowData.typeOfCharge}}</td>
+                        <td>{{rowData.loadingName}}</td>
+                        <td>{{rowData.lodgingName}}</td>
+
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="number" (keyup)="onInputChange($event)" [(ngModel)]="rowData.price">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.price}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="saveDiv" *ngIf="enableSave">
+                        <button type="button" pButton class="saveBtn" icon="fa fa-check" (click)="saveNewData()" icon="fa fa-check" label="OK"></button>
+                    </div>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+    </p-tabView>
+    <div *ngIf="displayForm">
+    <form #updatePriceECForm="ngForm" (ngSubmit)="updateECPrice(updatePriceECForm.value,updatePriceECForm)">
+        <table id="comments" class="ecComment">
+            <tr *ngFor="let c of prevRemarks;let i=index;">
+                <td>
+                    <label>
+                        <b>{{c.assingedToname}} - Comments</b>
+                    </label>
+                </td>
+                <td>
+                    <textarea class="pcomments" disabled placeholder="Enter your comments" cols="50" rows="2">{{c.comment}}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        <b>Comments
+                            <span class="asterisk_input">*</span>
+                        </b>
+                    </label>
+                </td>
+                <td>
+                    <textarea required #remarks="ngModel" name="remarks" cols="50" rows="2" ngModel class="remarks" placeholder="Enter your Comments"></textarea>
+                </td>
+            </tr>
+            <tr *ngIf="(erecCommApprove || erecCommReview)">
+                <td>
+                    <label class="reviewrlbl">
+                        <b> Accept / Reject the update request here
+                            <span class="asterisk_input">*</span>
+                        </b>
+                    </label>
+                </td>
+                <td>
+                    <select class="priceField" #state="ngModel" required name="status" ngModel   #status="ngModel" (change)="statusSel(status.value)">
+                        <option value="" selected hidden>Please select </option>
+                        <option>Accept</option>
+                        <option>Reject</option>
+                    </select>
+                </td>
+            </tr>
+             <tr *ngIf="(erecCommEdit || erecCommReview) && (enableStatus)">
+                <td>
+                    <label>
+                        <b>{{labelName}}</b>
+                    </label>
+                    <span class="asterisk_input">*</span>
+                </td>
+                <td>
+                    <select required class="widthInc" ngModel name="assignee" #assignee>
+                        <option value="" hidden selected> Please select</option>
+                        <option [ngValue]="u.userId" *ngFor="let u of newUsersList">{{u.empName}}</option>
+                    </select>
+                </td>
+            </tr> 
+
+        </table>
+        <div class="previouFun">
+            <button id="saveReq" class="btn2" type="button" [disabled]="updatedPriceList.length==0" (click)="saveAsDraft(updatePriceECForm.value,updatePriceECForm)">Save as Draft</button>
+            <button id="updateReq" [disabled]="!(updatePriceECForm.form.valid && updatedPriceList.length!=0)" class="btn2" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<!-- <div *ngIf="message" class="msgDiv">
+    {{successMsg}}
+</div>
+<div *ngIf="updMessage" class="msgDiv">
+    {{updSuccessMsg}}
+        </div> -->
+        <p-dialog header="Request Status" [(visible)]="message" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+            <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+            <p-footer>
+              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+              </div>
+            </p-footer>
+          </p-dialog>
+          <p-dialog header="Request Status" [(visible)]="dispMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+                <p-footer>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                    <button type="button" pButton icon="fa fa-check" (click)="displayMessage()" label="Ok"></button>
+                  </div>
+                </p-footer>
+              </p-dialog>
+    </div>
+</div>

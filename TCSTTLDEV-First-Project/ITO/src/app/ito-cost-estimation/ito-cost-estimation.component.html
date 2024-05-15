@@ -1,0 +1,157 @@
+<div class="costContainer" id="cosId">
+  <!-- <h4 style="margin-top: 5px; margin-bottom: 5px; font-size:15px; font-family: helvetica;">Estimate Cost</h4>  -->
+  <div style="font-weight: bold; margin-top: 5px; margin-bottom: 5px; width: 300px; font-family: Helvetica; font-size: 14px;" *ngIf="ELEbtn || TDbtn || MECHbtn || CIbtn">{{frameNm}} - {{capacity}}MW - {{typeCust}}</div>
+  <div class="alignOrder">
+    <p-dialog class="dialog" header="Instructions" [(visible)]="instructionsDialog" showEffect="fade" appendTo="body" [modal]="true"
+      [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+      <div class="notifiacationDiv">
+        <ul style="list-style: none;">
+          <li class="notifiacationDivLi">
+          1. Before going to next step please click Save / Next button to save your effort .
+          </li>
+          <li class="notifiacationDivLi">
+           2. Please do not use browser back button / refresh button when creating quotation.
+          </li>
+        </ul>
+      </div>
+      <p-footer>
+        <button type="button" class="dialogClosebtn" (click)="instructionsDialog=false">Close</button>
+      </p-footer>
+    </p-dialog>    
+   
+    <nav>
+      <div class="deco">          
+        <button [routerLink]="['CustomerInformation']" [ngStyle]="{ 'background-color':SOSbtn ? 'green' : 'rgb(213,120,23)' }" routerLinkActive="active"
+          (click)="enableDisableRule()" this.toggleOrange=true; [ngClass]="{'decoLink' : toggleGrey, 'decolinkClick': toggleOrange , 'decolinkClickgreen': togglegreen  }">1</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button1 ? 'blue' : 'black' }" [ngClass]="{'custLable' : toggleGrey , 'custLable1': toggleOrange , 'custLable2': togglegreen }" [ngStyle]="{ 'color':SOSbtn ? 'green' : 'rgb(213,120,23)' }">Customer Information</label>
+      </div>
+      <div class="decoArrow"> 
+      <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+    </div> 
+      <div class="deco3">
+        <button [disabled]="!SOSbtn" [ngStyle]="{ 'background-color':greenSOS ? 'green' : 'rgb(213,120,23)' }" 
+       
+        [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+        [routerLink]="['ScopeOfsupplyCstEst']" routerLinkActive="active1" (click)="enableDisableRule3()">2</button>
+        <label  [ngStyle]="{ 'color':    this._ITOeditQoutService.button2 ? 'blue' : 'black' }" style="margin-left: 0px;" [ngClass]="{'scopeOfsupOrTab' : !SOSbtn, 'scopeOfsupOrTab1': SOSbtn , 'scopeOfsupOrTab2': greenSOS }">Scope Of Supply</label>
+      </div>
+      <div class="deco3"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!SAPbtn" 
+         [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }" style="background-color:gray"
+          [routerLink]="['ItoF2fTurbineDetails']" (click)="buttonmethod3()" routerLinkActive="active2">3</button>
+        <label [ngStyle]="{ 'color':this._ITOeditQoutService.button3 ? 'blue' : 'black' }" [ngClass]="{'scopeOfsupTab' : !SAPbtn, 'scopeOfsupTab1': SAPbtn , 'scopeOfsupTab2':toggle3Green }"
+        >F2F SAP</label>
+      </div>
+      <div class="deco3"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!TDbtn" [ngStyle]="{ 'background-color':F2FTurGreen? 'green' : 'rgb(213,120,23)' }"
+         [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+         [routerLink]="['CompleteTurbineDetails']" (click)="buttonmethod4()" routerLinkActive="active2">4</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button4 ? 'blue' : 'black' }" class="turbineLab" [ngClass]="{'scopeOfsupTab' : !TDbtn, 'scopeOfsupTab1': TDbtn , 'scopeOfsupTab2':F2FTurGreen }"
+         >Turbine</label>
+      </div>
+      <div class="decoArrow"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!MECHbtn" [ngStyle]="{ 'background-color':MECHGreen? 'green' : 'rgb(213,120,23)' }" 
+        [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+         [routerLink]="['Mechanical']" (click)="buttonmethod5()" routerLinkActive="active2">5</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button5 ? 'blue' : 'black' }" class="turbineLab" [ngClass]="{'scopeOfsupTab' : !MECHbtn, 'scopeOfsupTab1': MECHbtn , 'scopeOfsupTab2':toggle3Green }"
+      >Mechanical</label>
+      </div>
+      <div class="deco3"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!ELEbtn" [ngStyle]="{ 'background-color':ELEGreen? 'green' : 'rgb(213,120,23)' }" [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+         [routerLink]="['Electrical']" (click)="buttonmethod6()" routerLinkActive="active2">6</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button6 ? 'blue' : 'black' }" class="turbineLab" [ngClass]="{'scopeOfsupTab' : !ELEbtn, 'scopeOfsupTab1': ELEbtn , 'scopeOfsupTab2':toggle3Green }"
+         >Electrical</label>
+      </div>
+      <div class="deco3"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!CIbtn" [ngStyle]="{ 'background-color':CIGreen? 'green' : 'rgb(213,120,23)' }" [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+        style="margin-right: 5px; margin-left: 15px;" [routerLink]="['ControlInstrumentation']" (click)="buttonmethod7()" routerLinkActive="active2">7</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button7 ? 'blue' : 'black' }" class="turbineLab" [ngClass]="{'scopeOfsupTab' : !CIbtn, 'scopeOfsupTab1': CIbtn , 'scopeOfsupTab2':toggle3Green }"
+         style="margin-left: 9px;">C&I</label>
+      </div>
+      <div class="deco3"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3">
+        <button [disabled]="!TECHbtn" [ngStyle]="{ 'background-color':TECHGreen? 'green' : 'rgb(213,120,23)' }"
+         [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+         [routerLink]="['Techinal/ItoPerformance']" (click)="buttonmethod8()" routerLinkActive="active2">8</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button8 ? 'blue' : 'black' }" class="turbineLab" style="margin-left: 0px;"  [ngClass]="{'scopeOfsupTab' : !TECHbtn, 'scopeOfsupTab1': TECHbtn , 'scopeOfsupTab2':toggle3Green }"
+          >Others Chapters</label>
+      </div>
+      <div class="deco3" *ngIf="disableComr"> 
+          <p style="font-size: 30px; margin: 0px; margin-top: -7px;">&rarr;</p>
+        </div> 
+      <div class="deco3" *ngIf="disableComr">
+      <!-- <div class="deco3"> -->
+        <button [disabled]="!cmpltBn" [ngStyle]="{ 'background-color':COMRGreen? 'green' : 'rgb(213,120,23)' }"
+         [ngClass]="{'decoLink3' : toggle3Grey, 'decolinkClick3': toggle3Orange ,'decolinkClick3green':toggle3Green }"
+        style="margin-left:15px;" [routerLink]="['EstimateCost']" (click)="buttonmethod9()" routerLinkActive="active2">9</button>
+        <label [ngStyle]="{ 'color':    this._ITOeditQoutService.button9 ? 'blue' : 'black' }" class="turbineLab" [ngClass]="{'scopeOfsupTab' : !cmpltBn, 'scopeOfsupTab1': cmpltBn , 'scopeOfsupTab2':toggle3Green }"
+        style="margin-left: 0px;">Commercial</label>
+    </div>
+    <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon">
+      <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" downloadDoc()" style="float:right; background-color: white; color:rgb(213,120,23);  padding-top: 3px;"
+         title="Technical Offer"></i>
+         <label class="turbineLab1">TO</label>
+         </div>
+         <!-- <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon && disableComr" >
+          <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" comrDownload()" style="float:right; background-color: white; color:rgb(213,120,23);  padding-top: 3px;"
+             title="Comercial Report Section2A"></i>
+             <label class="turbineLab1">CRS2A</label>
+             </div> 
+             <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon && disableComr">
+              <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" comrDownloadNew()" style="float:right; background-color: white; color:rgb(213,120,23);  padding-top: 3px;"
+                 title="Comercial Report Section2B"></i>
+                 <label class="turbineLab1">CRS2B</label>
+                 </div>    -->
+                 <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon">
+                  <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)="export()" style="float:right; background-color: white; color:rgb(213,120,23); padding-top: 3px;"
+                 title="Final Cost Sheet"></i>
+                 <label class="turbineLab1">FCS</label>
+                </div>    
+                
+                <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon">
+                  <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)="addOnPdf()" style="float:right; background-color: white; color:rgb(213,120,23); padding-top: 3px;"
+                 title="AddOn Cost Sheet"></i>
+                 <label class="turbineLab1">ACS</label>
+               </div> 
+                          
+    <div class="deco3" style="margin-left: 10px;" *ngIf="disableIcon">
+      <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" detailedpdf()" style="float:right; background-color: white; color:rgb(213,120,23); padding-top: 3px;"
+     title="Input Report"></i>
+     <label class="turbineLab1">IR</label>
+   </div>   
+    
+ 
+
+                           
+              
+      <div class="deco3" *ngIf="hidespinner">
+        <p-progressSpinner [hidden]="!hidespinner" [style]="{width: '25px', height: '25px', float: 'right', top: '14px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+      </div>
+      <!-- <div *ngIf="!disableF2F" class="deco2">
+        <button [disabled]="!Estbtn" [ngStyle]="{ 'background-color':Estbtn? 'green' : 'rgb(213,120,23)' }" class="decoLink1" [routerLink]="['EstimateCost']"
+          routerLinkActive="active3" (click)="enableDisableRule2()">3</button>
+        <label [ngClass]="{'estimateCostLab' : toggle2Grey, 'estimateCostLab1':toggle2Orange }" [ngStyle]="{ 'color':TDbtn ? 'green' : 'rgb(213,120,23)' }">Estimate cost</label>
+      </div> -->
+    </nav>
+  </div>
+  <div class="containerStyling">
+    <router-outlet></router-outlet>
+  </div>
+</div>

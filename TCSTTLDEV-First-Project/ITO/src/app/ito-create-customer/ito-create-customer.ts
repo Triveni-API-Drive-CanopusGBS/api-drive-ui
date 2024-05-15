@@ -1,0 +1,45 @@
+export class CustomerDetails{
+    custId:number;
+    custName:string;
+    custCode:string;
+    custType:string;
+    contactPersonName:string;
+    emailId:string;
+    contactNumber:string;
+    city:string;
+    state:string;
+    country:string;
+    district:string;
+    pincode:string;
+    address:string;
+    createdDate:string;
+    modifiedDate:string;
+    createdBy:number;
+    modifiedBy:number;
+    hasEnduser:number;
+    hasConsultant:number;
+    active:boolean;
+
+    constructor(obj){
+        this.custId=obj.custId;
+        this.custName=obj.custName;
+        this.custCode=obj.custCode;
+        this.custType=obj.custType;
+        this.contactPersonName=obj.contactPersonName;
+        this.emailId=obj.emailId;
+        this.contactNumber=obj.contactNumber;
+        this.city=obj.city;
+        this.state=obj.state;
+        this.country=obj.country;
+        this.district=obj.district;
+        this.pincode=obj.pincode;
+        this.address=obj.address;
+        this.createdDate=obj.createdDate;
+        this.modifiedDate=obj.modifiedDate;
+        this.createdBy=obj.createdBy;
+        this.modifiedBy=obj.modifiedBy;
+        this.hasEnduser=obj.hasEnduser;
+        this.hasConsultant=obj.hasConsultant;
+        this.active=obj.active;
+    }
+}

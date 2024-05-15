@@ -1,0 +1,610 @@
+<div class="dboMechContainer">
+    <div class="dboMechList">
+        <ul>
+            <li *ngFor="let d of newArray;let i=index">
+                    <div *ngIf="!d.enabled"> <!--Disabled -->
+                        <input style="float:left;margin-top:5px;" disabled type="checkbox" checked=true>
+                        <label style= "color: gray;" class="dboEls" id="{{d.itemId}}"  title="{{d.itemName}}" >{{d.itemName}} </label>                 
+                    </div>
+                    <div *ngIf="d.enabled">
+                <input style="float:left;margin-top:5px;" type="checkbox" 
+                name="selectedE" value="selectedE" [disabled]="!selectdEl[i]" (click)="dboMechItmList($event,d.itemId,i)" [checked]="selectdEl[i]">
+                <label class="dboEls" (click)="dboMechSel(d,d.itemName,i)" [ngStyle]="{ 'pointer-events':diableitemname? 'visible' : 'none' }" title="{{d.itemName}}">{{d.itemName}}</label>
+            </div>
+            </li>
+        </ul>
+    </div>    
+    <!-- <div class="altAddOns" style="margin-left:30px;margin-top:10px" *ngIf="dboMechFullArray3?.length > 0"  [appDisable]="appDisable">
+        <input type="checkbox" [checked]="othItmTechRemChk" [(ngModel)]="itemtechRemarkCheck" name="itemRemark" (click)="itemRmrkCheck($event)" class="checkBoxStyl">
+        <b>Technical Comments</b>
+        <div *ngIf="itemRemarkDiv">
+           <textarea  (keyup)="checkRemarks()" name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+            [(ngModel)]="itemRemarksVal" required placeholder="Technical Remarks"></textarea>                
+        </div>
+    </div>    
+    <div class="altAddOns" style="margin-left:30px;margin-top:10px" *ngIf="dboMechFullArray3?.length > 0"  [appDisable]="appDisable">
+        <input type="checkbox" [checked]="othItmComrRemChk" [(ngModel)]="itemComrRemarkCheck" name="itemRemark" (click)="itmComrRmrk($event)" class="checkBoxStyl">
+        <b>Commercial Comments</b>
+        <div *ngIf="itemComrRemarkDiv">
+            <textarea  (keyup)="checkItemComrRmrks()"  name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+            [(ngModel)]="itemCmrRemarksVal" required placeholder="Commercial Remarks"></textarea>                
+        </div>
+    </div>    -->
+    <p-dialog [header]="itemName" [(visible)]="displayMechSubList" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px', 'height': 'auto', 'font-family':'Helvetica', 'font-size':'13px'}">    
+        <div class="dboMechList">
+            <ul>
+                <li *ngFor="let sd of subList1;let i=index">
+                    <input style="float:left; margin-top: 5px;" type="checkbox" name="selectedE1" name="selectedE1" [disabled]="!selectdEl1[i]" value="selectedE1" [checked]="selectdEl1[i]"
+                     (click)="dboMechItmListSub($event,sd.subItemId,i)">
+                    <label class="dboEls" id="{{sd.itemId}}" title="{{sd.subItemName}}" [ngStyle]="{ 'pointer-events':diableitemname? 'visible' : 'none' }"  (click)="dboMechSel(sd,sd.subItemName,i)">{{sd.subItemName}}</label>
+                </li>
+            </ul>
+        </div>    
+        <!-- <div class="altAddOns" style="margin-left:30px;margin-top:20px"  [appDisable]="appDisable">
+            <input type="checkbox" [checked]="othSubItmTechRemChk"  [(ngModel)]="subItemTchRem" name="subitemRemark" (click)="subItemTechRem($event)" class="checkBoxStyl">
+            <b>Technical Remarks</b>
+            <div *ngIf="subItemRemarkDiv">
+               <textarea  (keyup)="checkSubItemRem()"  name="subTechRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+                [(ngModel)]="subItemRmkValOut" required placeholder="Technical Remarks"></textarea>                
+            </div>
+        </div>        
+        <div class="altAddOns" style="margin-left:30px;margin-top:10px"  [appDisable]="appDisable">
+            <input type="checkbox" [checked]="othSubItmComrRemChk"  [(ngModel)]="subItemComRem" name="subItemComRemark" (click)="subItemComrRem($event)" class="checkBoxStyl">
+                <b>Commercial Remarks</b>
+                <div *ngIf="subItemComrRemDiv">
+                   <textarea  (keyup)="subChkItemComrRmrks()"  name="comQuotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+                    [(ngModel)]="subItemCmrRemValOut" required placeholder="Commercial Remarks"></textarea>                
+                </div>
+            </div> -->
+            
+                <label class="samllLblIndCLose" for="priceField">Cost :</label>
+                <input disabled type="number" style="width:100px;padding:4px;border-radius:5px;margin:10px; margin-left:0px;"
+                [(ngModel)]="subItemcst">
+            
+            <!-- <div class="altAddOns" style="margin-left:20px;margin-top:10px">
+                <input type="checkbox"  [checked]="othersSubCheck" [(ngModel)]="othersSubItemCheck" name="addOns" (click)="openSubItemTable($event)" class="checkBoxStyl">
+                <b>Others</b>
+                <div *ngIf="displaySubItemOthTable" class="othersTable">
+                    <form #othersSubItem="ngForm" (ngSubmit)="subItemOthForm(othersSubItem.value ,othersSubItem)">
+                        <table id="addOnTab2" class="addOnTable">
+                            <th class="tabBackColor">
+                                Sub Item Name
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th class="tabBackColor">
+                                Quantity
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th class="tabBackColor">
+                                Cost
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th class="tabBackColor">
+                               Technical Remarks
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th class="tabBackColor">
+                                Commercial Remarks
+                                 <span class="asterisk_input">*</span>
+                             </th>
+                            <tr *ngFor="let o of subItemOthAddonList;let i=index">
+                                <td class="tabBackColor">
+                                    <label class="othersip">{{o.subItemName}}</label>
+                                </td>
+                                <td class="tabBackColor">
+                                        <label class="othersip">{{o.quantity}}</label>
+                                </td>
+                                <td class="tabBackColor">
+                                    <label class="othersip">{{o.cost}}</label>
+                                </td>
+                                <td class="tabBackColor">
+                                    <textarea class="othersip">{{o.techRemarks}}</textarea>
+                                </td>
+                                <td class="tabBackColor">
+                                    <textarea class="othersip"> {{o.comrRemarks}}</textarea>
+                                </td>
+                                <td style="border:none;">
+                                    <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesSubItemOth(i)" aria-hidden="true"></i>
+                                    <button (click)="addLhsRhsSubItem(i)" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+                                    type="button">Add Lhs/Rhs</button>
+                                </td>
+                            </tr>
+                            <tr [hidden]="!dsplySubItmOthnewLine">
+                                <td class="tabBackColor">
+                                    <input name="subItemName" style="background-color: #efeff5;" placeholder="Enter Item Name .." required #subItemName="ngModel"
+                                        ngModel class="othersip" type="text">
+                                </td>
+                                <td class="tabBackColor">
+                                    <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                        name="subItemQty" style="background-color: #efeff5;" placeholder="Enter Quantity .."
+                                        required #subItemQty="ngModel" ngModel class="othersip" type="number">
+                                </td>
+                                <td class="tabBackColor">
+                                    <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                     name="subItemPrice" style="background-color: #efeff5;" placeholder="Enter Price .." required #subItemPrice="ngModel" ngModel
+                                        class="othersip" type="number">
+                                </td>
+                                <td class="tabBackColor">
+                                    <textarea name="subItemTechRem" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #subItemTechRem="ngModel"
+                                        ngModel class="othersip" type="text"></textarea>
+                                </td>
+                                <td class="tabBackColor">
+                                    <textarea name="subItemComrRemr" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #subItemComrRemr="ngModel"
+                                        ngModel class="othersip" type="text"></textarea>
+                                </td>
+                                <td style="border:none;">
+                                    <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!othersSubItem.form.valid"
+                                        type="submit">Save</button>
+                                    <button (click)="cancelnewLineSubItem()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                                        type="button">Cancel</button>
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <button type="button" class="othersbtn" (click)="addRowsSubItem()">Add</button>
+                    <button type="button" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!subItemOthAddonList.length>0" (click)="subItemsSave()">Save Items</button>
+                </div>
+            </div>
+                <p-dialog [header]="lhsRhsSubItemSel" [(visible)]="dsplyDialogSubLhsRhs" [responsive]="true" showEffect="fade" [modal]="true" [width]="800">
+                    <div *ngIf="dsplyDialogSubLhsRhs" class="othersTable">
+                        <form #lhsRhsSubItem="ngForm" (ngSubmit)="addSubLhsRhsForm(lhsRhsSubItem.value ,lhsRhsSubItem)">
+                            <table id="addOnTab1lLR" class="addOnTable">
+                                <th class="tabBackColor">
+                                   LHS
+                                    <span class="asterisk_input">*</span>
+                                </th>
+                                <th class="tabBackColor">
+                                    RHS
+                                    <span class="asterisk_input">*</span>
+                                </th>
+                                <ng-container  *ngFor="let o of lhsRhsSubItemsList;let i=index">
+                                     <tr *ngIf="o.subItemName == lhsRhsSubItemSel && o.colNm != null">
+                                    <td class="tabBackColor">
+                                        <label class="othersip">{{o.colNm}}</label>
+                                    </td>
+                                    <td class="tabBackColor">
+                                            <label class="othersip">{{o.colValCd}}</label>
+                                    </td>
+                                    <td style="border:none;">
+                                        <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesSubLhs(i)" aria-hidden="true"></i>
+                                    </td> 
+                                </tr>                       
+                                </ng-container>
+                                <tr [hidden]="!lhsRhsSubnewLine">
+                                    <td class="tabBackColor">
+                                        <input name="subLhsVal" style="background-color: #efeff5;" placeholder="Enter LHS .." required #subLhsVal="ngModel"
+                                            ngModel class="othersip" type="text">
+                                    </td>
+                                    <td class="tabBackColor">
+                                        <input name="subRhsVal" style="background-color: #efeff5;" placeholder="Enter RHS .."
+                                            required #subRhsVal="ngModel" ngModel class="othersip" type="text">
+                                    </td>
+                                    <td style="border:none;">
+                                        <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!lhsRhsSubItem.form.valid"
+                                            type="submit">Save</button>
+                                        <button (click)="cancelnewLineSubLhs()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                                            type="button">Cancel</button>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                        <button type="button" class="othersbtn" (click)="addRowsSubLhsRhs()">Add</button>
+                    </div>
+                
+                </p-dialog> -->
+        <button class="ovrWriteBtn" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;" (click)="subItemSave();" [ngStyle]="{ 'background-color':subItemSaveBt? 'rgb(213,120,23)' : 'green' }"   [disabled]="appDisable"type="submit">Save</button>
+    </p-dialog>
+    <p-dialog [header]="finalItem" [(visible)]="displayF2f" [maximizable]="true" [baseZIndex]="10000"  [minY]="20" [style]="{'background-color': 'white', 'padding-top':'10px', 'height': 'auto', 'font-family':'Helvetica'}">
+        <div  [appDisable]="appDisable">
+        <label class="samllLblInd">Quantity :</label>
+        <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+            type="number" style="width:100px;padding:4px;border-radius:5px;margin:10px; margin-left:0px;"
+            [(ngModel)]="qty">
+        <label class="samllLblIndCLose" for="priceField">Basic Cost</label>
+        <input type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+         name="dboCost" [(ngModel)]="dboCost" ngModel class="ipStyle" [disabled]="!disableStatus">
+        <div class="addOnDiv">
+            <label class="samllLblIndCLose" for="priceField">Add On Cost :</label>
+            <input type="number" name="dboAddOnCost" disabled [(ngModel)]="dboAddOnCost" ngModel class="ipStyle">
+        </div>
+        <div class="addOnDiv" *ngIf="rewApp">
+            <label class="samllLblIndCLose" for="priceField">Discount% :</label>
+            <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+            type="number" style="width:100px;padding:4px;border-radius:5px;margin:10px; margin-left:0px;"
+            [(ngModel)]="discountPer">
+        </div>
+        <div class="addOnDiv">
+            <label class="samllLblIndCLose" for="priceField">Total Cost :</label>
+            <input type="number" name="itemCost" disabled [(ngModel)]="itemCost" ngModel class="ipStyle">
+        </div>
+        
+        <!-- <button type="button" *ngIf="dboCost>0" (click)="AddOns()" class="submitButtn">AddOns</button> -->
+        <button type="button" style="margin-right:10px;" (click)="getPriceExel()" [ngStyle]="{ 'background-color':saveBtColor? 'rgb(213,120,23)' : buttonColor }" [disabled]="addonflg=='1'" class="submitButtn">Submit</button>
+        <div  class="msgDisp">
+            
+        </div>
+        <div *ngIf="!getPrice" style ="color: red;" >
+            PLease save all the Add-On's below !! For saving the Item
+        </div>
+        <p-progressSpinner *ngIf="hideprogressCost" [style]="{width: '25px', height: '50px', position:'absolute'}" strokeWidth="5"
+        fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+       
+
+    <div class="questionnaireDiv" style="background: 1px solid black;">
+        <div class="custStyl" *ngFor="let question of questionsBean ; let i=index">
+            <div *ngFor="let question1 of questionsBean ; let z=index">    
+                <div class="flexCollll" *ngIf="questionsBean[z].orderId == i+2">
+	                 
+                     <div *ngIf="questionsBean[z].colType === 'DROPDOWN'; then thenBlock else elseBlock"></div>
+                     <ng-template #thenBlock style="color: blue;">
+                    <p class="quesLabel" title="{{questionsBean[z].dropDownType.value}}">{{questionsBean[z].dropDownType.value}}</p>
+                    <select  class="widthInc" id="{{i}}" #opts [disabled]=rhs[questionsBean[z].dropDownType.key] (change)="optionSel(questionsBean[z].dropDownValueList,opts.value,z)" [(ngModel)]="defaultValues[z]" ngModel>
+                    <option *ngFor="let Dropdown of questionsBean[z].dropDownValueList; let j=index">{{questionsBean[z].dropDownValueList[j].value}}</option>
+                    </select>    
+                </ng-template>
+                <ng-template #elseBlock style="color: blue;">
+                    <p class="quesLabel" title="{{questionsBean[z].dropDownType.value}}">{{questionsBean[z].dropDownType.value}}</p>
+                    <!-- <textarea class="widthIncText" rows="3" cols="50" disabled  [(ngModel)]="defaultValues[z]"></textarea> -->
+                    <p class="quesLabel12" style="  font-weight: bold;font-size: 13px;width: 1000px;font-family: Helvetica;white-space: pre-line;min-height: 30px;padding-top: 4px;padding-bottom:4px; padding-right:4px; padding-left:4px; border-radius: 5px; border-radius: 5px;background-color: white; border:1px solid black;width: 250px; font-weight: normal;">{{defaultValues[z]}}</p>
+                </ng-template>
+                <div *ngIf="AddOnFlag[z]" style="margin-left: 10px; margin-top: 15px">
+                    <!-- <button class="widthIncBtn" [disabled]= "!AddOnFlag[i]" (click)="newAddOn1(questionsBean[z].dropDownType.value, z);" type="button">AddOn</button> -->
+                    <!-- <input type="checkbox"  [checked]="addOnCheck[questionsBean[z].dropDownType.key]" [(ngModel)]="addOnCheck[questionsBean[z].dropDownType.key]" name="itemRemarkaddon[questionsBean[z].dropDownType.key]" (click)="newAddOn1(questionsBean[z].dropDownType.value, questionsBean[z].dropDownType.key,$event)" > -->
+                    <button class="widthIncBtn"  [disabled]="addOnCheck[questionsBean[z].dropDownType.key] || addonflg==1
+                    " style="margin-left: 10px;" (click)="newAddOn1(questionsBean[z].dropDownType.value, questionsBean[z].dropDownType.key);" type="button">AddOn</button>
+                    <!-- <input type="checkbox" style="border:2px dotted #00f;display:block;background:#ff0000;" /> -->
+
+                   </div> 
+               
+                    <div *ngIf="openOth[questionsBean[z].dropDownType.key] " style="margin-left:360px; margin-top: 38px; display:block; Position: absolute;">
+                        <table id="addOntbl">
+                         
+                            <tr>
+
+                                <div class = addonTableCheck>
+                                <td *ngIf="openOth[questionsBean[z].dropDownType.key]"> Name
+                                        <span class="asterisk_input">*</span>
+                                    <input type="text" [disabled]="!openOth1[questionsBean[z].dropDownType.key]" [(ngModel)]="newAddNameO[questionsBean[z].dropDownType.key]">
+                                </td>
+                                
+                                <td *ngIf="openOth[questionsBean[z].dropDownType.key]"> Cost
+                                         <span class="asterisk_input">*</span>
+                                   
+                                    <input 
+                                     type="text" [disabled]="!openOth1[questionsBean[z].dropDownType.key]" required #ysR (keypress)="keyPress($event,ysR.value,$event.target.selectionStart)" [(ngModel)]="newAddCostO[questionsBean[z].dropDownType.key]">
+                                        </td>
+
+                                <td *ngIf="openOth[questionsBean[z].dropDownType.key]"> Remarks
+                                    <span class="asterisk_input">*</span>
+                                    <input type="text" [disabled]="!openOth1[questionsBean[z].dropDownType.key]" [(ngModel)]="newAddRemrkO[questionsBean[z].dropDownType.key]">
+
+                                        </td>
+                                        
+
+                                    </div>
+                       
+                               
+                                <td style="border:none; min-width: 0px;" *ngIf="openOth1[questionsBean[z].dropDownType.key]">
+                                    <button (click)="rhsOthersForm(questionsBean[z].dropDownType.value,questionsBean[z].dropDownType.key)" [disabled] ="(newAddNameO[questionsBean[z].dropDownType.key]=='') || (newAddNameO[questionsBean[z].dropDownType.key]==null)|| (newAddRemrkO[questionsBean[z].dropDownType.key]=='') || (newAddRemrkO[questionsBean[z].dropDownType.key]==null) || (newAddCostO[questionsBean[z].dropDownType.key]=='') || (newAddCostO[questionsBean[z].dropDownType.key]=='-') || ((newAddCostO[questionsBean[z].dropDownType.key][0]=='-') &&  (newAddCostO[questionsBean[z].dropDownType.key][1]=='.')) || (newAddCostO[questionsBean[z].dropDownType.key][newAddCostO[questionsBean[z].dropDownType.key].length-1]=='.') "class="okStyle" type="button">Ok</button>
+                                    </td>    
+                                    <td style="border:none; min-width: 0px;">
+                                        <i style="color:rgb(213,120,23); position : absolute; bottom : 32px;" class="fa fa-times fa-2x" (click)="cancelAddOn(questionsBean[i].dropDownType.key, questionsBean[i].dropDownType.key,d)" aria-hidden="true"></i>
+                                    </td>
+                                    <td  style="min-width: 0px;" *ngIf="!openOth1[questionsBean[z].dropDownType.key]">
+                                            <button (click)="rhsOthersFormEdit(questionsBean[z].dropDownType.value,questionsBean[z].dropDownType.key,questionsBean[z])" [disabled] ="(newAddNameO[questionsBean[z].dropDownType.key]=='') || (newAddNameO[questionsBean[z].dropDownType.key]==null)|| (newAddRemrkO[questionsBean[z].dropDownType.key]=='') || (newAddRemrkO[questionsBean[z].dropDownType.key]==null) || (newAddCostO[questionsBean[z].dropDownType.key]=='') "class="okStyle" style="margin-left: 20px;" type="button">Edit</button>
+                                          </td>
+                                </tr>                                  
+                                                       
+                            </table> 
+                                
+                                
+                    </div>
+                    <p *ngIf="errDisplayPnl[questionsBean[z].dropDownType.key]" class="msgDisp">{{errMsgRhsCost[questionsBean[z].dropDownType.key]}}</p>    
+                  
+                   
+                </div>   
+                
+           </div>
+     
+    </div>
+    </div>
+    <div class="altAddOns" style="margin-left:30px;margin-top:20px">
+        <input type="checkbox"  [(ngModel)]="techCheckIn" name="itemRemark" (click)="itemRmrkCheckIn($event)" class="checkBoxStyl">
+        <b>Technical Remarks</b>
+        <div *ngIf="itemTechRmkDiv">
+           <textarea  (keyup)="itmTechInRemarks()"  name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+            [(ngModel)]="mechItemTechRemarks" required placeholder="Technical Remarks"></textarea>                
+        </div>
+    </div>    
+    <div class="altAddOns" style="margin-left:30px;margin-top:10px">
+        <input type="checkbox"  [(ngModel)]="comrrCheck" name="itemCmrRemark" (click)="itemComrCheckIn($event)" class="checkBoxStyl">
+            <b>Commercial Remarks</b>
+            <div *ngIf="itemComrRmkDiv">
+               <textarea  (keyup)="itemComrInRemarks()"  name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+                [(ngModel)]="mechItemComrRemarks" required placeholder="Commercial Remarks"></textarea>                
+            </div>
+        </div>
+        <div class="altAddOns" style="margin-left:30px;margin-top:10px">
+            <input type="checkbox" [checked]="othCheck" [(ngModel)]="othersCompCheck" name="addOns" (click)="openCompTable($event)" class="checkBoxStyl">
+            <b>Others</b>
+            <div *ngIf="displayCompOthTable" class="othersTable">
+                <form #others="ngForm" (ngSubmit)="compOthersForm(others.value ,others)">
+                    <table id="addOnTabl" class="addOnTable">
+                        <th class="tabBackColor">
+                            Attribute Name(LHS)
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <th class="tabBackColor">
+                            Attribute Value(RHS)
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <!-- <th class="tabBackColor">
+                            Quantity
+                            <span class="asterisk_input">*</span>
+                        </th> -->
+                        <th class="tabBackColor">
+                            Cost
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <th class="tabBackColor">
+                            Technical Remarks
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <th class="tabBackColor">
+                            Commercial Remarks
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <tr *ngFor="let o of itemOthersList;let i=index">
+                                <td class="tabBackColor">
+                                        <textarea class="othersip" [disabled]="!disablelhs[i]" value="{{o.colNm}}"  [(ngModel)]="o.colNm" [ngModelOptions]="{standalone: true}" ngModel></textarea>
+                                    </td>
+                                    <td class="tabBackColor">
+                                            <textarea class="othersip" [disabled]="!disablelhs[i]" value="{{o.colValCd}}"  [(ngModel)]="o.colValCd" [ngModelOptions]="{standalone: true}" ngModel></textarea>
+                                   
+                                        </td>
+                                    <!-- <td class="tabBackColor">
+                                        <label class="othersip">{{o.quantity}}</label>
+                                    </td> -->
+                                    <td class="tabBackColor">
+                                        <textarea class="othersip" [disabled]="!disablelhs[i]" required #ysR (keypress)="keyPress($event,ysR.value,$event.target.selectionStart)" value="{{o.cost}}"  [(ngModel)]="o.cost" [ngModelOptions]="{standalone: true}" ngModel></textarea>
+                                    </td>
+                                    <td class="tabBackColor">
+                                        <textarea class="othersip" [disabled]="!disablelhs[i]" value="{{o.techRemarks}}"  [(ngModel)]="o.techRemarks" [ngModelOptions]="{standalone: true}" ngModel></textarea>
+                                    </td>
+                                    <td class="tabBackColor">
+                                            <textarea class="othersip" [disabled]="!disablelhs[i]" value="{{o.comrRemarks}}"  [(ngModel)]="o.comrRemarks" [ngModelOptions]="{standalone: true}" ngModel></textarea>
+                                    </td>                   
+                                                    
+                            <td style="border:none;">
+                                <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesOth(i)" aria-hidden="true"></i>
+                                <button (click)="editlhs(i)"  *ngIf="!disablelhs[i]"  style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;"
+                                type="button">Edit</button>
+                                <button (click)="savelhs(i)"  *ngIf="disablelhs[i]" [disabled] ="(itemOthersList[i].techRemarks=='') || (itemOthersList[i].techRemarks==null)|| (itemOthersList[i].comrRemarks=='') || (itemOthersList[i].comrRemarks==null) ||  (itemOthersList[i].colValCd=='') || (itemOthersList[i].colValCd==null) || (itemOthersList[i].colNm=='') || (itemOthersList[i].colNm==null) || (itemOthersList[i].cost=='') || (itemOthersList[i].cost=='-') || (itemOthersList[i].cost[0]=='-' && itemOthersList[i].cost[1]=='.') || (itemOthersList[i].cost[ itemOthersList[i].cost.length-1]=='.')" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;"
+                                    type="button">Save</button>
+                            </td>
+                        </tr>
+                        <tr [hidden]="!displayOthnewLine">
+                            <td class="tabBackColor">
+                                <input name="othItemName" style="background-color: #efeff5;" placeholder="Enter Component Name .." required #othItemName="ngModel"
+                                    ngModel class="othersip" type="text">
+                            </td>
+                            <td class="tabBackColor">
+                                    <input name="othItemVal" style="background-color: #efeff5;" placeholder="Enter Component Value .." required #othItemVal="ngModel"
+                                        ngModel class="othersip" type="text">
+                            </td>
+                            <!-- <td class="tabBackColor">
+                                <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    name="othQuantity" style="background-color: #efeff5;" placeholder="Enter Quantity .."
+                                    required #othQuantity="ngModel" ngModel class="othersip" type="number">
+                            </td> -->
+                            <td class="tabBackColor">
+                                <input name="othCost" required #ysR (keypress)="keyPress($event,ysR.value,$event.target.selectionStart)"
+                                 style="background-color: #efeff5;" placeholder="Enter Price .." required #othCost="ngModel" ngModel
+                                    class="othersip" type="text">
+                            </td>
+                            <td class="tabBackColor">
+                                <textarea name="othTechRem" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #othTechRem="ngModel"
+                                    ngModel class="othersip" type="text"></textarea>
+                            </td>
+                            <td class="tabBackColor">
+                                    <textarea name="othComrRem" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #othComrRem="ngModel"
+                                        ngModel class="othersip" type="text"></textarea>
+                                </td>
+                            <td style="border:none;">
+                                <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;" [disabled]="(!others.form.valid) || (others.value.othCost=='-') || (others.value.othCost=='-.')"
+                                    type="submit">Save</button>
+                                <button (click)="cancelnewLineOth()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;"
+                                    type="button">Cancel</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <button type="button" class="othersbtn" (click)="addRowsOth()">Add</button>
+            </div>
+        </div>
+        </div>
+            <p-dialog [(visible)]="dispSCFM" [maximizable]="true" [width]="500" [height]="200" [minY]="20">
+                <p-header style="color: blue;" class="dialogHeader" >
+                   &nbsp;&nbsp;{{alert}}
+        </p-header>         
+                <p class="quesLabel" style="font-size: 15px;color: buttonColor">Get the Basic cost from SCM</p>
+        
+        <button type="button" style="background-color: blue"  class="submitButtn27" (click)="clearerror()" >Close</button> 
+        
+            </p-dialog>
+    </p-dialog>
+    <button class="ovrWriteBtn" style="width: 60px; margin-top:15px;" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+    <button  [disabled]="appDisable" type="button" [ngStyle]="{ 'background-color':mainSave2? 'rgb(213,120,23)' : 'green' }" style="margin-right:10px; margin-top: 15px;" class="ovrWriteBtn" (click)="calcTotal()">Calculate Total</button>
+            <p-progressSpinner *ngIf="hideprogressCost1" [style]="{width: '25px', height: '50px', position:'absolute'}" strokeWidth="5"
+                fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+            <div class="tatalCostDiv" *ngIf="finalCostBool"  [appDisable]="appDisable">
+                <div style="display:inline-block">
+                    <label class="samllLbl" for="cost">
+                        <b>DBO Mechanical Cost:</b>
+                    </label>
+                    <input type="number" class="costField" name="cost" [(ngModel)]="finalMechCost" disabled />
+                    <label class="samllLbl" for="cost">
+                        <b>Total DBO Mechanical Cost:</b>
+                    </label>
+                    <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                     type="number" class="costField" name="cost" [(ngModel)]="totalMechCost" disabled />
+                </div>
+                <button type="button" style="margin-left: 7px;" class="ovrWriteBtn" *ngIf="finalMechCost > 0 && rewApp" (click)="enableOverWrite(j)">Overwrite</button>
+                <button type="button" style="margin-left: 7px;" class="ovrWriteBtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite(j)">Cancel</button>
+                <button type="button" style="margin-left: 7px;" class="ovrWriteBtn" *ngIf="rewApp" (click)="getPrevComments()">Previous Comments</button>
+                <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+                    Previous comments
+                </i> -->
+                <form #inde="ngForm" (ngSubmit)="savePriceExel(j,inde.value ,inde)">
+                    <div *ngIf="enableOverwriteDiv || OverWrittenfinalMechCost>0">
+                        <label class="samllLbl" for="cost">
+                            <b>Overwrittten Cost :</b>
+                        </label>
+                        <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                         type="number" class="costField" name="cost" [disabled]="!enableOverwriteDiv" [(ngModel)]="OverWrittenfinalMechCost"/>
+                    </div>
+                    <label class="samllLblIndCLose" *ngIf="enableOverwriteDiv" style="margin-left: 0px;" for="priceField">Remarks
+                        <span class="asterisk_input" style="margin-left:0px;">*</span>
+                    </label>
+                    <textarea class="remarkFieldsss" ngModel #remrk="ngModel" required [(ngModel)]="remarks" *ngIf="enableOverwriteDiv" name="remark"
+                        cols="20" rows="3"></textarea>
+                    <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" class="savePriceBtn" *ngIf="finalCostBool"  (click)="savePriceExel(j)" [disabled]=" (OverWrittenfinalMechCost== undefined || remarks==null || remarks=='')  && (finalcostflag==true)"  type="submit">Save</button>
+                </form>
+                <div *ngIf="message" class="msgDiv">
+                    {{successMsg}}
+                </div>
+            </div>
+            <!-- <div class="altAddOns" style="margin-left:20px;margin-top:10px">
+  <input type="checkbox" [checked]="othersCheck" [(ngModel)]="othersItemCompCheck" name="addOns" (click)="openItemCompTable($event)" class="checkBoxStyl"> -->
+  <!-- <b>Others</b>
+  <div *ngIf="displayItemCompOthTable" class="othersTable">
+      <form #othersItem="ngForm" (ngSubmit)="itemOthersForm(othersItem.value ,othersItem)">
+          <table id="addOnTabl" class="addOnTable">
+              <th class="tabBackColor">
+                  Item Name
+                  <span class="asterisk_input">*</span>
+              </th>
+              <th class="tabBackColor">
+                  Quantity
+                  <span class="asterisk_input">*</span>
+              </th>
+              <th class="tabBackColor">
+                  Cost
+                  <span class="asterisk_input">*</span>
+              </th>
+              <th class="tabBackColor">
+                 Technical Remarks
+                  <span class="asterisk_input">*</span>
+              </th>
+              <th class="tabBackColor">
+                  Commercial Remarks
+                   <span class="asterisk_input">*</span>
+               </th>
+              <tr *ngFor="let o of itemOthersAddonList;let i=index">
+                  <td class="tabBackColor">
+                      <label class="othersip">{{o.itemName}}</label>
+                  </td>
+                  <td class="tabBackColor">
+                          <label class="othersip">{{o.quantity}}</label>
+                  </td>
+                  <td class="tabBackColor">
+                      <label class="othersip">{{o.cost}}</label>
+                  </td>
+                  <td class="tabBackColor">
+                      <textarea class="othersip">{{o.techRemarks}}</textarea>
+                  </td>
+                  <td class="tabBackColor">
+                      <textarea class="othersip"> {{o.comrRemarks}}</textarea>
+                  </td>
+                  <td style="border:none;">
+                      <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesItemOth(i)" aria-hidden="true"></i>
+                      <button (click)="addLhsRhsItem(i)" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+                      type="button">Add Lhs/Rhs</button>
+                  </td>
+              </tr>
+              <tr [hidden]="!displayItmOthnewLine">
+                  <td class="tabBackColor">
+                      <input name="itemCompName" style="background-color: #efeff5;" placeholder="Enter Item Name .." required #itemCompName="ngModel"
+                          ngModel class="othersip" type="text">
+                  </td>
+                  <td class="tabBackColor">
+                      <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                          name="itemQuantity" style="background-color: #efeff5;" placeholder="Enter Quantity .."
+                          required #itemQuantity="ngModel" ngModel class="othersip" type="number">
+                  </td>
+                  <td class="tabBackColor">
+                      <input name="itemPrice" style="background-color: #efeff5;" placeholder="Enter Price .." required #othPrice="ngModel" ngModel
+                          class="othersip" type="number">
+                  </td>
+                  <td class="tabBackColor">
+                      <textarea name="itemTechRemarks" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #itemTechRemarks="ngModel"
+                          ngModel class="othersip" type="text"></textarea>
+                  </td>
+                  <td class="tabBackColor">
+                      <textarea name="itemComrRemr" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #itemComrRemr="ngModel"
+                          ngModel class="othersip" type="text"></textarea>
+                  </td>
+                  <td style="border:none;">
+                      <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!othersItem.form.valid"
+                          type="submit">Save</button>
+                      <button (click)="cancelnewLineItem()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                          type="button">Cancel</button>
+                      
+                  </td>
+              </tr>
+          </table>
+      </form>
+      <button type="button" class="othersbtn" (click)="addRowsItem()">Add</button>
+      <button type="button" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!itemOthersAddonList.length>0" (click)="itemsSubmit()">Save Items</button>
+  </div>
+</div>
+  <p-dialog [header]="lhsRhsItemSel" [(visible)]="displayDialogLhsRhs" [responsive]="true" showEffect="fade" [modal]="true" [width]="800">
+      <div *ngIf="displayDialogLhsRhs" class="othersTable">
+          <form #lhsRhsItem="ngForm" (ngSubmit)="addLhsRhsForm(lhsRhsItem.value ,lhsRhsItem)">
+              <table id="addOnTablLR" class="addOnTable">
+                  <th class="tabBackColor">
+                     LHS
+                      <span class="asterisk_input">*</span>
+                  </th>
+                  <th class="tabBackColor">
+                      RHS
+                      <span class="asterisk_input">*</span>
+                  </th>
+                  <ng-container  *ngFor="let o of lhsRhsItemsList;let i=index">
+                       <tr *ngIf="o.itemName == lhsRhsItemSel && o.colNm != null">
+                      <td class="tabBackColor">
+                          <label class="othersip">{{o.colNm}}</label>
+                      </td>
+                      <td class="tabBackColor">
+                              <label class="othersip">{{o.colValCd}}</label>
+                      </td>
+                      <td style="border:none;">
+                          <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesLhs(i)" aria-hidden="true"></i>
+                      </td> 
+                  </tr>                       
+                  </ng-container>
+                  <tr [hidden]="!lhsRhsnewLine">
+                      <td class="tabBackColor">
+                          <input name="lhsVal" style="background-color: #efeff5;" placeholder="Enter LHS .." required #lhsVal="ngModel"
+                              ngModel class="othersip" type="text">
+                      </td>
+                      <td class="tabBackColor">
+                          <input name="rhsVal" style="background-color: #efeff5;" placeholder="Enter RHS .."
+                              required #rhsVal="ngModel" ngModel class="othersip" type="text">
+                      </td>
+                      <td style="border:none;">
+                          <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!lhsRhsItem.form.valid"
+                              type="submit">Save</button>
+                          <button (click)="cancelnewLineLhs()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                              type="button">Cancel</button>
+                          
+                      </td>
+                  </tr>
+              </table>
+          </form>
+          <button type="button" class="othersbtn" (click)="addRowsLhsRhs()">Add</button>
+      </div>
+    </p-dialog> -->
+</div>

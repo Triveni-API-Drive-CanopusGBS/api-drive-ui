@@ -1,0 +1,60 @@
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+th{
+    background-color: gray;
+    text-align: left;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+}
+.datarow:last-child{
+    border-bottom: 1px solid;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+h2{
+    margin-left: 30px;
+    color: gray;
+}
+.myWorkFlowDiv{
+    padding-bottom: 55px;
+}

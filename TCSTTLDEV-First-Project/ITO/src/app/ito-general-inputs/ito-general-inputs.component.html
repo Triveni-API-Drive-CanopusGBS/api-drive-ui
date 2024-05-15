@@ -1,0 +1,164 @@
+<div class="example-container">
+  <form class="example-form" #others="ngForm" (ngSubmit)="saveGeneralInp()">
+    <!-- when filter is required use line commented lines or else use un commented line from 4 to 9 -->
+    <div class="custStyl">
+        <p class="quesLabel">General Inputs - Mechanical</p>
+        <!-- <div class="custStyl" *ngFor="let selSOS of selSOSListNew; let l=index"> -->
+    <!-- <p class="quesLabel">{{selSOSListNew[l]}}</p> -->
+    <div *ngFor="let question of f2fCacheFil ; let i=index">
+      <!-- <div *ngIf="selSOSListNew[l] === f2fCacheFil[i].groupDescription"> -->
+    <div *ngIf="f2fCacheFil[i].genType === 'DROPDOWN' && f2fCacheFil[i].dispInd == 1; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+        <p class="quesLabel1" title="{{question.genInNm}}">{{f2fCacheFil[i].genInNm}}
+            <span class="asterisk_input">*</span>
+          </p>
+      <select class="widthInc" required id="{{f2fCacheFil[i].genInId}}" #opts (change)="optionSel(opts.value, question)"  [(ngModel)] = "defaultValues[f2fCacheFil[i].genInId]" [ngModelOptions]="{standalone: true}" ngModel>
+        <ng-container *ngFor="let Dropdown of f2fCacheList; let j=index">
+          <option *ngIf="f2fCacheList[j].genInNm == f2fCacheFil[i].genInNm" [value]="f2fCacheList[j].categoryValName"> {{f2fCacheList[j].categoryValName}}</option>
+        </ng-container>
+      </select>
+    </ng-template>
+    <ng-template #elseBlock>
+      <div *ngIf="f2fCacheFil[i].genType === 'RADIO' && f2fCacheFil[i].dispInd == 1; then thenRadio else elseInput"></div>
+      <ng-template #thenRadio>
+          <p class="quesLabel1" title="{{question.genInNm}}">{{f2fCacheFil[i].genInNm}}
+              <span class="asterisk_input">*</span>
+            </p>
+      <ng-container *ngFor="let Dropdown1 of f2fCacheList; let k=index">
+        <input class="radioStyl" required *ngIf="f2fCacheFil[i].genInNm == f2fCacheList[k].genInNm" type="radio" [checked]="f2fCacheFil[i].categoryValName == f2fCacheList[k].categoryValName" 
+        name="selectedOpt{{i}}" (click)="radioSel(f2fCacheList[k].categoryValName,f2fCacheList[k])">
+        <label class="radClass"  *ngIf="f2fCacheFil[i].genInNm == f2fCacheList[k].genInNm"> {{f2fCacheList[k].categoryValName}}</label>
+        <!-- <div *ngIf="f2fCacheFil[i].genInNm == 'Is  Mechanical Auxiliaries Required ' && f2fCacheFil[i].categoryValName == 'Yes'">
+          <div class="dispFl"  *ngIf="f2fCacheList[k].genInNm == 'Mechanical Auxiliaries '"> -->
+          <!-- <input type="checkbox" [checked]="mechAuxCheck" [(ngModel)]="mechAuxCheckMd" name="auxCheck" (click)="mechAuxCheck($event)" class="checkBoxStyl"> -->
+          <!-- <input type="checkbox" [checked]="auxCheck[f2fCacheList[k].genInId]"  name="mechAuxCheck[f2fCacheList[k].genInId]"
+            style="margin-top: 10px;"
+           (click)="mechAuxCheckNe(f2fCacheList[k].categoryValName, f2fCacheList[k].genInId, f2fCacheList[k], $event)" >
+          <p style="margin-top: 10px;">{{f2fCacheList[k].categoryValName}}</p>  -->
+          <!-- <div *ngIf="checkQty[f2fCacheList[k].genInId]">
+          <input type="number" required #yesR (keyup)="checkForQuantity(yesR.value, Dropdown1)" 
+          style="width:100px;padding:4px;border-radius:5px;margin:5px" value="{{f2fCacheList[k].quantity}}">
+          
+      </div> -->
+      <!-- </div>
+        </div> -->
+      </ng-container>
+    </ng-template>
+    <ng-template #elseInput>
+        <p class="quesLabel1" *ngIf="f2fCacheFil[i].genType === 'INPUT' && f2fCacheFil[i].dispInd == 1" title="{{question.genInNm}}">{{f2fCacheFil[i].genInNm}}
+            <span class="asterisk_input">*</span>
+          </p>
+        <input type="number" required *ngIf="f2fCacheFil[i].genType === 'INPUT' && f2fCacheFil[i].genInCd != 'TYP_OF_DRIVEN_EQUIP' && f2fCacheFil[i].dispInd == 1" #flw (keyup)="checkForChanges(flw.value,i,question)" style="width:100px;padding:4px;border-radius:5px"
+        value="{{question.categoryValName}}">
+        <input type="text" required *ngIf="f2fCacheFil[i].genType === 'INPUT' && f2fCacheFil[i].genInCd === 'TYP_OF_DRIVEN_EQUIP' && f2fCacheFil[i].dispInd == 1" #flw (keyup)="checkForChanges(flw.value,i,question)" style="width:100px;padding:4px;border-radius:5px"
+        value="{{question.categoryValName}}">
+        <p *ngIf="errDisplay[i]" class="msgDisp">{{errMsg[i]}}</p>
+      </ng-template>
+    </ng-template>   
+    <!-- </div> -->
+  </div>
+  </div>
+    <!-- <div class="previouFun"> -->
+      <!-- <button class="btn3" routerLink="/CostEstimation/ScopeOfSupply" routerLinkActive="active">previous</button>
+       [disabled]="!(GenInpCE.form.valid && showMsg==false)"  -->
+      <!-- <button class="btn2" [disabled]="!enableSub" type="submit">Submit</button>
+      <button class="btn2" [disabled]="!enableEleBtn" (click)="getEleFil(980)" type="button">Ele Submit</button> -->
+    <!-- </div>     -->
+  </form>
+  <form #dboEle="ngForm" (ngSubmit)="dboEleFil()">
+    <div class="flexDis" *ngIf = "dispFil">
+      <p class="quesLabel" style="margin-left: 10px">General Inputs - Electrical & Instrumentation</p>
+    <div class="custStyl1" *ngFor="let question of newArray ; let i=index">
+        <div *ngIf="newArray[i].dispInd == 1 && this.newArray[i].itemName != 'Excitation Type' && this.newArray[i].itemName != 'Type of Govenor'">
+      <p class="quesLabel1" title="{{newArray[i].itemName}}">{{newArray[i].itemName}}<span class="asterisk_input">*</span></p>
+      
+        <div *ngIf="newArray[i].genType === 'DROPDOWN'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock style="color: blue;">
+          <div class="fleDisppp">
+              <select class="widthInc" id="{{i}}" #opts (change)="optionSelNew(opts.value, newArray[i])"  [(ngModel)]="defaulVales[i]" [ngModelOptions]="{standalone: true}" ngModel>
+         
+            <ng-container *ngFor="let Dropdown of dboEleFilterListNew; let p=index">  
+              
+            <option *ngIf="dboEleFilterListNew[p].itemName === newArray[i].itemName" [value]="dboEleFilterListNew[p].colValNm"> {{dboEleFilterListNew[p].colValNm}}</option>
+       
+          </ng-container>
+        </select>
+          <ng-container *ngFor="let question2 of  childvaluesnew ; let j=index">    
+            <div *ngIf="newArray[i].itemName == childvaluesnew[j].itemName && defaulVales[i]==childvaluesnew[j].colValNm">
+            <select  class="widthInc" name="opts1.value" id="{{j}}" #opts1  (change)="optionSel12(childvaluesnew[j],opts1.value)" [(ngModel)]="temparray[childvaluesnew[j].eleFilterId]"
+            style="margin-left: 10px;" [ngModelOptions]="{standalone: true}" ngModel>
+                    <option   *ngFor="let Dropdown12 of question2.dropDownValueList; let k=index">{{question2.dropDownValueList[k]}}</option>
+                    </select>
+              </div>
+          </ng-container>
+        </div>
+        </ng-template>       
+        <ng-template #elseBlock>
+            <input type="number" required #flwe (keyup)="checkForEleChanges(flwe.value,i,question)" style="width:100px;padding:4px;border-radius:5px"
+            value="{{question.colValCd}}">
+            <p *ngIf="errDisplayEle[i]" class="msgDisp">{{errMsgEle[i]}}</p>
+          </ng-template>
+        </div>
+      </div>
+      <!-- //To dispaly change list data -->
+      <div *ngIf="changeListLhs?.length > 0">
+      <div class="custStyl1" *ngFor="let question1 of changeListLhs ; let i=index">
+          <div *ngIf="changeListLhs[i].dispInd == 1">
+        <!-- <div *ngIf="changeListLhs[i].dispInd == 1 && changeList?.length>1"> -->
+      <p class="quesLabel1" title="{{changeListLhs[i].itemName}}">{{changeListLhs[i].itemName}}<span class="asterisk_input">*</span></p>
+      
+        <div *ngIf="changeListLhs[i].genType === 'DROPDOWN'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock style="color: blue;">
+          <div class="fleDisppp">
+              <select class="widthInc" id="{{i}}" #opts (change)="optionSelNewLst(opts.value, changeListLhs[i])"  [(ngModel)]="defaulValesNw[i]" [ngModelOptions]="{standalone: true}" ngModel>
+         
+            <ng-container *ngFor="let Dropdown of changeList; let p=index">  
+              
+            <option *ngIf="changeList[p].itemName === changeListLhs[i].itemName" [value]="changeList[p].colValNm"> {{changeList[p].colValNm}}</option>
+       
+          </ng-container>
+        </select>
+        </div>
+        </ng-template>       
+        
+        </div>
+      </div>
+    </div>
+    <!-- //To dispaly Governer list data -->
+      <div *ngIf="dboGovernerListLhs?.length > 0">
+      <div class="custStyl1" *ngFor="let question1 of dboGovernerListLhs ; let i=index">
+          <div *ngIf="dboGovernerListLhs[i].dispInd == 1">
+        <!-- <div *ngIf="dboGovernerListLhs[i].dispInd == 1 && dboGovernerList?.length>1"> -->
+      <p class="quesLabel1" title="{{dboGovernerListLhs[i].itemName}}">{{dboGovernerListLhs[i].itemName}}<span class="asterisk_input">*</span></p>
+      
+        <div *ngIf="dboGovernerListLhs[i].genType === 'DROPDOWN'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock style="color: blue;">
+          <div class="fleDisppp">
+              <select class="widthInc" id="{{i}}" #opts (change)="optionSelNewLstGov(opts.value, dboGovernerListLhs[i])"  [(ngModel)]="defaulValesNww[i]" [ngModelOptions]="{standalone: true}" ngModel>
+         
+            <ng-container *ngFor="let Dropdown of dboGovernerList; let p=index">  
+              
+            <option *ngIf="dboGovernerList[p].itemName === dboGovernerListLhs[i].itemName" [value]="dboGovernerList[p].colValNm"> {{dboGovernerList[p].colValNm}}</option>
+       
+          </ng-container>
+        </select>
+        </div>
+        </ng-template>       
+        
+        </div>
+      </div>
+    </div>
+      <!-- <button class="btn2" [disabled]="!enableEleSub" type="submit">Submit</button> -->
+  </div>
+    </form>
+    <div *ngIf="message" class="msgDiv">
+        {{successMsg}}
+    </div>
+    <button class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+    <button class="btn2" *ngIf="(enableEleSub) && (enableSub)" type="button" [ngStyle]="{ 'background-color':mainSave2? 'rgb(213,120,23)' : 'green' }" (click)="subFinal()">Save</button>
+    <!-- <button class="btn2" *ngIf="enableUpdate" type="button" (click)="updateGI()">Update</button> -->
+    <button *ngIf="stdOffrflag && !succDisable" class="btn2" style="width: 120px;" type="button" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" (click)="stdOffer()">Submit</button>
+    <p-progressSpinner [hidden]="hidespinner" [style]="{width: '20px', height: '20px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+    
+</div>
+

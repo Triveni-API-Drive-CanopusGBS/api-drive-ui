@@ -1,0 +1,41 @@
+$submitBtn-color:    Helvetica, sans-serif;
+$primary-color: rgb(213,120,23)333;
+
+
+  .test{
+    background-color: $primary-color;
+    // font-weight: bolder;
+    font-size: 25px;
+  }
+  .headerbtn{
+    display: inline-block;
+    width: auto;
+    padding: 5px;
+    background-color: transparent;
+    border: 1px solid black;
+    color: black;
+    margin-left: 10px;
+}
+.headerbtn:hover{
+  display: inline-block;
+  width: auto;
+  padding: 5px;
+  font-size: 14px;
+  background-color: transparent;
+  border: 1px solid darkgoldenrod;
+  color: darkgoldenrod;
+  margin-left: 10px;
+}
+
+  .LrHsel{
+    font-family: $submitBtn-color;
+    padding: 6px;
+    margin: 10px;
+    border-radius: 6px;
+  }
+  li{
+    list-style: none;
+  }
+
+
+

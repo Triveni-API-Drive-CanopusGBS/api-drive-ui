@@ -1,0 +1,187 @@
+nameCelltable{
+    width:100%;
+   
+}
+.menutd{
+    width: 25%;
+}
+.decoLink1 {
+    position:relative;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:white;
+    height: 25px !important;
+    /* width: 100%; */
+    width:200px !important;
+    border:solid 1px black;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+ .decoLink1:after{
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-top: solid 5px black;
+    border-left: solid 5px transparent;
+    border-right: solid 5px transparent;
+} 
+
+.active {
+    color: white;
+    background-color: grey;
+   
+}
+button{
+    width: 100%;
+    background-color: transparent;
+    padding: 0px;
+    height: 100%;
+    border-color: transparent;
+    outline: none;    
+}
+.decoLink{
+    font-size: 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:grey;
+    color:white;
+    height: 30px !important; 
+    border: solid 1px black;
+    padding-top: 5px;
+    padding-bottom:0px;
+}
+.ttlCostEst{
+    /* display:flex;
+    flex-direction: column; */
+    float:right;
+    width:23%;
+    right: 1px;
+    border: solid 1px black;
+    height:500px;
+    margin-right:8px;
+    
+}
+.scrollClass{
+    overflow-y: scroll;
+    padding: 2px;
+    height: 455px;
+}
+.scrollClass:hover{
+    overflow-y: scroll;
+}
+div.scrollClass::-webkit-scrollbar{
+   width: 5px;
+}
+div.scrollClass::-webkit-scrollbar-thumb{
+    background-color:darkgrey;   
+}
+.alignOrder{
+  /* display:flex;
+  flex-direction: column; */
+  float:left;
+  border: solid 1px black;
+  height:500px;
+  width: 75%;
+  overflow: scroll;
+
+}
+.alignOrder:hover{
+    overflow: scroll;
+}
+.estimateCostLab{
+    padding-top: 10px;
+    font-size: 12px;
+    font-family:helvetica;
+}
+label{
+    margin-bottom:0px;
+    font-size: 12px;
+    font-family:helvetica;
+}
+.priceTable{
+    margin-top: 5px;
+    /* width: 100%; */
+    border-collapse: collapse;
+}
+.nameCell{
+    text-align: left;
+    height: auto;
+    float: left;
+    width: 150px;
+    font-size: 11px;
+    margin-bottom: 10px;
+    font-family:helvetica;
+    
+}
+.priceCell{
+    text-align:right;
+    float: right;
+    width: 100px;
+    font-size: 12px;
+}
+.subitemName{
+    text-align: left;
+    height: auto;
+    font-size: 11px;
+    display: inline-block;
+    width: 105px !important;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+.subitemPrice{
+    text-align: right;
+    float: right;
+    padding-left: 5px;
+    font-size: 12px;
+    width: 100px;
+}
+ul{
+    list-style: none;
+    padding: 0px;
+}
+li{
+    list-style: none;
+    width: 100%;
+    display: block;
+    padding: 0px;
+    margin-top: 5px;
+}
+
+.totalDiv{
+    margin-top: 400px;
+    position: absolute;
+   
+}
+.disableContent{
+    z-index: 1;
+    height: max-content;
+    padding: 12px;
+    width: 100%;
+    padding-right: 25px;
+    padding-bottom: 35px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+}

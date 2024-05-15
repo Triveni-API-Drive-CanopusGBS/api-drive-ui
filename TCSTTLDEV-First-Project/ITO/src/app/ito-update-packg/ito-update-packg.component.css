@@ -1,0 +1,329 @@
+.outerDiv{
+    
+    margin:30px;
+    margin-left: 30px;
+    width: 700px;
+    height: auto;
+    padding: 10px;
+}
+td,th{
+    padding: 5px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+table{   
+    border-collapse: collapse;
+}
+ label  {
+    padding: 4px;
+    margin: 10px;
+    min-width: 200px;
+    font-weight: bold;
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+input{
+    padding: 4px;
+}
+select{
+    padding: 4px;
+    border-radius: 4px;
+}
+.transportDiv{
+    margin: 20px;
+}
+h2{
+    color:rgb(213,120,23);;
+    font-weight: bolder;
+    margin-left: 25px;
+}
+h4{
+    color: rgb(213,120,23);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: bold; 
+    font-size: 20px; 
+}
+.quesLabel{
+    width: 100px !important;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+td:nth-child(5){
+    text-align: right;
+}
+td:nth-child(6){
+    text-align: right;
+}
+td:nth-child(7){
+    text-align: right;
+}
+.btnGrp{
+    margin: 20px;
+    margin-left: 40px;
+    padding: 10px;
+}
+.btnStyle{
+    padding: 6px;
+    background: transparent;
+    border:1px solid rgb(213,120,23);
+    color: rgb(213,120,23);
+    width: 150px;
+    margin-left: 30px;
+    outline-style: none;
+}
+.btnStyle:hover{
+    background-color: rgb(213,120,23);
+    color: white;
+}
+.quesStyle{
+    display: inline-block;
+    width:470px;
+}
+.itemSet{
+    display: block;
+    padding: 10px;
+}
+.formClass{
+    margin-left:20px;
+    width: auto;
+}
+.basicForm{
+    width: 1000px !important;
+    padding-bottom: 15px;
+}
+hr{
+    width:800px;
+    float: left;
+    margin-left: 30px;
+    display: block;
+}
+li{
+    margin:25px;
+}
+li:first-child{
+    margin-top:25px;
+}
+.ipAlbl{
+    display: inline-block;
+}
+.samllLbl{
+    font-size: 12px;
+    font-weight: normal;
+    display: block;
+    margin: 0px;
+}
+.ipStyle{
+    display: block;
+}
+
+.ipTxtStyle{
+    position: relative;
+    margin: 0px;
+    top: 0;
+    bottom: 0;
+}
+.btnClass{
+    margin:5px;
+    display: inline-block;
+}
+.savebtn{
+    margin:5px;
+    background-color: rgb(213,120,23);
+    color: white;
+    padding: 5px;
+    display: inline-block;
+    outline-style: none;
+}
+.BasicbtnStyle{
+    padding: 6px;
+    background: rgb(213,120,23);
+    border:1px solid rgb(213,120,23);
+    color: white;
+    border-radius: 5px;
+    margin-left:620px;
+    font-weight: bold;
+}
+.bLabel{
+    /* width: 1000px !important; */
+    margin-right: 5px;
+}
+.costDiv{
+    display: inline-block;
+    margin-left: 75px;
+}
+.overwriteDiv{
+    display: block;
+}
+button:disabled{
+    background-color: gray;    
+}
+button:disabled button:hover{
+    background-color: gray;
+    
+}
+.reviewrlbl{
+    margin-left: 75px;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+th{
+    background-color: rgb(213,120,23);;
+    text-align: center;
+    color: white;
+    height: 20px;
+    border: 1px solid rgb(213,120,23);;
+}
+.datarow:last-child{
+    border-bottom: 1px solid;
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+
+}
+.priceDiv{
+    margin: 50px;
+    margin-top: 20px;
+}
+.pricefield{
+    width: 75px;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+}
+/* td{
+    padding: 15px;
+    text-align: left;
+    width: 150px;
+    display: inline-block;
+}
+th{
+    text-align: center;
+} */
+.updateTrans{
+   padding: 8px;
+   background-color: rgb(213,120,23);
+   font-weight: bold;
+   color: white;
+   border: 1px solid rgb(213,120,23);
+   border-radius: 5px;
+   width:130px;
+   margin: 15px;
+   margin-left: 20px;
+}
+.twoDiv{
+    display: inline-block;
+    width: 50%;
+}
+.optionStyle{
+    margin: 6px;
+}
+.reviewrlbl{
+    margin: 20px;
+    margin-left:10px;
+    padding: 5px;
+    font-weight: bold;
+}
+.reviewr{
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.chkboxStyle{
+    display: inline-block;
+}
+.comentslbl{
+    display: block;
+    margin: 10px;
+    margin-left: 0px;
+    padding: 5px;
+    font-weight: bold;
+}
+.comments{
+    display: block;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+button:disabled{
+    background-color: gray;
+}
+.successMsg{
+    font-size: 18px;
+    margin-left: 35px;
+    color: blue;
+}
+.comments{
+    border-radius: 15px;
+    margin-bottom: 6px;
+    padding: 7px;
+    outline-style: none;
+}
+.pcomments{
+    font-style: italic;
+    border-radius: 15px;
+    margin-top: 0px;
+    padding: 7px;
+    outline-style: none;
+}
+.pcomentslbl{
+    font-weight:bold;
+    font-size: 14px; 
+    display: block; 
+    margin-bottom: 6px;
+}
+.successMsg{
+    display:block;
+}
+.updateTrans{
+    padding: 8px;
+    background-color: rgb(213,120,23);
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgb(213,120,23);
+    border-radius: 5px;
+    width:130px;
+    margin: 15px;
+    margin-left: 20px;
+ }

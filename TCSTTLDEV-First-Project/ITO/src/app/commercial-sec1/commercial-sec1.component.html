@@ -1,0 +1,75 @@
+<div style="margin-bottom: 50px; margin-left: 10px; width: 1000px; font-family:helvetica;">
+    <p style="font-weight: bold; margin-bottom:20px;font-size:14px;font-family:helvetica;margin-left: 22em;">
+            SECTION-II ({{qouttype}})
+           </p>
+<div class="frstBorder">
+<div class="double-border" >
+    <p class="quesLabel">{{tempList[0].itemName}}:</p>
+    <textarea rows="{{defHeight[0]}}" required #note readonly="readonly"
+    [(ngModel)]="tempList[0].note" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+</div> 
+</div> 
+<p style="font-weight: bold; margin-bottom:20px;font-size:14px;text-decoration: underline;font-family:helvetica;margin-left: 20em;">
+        SECTION-IIA-Special Conditions
+       </p>  
+    
+ <div class="custStyl" *ngFor="let itmNm of itemNmList; let l=index">
+ <p class="quesLabel">{{itemNmList[l].itemName}}</p> 
+    <div class="custStyl" *ngFor="let fixdTxt of dboComercialItemList; let i=index">
+        <div *ngIf="itemNmList[l].itemName === dboComercialItemList[i].itemName && dboComercialItemList[i].subItemName === null && dboComercialItemList[i].subItemTypeName === null; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+          <div *ngIf="dboComercialItemList[i].itemName != '3. Validity'">
+            <textarea rows="{{defaultvalueshieght[i]}}" required #fixedText3 readonly="readonly"
+            [(ngModel)]="dboComercialItemList[i].fixedText3" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+            
+        </div><textarea *ngIf="dboComercialItemList[i].note!=null" required #note readonly="readonly"
+            [(ngModel)]="dboComercialItemList[i].note" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+      </ng-template>  
+      <ng-template #elseBlock>
+            <div class="custStyl" *ngFor="let subItNm of subItemNmList; let j=index">
+                <div *ngIf="itemNmList[l].itemName === subItemNmList[j].itemName && dboComercialItemList[i].subItemName === subItemNmList[j].subItemName">
+                    <p class="quesLabel" style="text-decoration: underline;">{{subItemNmList[j].subItemName}}</p>
+                 <div *ngIf="itemNmList[l].itemName === dboComercialItemList[i].itemName && subItemNmList[j].subItemName === dboComercialItemList[i].subItemName && dboComercialItemList[i].subItemTypeName === null; then thenBlockSub else elseBlockSub"></div>
+                 <ng-template #thenBlockSub>
+                        <textarea rows="{{defaultvalueshieght[i]}}" required #fixedText3 readonly="readonly"
+                        [(ngModel)]="dboComercialItemList[i].fixedText3" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+                        
+                 </ng-template>
+                 <ng-template #elseBlockSub>
+                        <div class="custStyl" *ngFor="let subItTyNm of subItemTyList; let k=index">
+                            <div *ngIf="itemNmList[l].itemName === subItemTyList[k].itemName && subItemNmList[j].subItemName === subItemTyList[k].subItemName && dboComercialItemList[i].subItemTypeName === subItemTyList[k].subItemTypeName">
+                                <p class="quesLabel" style="text-decoration: underline;">{{subItemTyList[k].subItemTypeName}}</p>
+                                <textarea rows="{{defaultvalueshieght[i]}}" required #fixedText3 readonly="readonly"
+                                [(ngModel)]="dboComercialItemList[i].fixedText3" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+                               
+                            </div>
+                        </div>
+                 </ng-template>
+                </div>
+            </div>
+      </ng-template>
+</div>
+<p class="quesLabel" *ngIf="itemNmList[l].itemName != '3. Validity' && itemNmList[l].note!=null">Note:</p>
+<textarea *ngIf="itemNmList[l].note!=null" required #note readonly="readonly" rows="10"
+            [(ngModel)]="itemNmList[l].note" [ngModelOptions]="{standalone: true}" class="othersipN" type="text"></textarea>
+</div>
+<div *ngFor="let v of dboComercialItemList;let i=index">
+    <div class="valClass" *ngIf="v.itemName === '3. Validity'">
+        <p style="margin-left: 20px; margin-bottom: 0px;">{{v.fixedText1}}</p>
+        <input class="validClas" required #fixedText2 [(ngModel)]="v.fixedText2" (keyup)="checkEdit()"  [ngModelOptions]="{standalone: true}" type="text">
+        <!-- <p>{{v.fixedText3}}</p> -->
+    </div>
+    <p *ngIf="v.itemName === '3. Validity'" style="width: 750px; margin-left: 20px; margin-top: 0px;">{{v.fixedText3}}</p>
+</div>   
+<div *ngIf="dialogMsgApp" class="msgDiv">
+        {{dialogMsgVal}}
+    </div>
+    <button style="margin-left:23px; border-radius: 5px;color:white;padding:7px; width:70px;margin-bottom:30px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+  <button  style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-left:20px;margin-bottom:30px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+  type="button" (click)="saveCom()" [ngStyle]="{ 'background-color':dialogMsgApp? 'green' : 'rgb(213,120,23)' }">Save</button>
+  
+</div>
+
+
+
+

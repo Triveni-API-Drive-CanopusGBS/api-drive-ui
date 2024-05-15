@@ -1,0 +1,118 @@
+.example-container{
+    padding-left: 20px;
+    padding-top: 20px;
+    width:90%;
+    
+}
+
+.reqStyl{
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width:50%;
+    padding-bottom: 30px;
+}
+.oppSeqStyl{
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width:50%;
+}
+.radioStyl{
+    margin-left: 10px;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.widthInc{
+    height:25px;
+    border-radius: 5px;
+    width: 250px;
+    border: 1px solid;
+    padding: 1px;
+    font-size:13px;
+    font-family:helvetica;
+}
+.inpStyl{
+    width: 400px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    border: 1px solid;
+}
+.capacity{
+    width: 100px;
+}
+.previouFun {
+    position: relative;
+    margin-left:406px;
+    margin-top: 239px;
+    width:50%;
+    }
+.btn3{
+        border-radius: 3px;
+        width:130px;
+        height: 35px;
+        margin-top: 10px;
+        color: white;
+        background-color: rgb(213,120,23);
+        
+        }
+.btn2{
+            border-radius: 5px;
+            width:90px;
+            height: 30px;
+            margin-top: 10px;
+            color: white;
+            background-color: rgb(213,120,23);
+            border-color: none;
+            font-family: Helvetica;
+            }
+label{
+    font-weight:bold;
+    font-size: 12px;
+    margin: 10px;
+    margin-left: 0px;
+}
+form{
+    margin-left: 50px;
+}
+
+button:disabled{
+    background-color: gray;
+}
+.bordercolor{
+    border: 1px solid red;
+}
+.frameSel{
+    position:relative;
+    color: blue;
+    font-size: 12px;
+}
+.dialogClosebtn{
+    padding: 7px;
+    background-color: rgb(213,120,23);
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+.dialogClosebtn:hover{
+    cursor:-webkit-grab;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}

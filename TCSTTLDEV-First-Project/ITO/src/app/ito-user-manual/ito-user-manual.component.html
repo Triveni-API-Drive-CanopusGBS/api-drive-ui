@@ -1,0 +1,153 @@
+<div class="container">
+<h1>
+    ITO User Manual
+</h1>
+<p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dialogMsgApp" showEffect="fade" appendTo="body" [modal]="true"
+        [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+        {{dialogMsgVal}}
+        <p-footer>
+          <button type="button" (click)="close()" style="background-color:rgb(213,120,23);" pButton class="fa fa-close" class="ui-button-secondary">Close</button>
+        </p-footer>
+      </p-dialog>
+      <div class="tableStyle">
+  <p-table #dt [columns]="cols" [value]="userManualArray" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+              <i type="button" class="fa fa-user" (click)="addNewDoc()" style="float:right ;background-color:rgb(213,120,23); color:white ;padding:8px; border:1px solid rgb(213,120,23); margin-right: 180px; margin-bottom: 23px; margin-top:0px;"> Add New</i>              
+          </div>
+      </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" >
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+              <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemNm'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemCd'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemDesc'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'modifyByNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'modifyDate'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              </th>
+              <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                  <td *ngFor="let col of columns" style="border:1px solid black">
+                      {{rowData[col.field]}}
+                  </td>
+                  <td style="text-align:left;">
+                      <i class="fa fa-pencil-square-o fa-lg" title="Edit Document" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editUserManual(rowData)"></i>
+                  </td>
+                  <td style="text-align:left;">
+                    <i class="fa fa-download" title="Download Document" style="color:rgb(213,120,23)" aria-hidden="true" (click)="downloadFile(rowData.itemId)"></i>
+                </td>
+              </tr>
+          </ng-template>
+        </p-table>
+        </div>
+        <p-dialog header="Document Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
+                <form #editDocForm="ngForm" (ngSubmit)="updateDocument(editDocForm.value)">
+            <div class="ui-g ui-fluid" *ngIf = "selectedRange">
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="vin">Name</label>
+                </div>
+                <div class="ui-g-8">
+                    <input  type="text" required ngModel name="activeNm" #activeNm="ngModel" [(ngModel)]="selectedRange.itemNm"/>
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="year">Description</label>
+                </div>
+                <div class="ui-g-8">
+                    <input  type="text" required ngModel name="active" #active="ngModel" [(ngModel)]="selectedRange.itemDesc"/>
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="brand">Download Document</label>
+                </div>
+                <div class="ui-g-8">
+                  <a class="btnSub" (click)="downloadFile(selectedRange.itemId)">Download File</a>
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="brand">Upload Document</label>
+                </div>
+                <div class="ui-g-8">
+                    <input type="file" id="image" accept="/image*" (change)="fileUpload($event)" ngModel name="image" #fileInput>
+                </div>
+              </div>
+            </div>
+            <p-footer>
+              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="submit" class="btn2">Ok</button>
+              </div>
+            </p-footer>
+        </form>
+          </p-dialog>
+          <p-dialog header="Document Details" [(visible)]="displayDiaAdd" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+                <form #addDocForm="ngForm" (ngSubmit)="addNewDocument(addDocForm.value)">
+            <div class="ui-g ui-fluid">
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="vin">Name</label>
+                </div>
+                <div class="ui-g-8">
+                   <input name="itemCd"  #itemCd="ngModel" required ngModel placeholder="Item Code">
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="year">Description</label>
+                </div>
+                <div class="ui-g-8">
+                  <input type="text" required ngModel name="coments" #comments="ngModel"  placeholder="Description"/>
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="brand">Document</label>
+                </div>
+                <div class="ui-g-8">
+                   <!-- <input type="file" id="manual" accept="/image*" (change)="fileUpload($event)" ngModel name="manual"> -->
+                   <input type="file" accept="/image*" (change)="fileUpload($event)" ngModel name="image" #fileInput>
+                </div>
+              </div>
+            </div>
+            <p-footer>
+              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="submit" class="btn2">Save</button>
+                <button type = "reset" class="btn2">Reset</button>
+                <button type="button" class="btn2">Cancel</button>
+              </div>
+            </p-footer>
+        </form>
+          </p-dialog>
+        </div>
+              
+  
+          <!-- <div class="info" *ngIf="userImageH">  
+           <img [src]="cl(userImageH)" width="150" height="150"/>   
+          </div>   -->
+<!-- <form #userManual="ngForm" (ngSubmit)="userManualForm(userManual.value)">
+<div class="manualDiv">
+  <label>comments</label>
+    <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter your comments"
+    cols="50" rows="4"></textarea>
+    <label>Item Code</label>
+    <input name="itemCd" [(ngModel)]="itemCode" #itemCd="ngModel" required class="comments" ngModel placeholder="Item Code">
+    <input type="file" id="manual" accept="/Pdf*" (change)="fileUpload($event)" ngModel name="manual">
+    <button class="btn2Style" type="submit">Save</button>
+    <button class="btn2Style" type="reset">Cancel</button>
+    <button class="btn2Style" (click) = "download()" >PDF</button>
+</div>
+</form> -->
+

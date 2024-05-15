@@ -1,0 +1,212 @@
+<div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+<div *ngIf="!hideprogress">
+    <h2 style="margin-left:25px;color:gray">
+      {{headerString}}
+    </h2>
+    
+    <button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans" (click)="bulkUpd()">Bulk Update</button>
+<div class="contentDiv">
+    <div class="priceDiv">
+<p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false"  [paginator]="true" [rows]="10" [filterDelay]="0" scrollHeight="300px" [columns]="cols" [value]="turbineInstWithPriceList"
+        selectionMode="single">
+        <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+            <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+              Export to Excel</i> -->
+              <i type="button" class="fa fa-file-excel-o fa-2x" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:10px; padding-top: 3px;" title="Export to Excel"></i>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns"  [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frmName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'bleedTypeName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'subContrCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'shopConvCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'totalPrice'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+              (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'totalFTFCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevShopConvCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevSubContrCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+                
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr #tr id="{{rowData.instrId}}" class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+            <td class="quesLabel" *ngFor="let col of columns;let i=index;" >
+              {{rowData[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
+          
+    <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+        <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="vin">Frame</label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.frmName}}</label>
+            </div>
+          </div>   
+                    
+                      <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="vin">Bleed Type</label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.bleedTypeName}}</label>
+                          </div>
+                        </div>                               
+                     
+                      
+                      <div class="ui-g-12">
+                        <div class="ui-g-5">
+                          <label for="color">Power</label>
+                        </div>
+                        <div class="ui-g-4">
+                            <label>: {{selectedFrame.maxPower}}</label>
+                        </div>
+                      </div>
+                      <div class="ui-g-12">
+                        <div class="ui-g-5">
+                          <label for="color">subContrCost</label>
+                        </div>
+                        <div class="ui-g-4">
+                          <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.subContrCost" />
+                        </div>
+                      </div>
+                      <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">shopConvCost</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.shopConvCost" />
+                          </div>
+                        </div>
+                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">Total Price</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <label>: {{selectedFrame.totalPrice}}</label>
+                          </div>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="vin">total F2F Cost</label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.totalFTFCost}}</label>
+                            </div>
+                          </div> 
+                    </div>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+
+        <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+            <div class="ui-g ui-fluid" >
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="vin">Sub Contract Percentage</label>
+                </div>
+                <div class="ui-g-8">
+                  <input pInputText style="padding:5px;" [(ngModel)]="subContrPercent" />
+                </div>
+              </div>
+              </div>
+              <div class="ui-g ui-fluid" >
+                <div class="ui-g-12">
+                  <div class="ui-g-4">
+                    <label for="vin">Shop Conversion Percentage</label>
+                  </div>
+                  <div class="ui-g-8">
+                    <input pInputText style="padding:5px;" [(ngModel)]="shopConvPercent" />
+                  </div>
+                </div>
+                </div>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+            </div>
+            </p-dialog>
+
+        <form #updateTurbineCost="ngForm" (ngSubmit)="updateTurbineCostForm(updateTurbineCost.value,updateTurbineCost)">
+          <div style="margin-left: 8%;" *ngFor="let c of prevRemarks;let i=index;">
+            <label class="pcomentslbl">{{c.assingedToname}} </label>
+            <textarea class="pcomments" disabled placeholder="Enter yor comments" cols="50" rows="2">{{c.comment}}</textarea>
+          </div>
+          <div style="margin-left: 8%;">
+            <label class="comentslbl">Comments
+              <span class="asterisk_input">*</span>
+            </label>
+            <textarea name="remarks" [(ngModel)]="remarkss" #remarks="ngModel" required class="comments" ngModel placeholder="Enter yor comments"
+              cols="50" rows="4"></textarea>
+          </div>
+  
+          <div style="margin-left: 7%;" *ngIf="(turbineCostApprover || turbineCostReviewer)">
+            <label class="reviewrlbl"> Accept / Reject the update request here
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #state="ngModel" required name="status" ngModel>
+              <option selected hidden>Please select</option>
+              <option>Accept</option>
+              <option>Reject</option>
+            </select>
+          </div>
+  
+          <div style="margin-left: 7%;" *ngIf="(uboEdit || financeEdit || f2fEdit || turbineCostReviewer)">
+            <label class="reviewrlbl">{{labelName}}
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #assignee="ngModel" required name="assignee" ngModel (change)="assignedUser(assignee.value)">
+              <option value="" selected hidden>Please select </option>
+              <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+            </select>
+            <!-- <button style="width:auto" class="updateTrans" type="button" (click)="assinToOthers()">Assign</button> -->
+          </div>
+          <button style="margin-left: 8%;" class="updateTrans" [disabled]="!updateTurbineCost.form.valid" type="submit">Submit</button>
+          <button class="updateTrans" (click)="saveAsDraftTurbine(updateTurbineCost.value,updateTurbineCost)" type="button">Save As Draft</button>
+        </form>
+        <p-dialog header="Request Status" [(visible)]="message" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+          <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+        <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+          <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="dispMessage()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+    </div>
+  </div>
+</div>

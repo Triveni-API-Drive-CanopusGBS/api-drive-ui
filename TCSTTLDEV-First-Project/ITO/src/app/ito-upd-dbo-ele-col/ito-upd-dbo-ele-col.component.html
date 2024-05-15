@@ -1,0 +1,1356 @@
+<div class="flexCollll">
+  <div  *ngIf="currentRoleNew=='DBO_ELE_EDIT' && !checkBoolean">
+  <div style="margin-top:20px;">
+    <label class="quesLabel1">Drive Type</label>
+      <select  class="widthInc" id="{i}}" #opts21  (change)="optionSel1(opts21.value)" [(ngModel)]="defaultvalue" ngModel>
+          <option *ngFor="let Dropdown of driveType; let j=index">{{Dropdown}}</option>
+      </select>
+      </div>
+
+      <div style="margin-top:20px;">
+      <label class="quesLabel1">Item Type</label>
+      <select  class="widthInc" id="{i}}" #opts21  (change)="optionSel2(opts21.value)" [(ngModel)]="defaultvaluetype" ngModel>
+          <option *ngFor="let Dropdown of typeofpanel; let j=index">{{Dropdown}}</option>
+      </select>
+    </div>
+      <button style=" border-radius: 5px;color:white;height:30px;margin-bottom:10px;margin-top:15px;width:90px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+      type="submit" (click)="getPanels()">Get Items's</button>
+<div style="margin-top:20px;">
+      <label class="quesLabel1">Item's</label>
+      <select  class="widthInc" id="{i}}" #opts20 (change)="optionSel3(opts20.value)" [(ngModel)]="defaultvaluepanel" ngModel>
+          <option *ngFor="let Dropdown of panels; let j=index">{{Dropdown}}</option>
+      </select>
+      </div>
+      <div style="margin-top:20px;" *ngIf="subItemList.length!=0">
+        <label class="quesLabel1">Sub Item's</label>
+
+      <select  class="widthInc" id="{i}}" #opts22  (change)="optionSel4(opts22.value)" [(ngModel)]="subItemDefault" ngModel>
+        <option *ngFor="let Dropdown of subItemList; let j=index">{{Dropdown}}</option>
+    </select>
+    </div>
+    <div style="margin-top:20px;" *ngIf="makeList.length!=0">
+      <label class="quesLabel1">Make</label>
+
+      <select  class="widthInc" id="{i}}" #opts21  (change)="optionSel5(opts21.value)" [(ngModel)]="make" ngModel>
+        <option *ngFor="let Dropdown of makeList; let j=index">{{Dropdown}}</option>
+    </select>
+    </div>
+  <div *ngIf="tableBoolean" style="margin-top:20px;">
+    <label class="quesLabel1">Table Type</label>
+    <select  class="widthInc" id="{i}}" #opts21   (change)="optionSel6(opts21.value)"  [(ngModel)]="dropdowndefault" ngModel>
+        <option *ngFor="let Dropdown of dropdowntype; let j=index">{{Dropdown}}</option>
+    </select>
+  </div>
+  <div  class="flexCollll">
+    <button style=" border-radius: 5px;color:white;height:30px;margin-top:15px;margin-bottom:10px;width:75px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+    type="submit" (click)="getTable()">Get Table</button>
+    <p-progressSpinner [hidden]="hidespinner" [style]="{width: '20px', height: '20px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+</div>
+
+
+    </div>
+<div  style="margin-left: 8%" class="flexCollll" *ngIf="(dropdowndefault!='Addon Price' && dropdowndefault!='Addon depending on turbine MW Price') && (tableList.length!=0) ">
+    <label class="quesLabel1">Bulk Update</label>
+    <input type="number" class="costField" name="percentage"  [(ngModel)]="percentage" />
+  <button  style=" border-radius: 5px;color:white;height:30px;margin-top:15px;margin-bottom:10px;width:75px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+    type="submit" (click)="bulkUpdate()">Percentage</button>
+  </div>
+    <div *ngIf="tableList.length!=0">
+      <div  *ngIf="dropdowndefault=='Set of STG Instruments List(Auto Spray)'">
+        
+          <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+          [value]="tableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="caption">
+            <div  class="ui-helper-clearfix">
+  
+              <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+                Export to Excel</i> -->
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'typeOfInstr'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)">
+
+
+                          <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'instrTypeNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)"> -->
+                                  
+
+
+
+                <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)"> -->
+              
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr #tr  id="{{rowData.pkgId}}"  class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+              <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+                {{rowData[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+  
+        </p-table>
+  
+    
+        </div>
+        </div>
+          
+        <div *ngIf="tableList.length!=0">
+          <div  *ngIf="dropdowndefault=='AdditionalProbes'">
+            
+              <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+              [value]="tableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="caption">
+                <div  class="ui-helper-clearfix">
+      
+                  <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+                    Export to Excel</i> -->
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+                <tr>
+                  <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addInstrNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'cost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+    
+    
+                              <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'instrTypeNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)"> -->
+                                      
+    
+    
+    
+                    <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)"> -->
+                  
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr #tr  id="{{rowData.pkgId}}"  class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+                  <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+                    {{rowData[col.field]}}
+                  </td>
+                </tr>
+              </ng-template>
+      
+            </p-table>
+      
+        
+            </div>
+            </div>
+  
+  <div  *ngIf="dropdowndefault=='Set of STG Instruments List(Auto Spray)'">
+
+    <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+            <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+
+                                            <!-- <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">instrDesc</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.instrDesc" />
+                </div>
+              </div> -->
+              <!-- <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">instrMounting</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.instrMounting" />
+                </div>
+              </div> -->
+                    <!-- <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">quantity1001Logic</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity1001Logic" />
+                </div>
+              </div> -->
+                          <!-- <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">quantity1002Logic</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity1002Logic" />
+                </div>
+              </div> -->
+           <!-- <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">quantity2003Logic</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity2003Logic" />
+                </div>
+              </div>		  		          -->
+                 <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">cost1001</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost1001" />
+                </div>
+              </div>
+               <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">approx1001Flag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1001Flag" />
+                </div>
+              </div>
+          
+                     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">cost1002</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost1002" />
+                </div>
+              </div>
+                     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">approx1002Flag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1002Flag" />
+                </div>
+              </div>
+                     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">cost2003</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost2003" />
+                </div>
+              </div>
+              <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">approx20003Flag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx20003Flag" />
+                </div>
+              </div>
+                     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">costCe1001</label>
+                </div>
+                <div class="ui-g-4">
+                    <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe1001" />
+                  </div>
+                </div>
+                     <div class="ui-g-12">
+                       
+                <div class="ui-g-5">
+                  <label for="color">approx1001CeFlag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1001CeFlag" />
+                </div>
+              </div>
+                     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">costCe1002</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe1002" />
+                </div>
+              </div>		       <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">approx1002CeFlag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1002CeFlag" />
+                </div>
+              </div>		       <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">costCe2003</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe2003" />
+                </div>
+              </div>
+     <div class="ui-g-12">
+                <div class="ui-g-5">
+                  <label for="color">approx20003CeFlag</label>
+                </div>
+                <div class="ui-g-4">
+                  <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx20003CeFlag" />
+                </div>
+              </div>
+<!--       
+      <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+
+<div class="ui-g-5">
+<label for="year">prevInstrDesc </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevInstrDesc}}</label>
+</div>
+</div>
+
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+
+<div class="ui-g-5">
+<label for="year">prevInstrMounting </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevInstrMounting}}</label>
+</div>
+</div>
+            <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+
+<div class="ui-g-5">
+<label for="year">PrevQuantity1001Logic </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevQuantity1001Logic}}</label>
+</div>
+</div>
+<div  *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevQuantity1002Logic </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevQuantity1002Logic}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevQuantity2003Logic </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevQuantity2003Logic}}</label>
+</div>
+</div> -->
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCost1001 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCost1001}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox1001Flag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox1001Flag}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCost1002 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCost1002}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox1002Flag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox1002Flag}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCost2003 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCost2003}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox20003Flag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox20003Flag}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCostCe1001 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCostCe1001}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox1001CeFlag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox1001CeFlag}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCostCe1002 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCostCe1002}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox1002CeFlag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox1002CeFlag}}</label>
+</div>
+</div>
+<div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevCostCe2003 </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevCostCe2003}}</label>
+</div>
+</div>
+<div  *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+<div class="ui-g-5">
+<label for="year">PrevApprox20003CeFlag </label>
+</div>
+<div class="ui-g-6">
+<label>: {{selectedFrame.prevApprox20003CeFlag}}</label>
+</div>
+</div>
+            </div>
+            <p-footer>
+              <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+              </div>
+            </p-footer>
+          </p-dialog>
+        </div>
+<div *ngIf="tableList.length!=0">
+    <div  *ngIf="itemNameTemp!='Turbine Vibration Monitoring System (VMS)' && (dropdowndefault=='Main Price' || dropdowndefault=='Addon depending on turbine MW Price'  ||  dropdowndefault=='Addon Price') ">
+
+  <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+          [value]="tableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="caption">
+            <div  class="ui-helper-clearfix">
+  
+              <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+                Export to Excel</i> -->
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+<div   *ngIf="itemNameTemp!='Turbine Vibration Monitoring System (VMS)'  && dropdowndefault=='Main Price'">
+  
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price15'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'priceCode'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)">
+                  </div>
+                  <div   *ngIf="itemNameTemp!='Turbine Vibration Monitoring System (VMS)'  && dropdowndefault=='Addon depending on turbine MW Price'">
+                    
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colValCd'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">                
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnDirCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                      <input class="localIp" placeholder="Search here.." *ngSwitchCase="'minVal'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">                
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxVal'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+</div>
+<div   *ngIf="itemNameTemp!='Turbine Vibration Monitoring System (VMS)'  && dropdowndefault=='Addon Price'">
+  
+  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">
+  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colValCd'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">               
+  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnDirCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">
+    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'minVal'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">                
+  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxVal'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">
+</div>
+                <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                  (keyup)="searchSet(dt,$event.target.value)"> -->
+              
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr #tr  id="{{rowData.pkgId}}"  class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+              <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+                {{rowData[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+  
+        </p-table>
+      </div>
+      </div>
+      <div *ngIf="tableList.length!=0">
+          <div  *ngIf="dropdowndefault=='Set of STG Instruments List'">
+            
+              <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+              [value]="tableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="caption">
+                <div  class="ui-helper-clearfix">
+      
+                  <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+                    Export to Excel</i> -->
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </th>
+                </tr>
+                <tr>
+                  <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'typeOfInstr'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'instrDesc'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'instrMounting'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'quantity1001Logic'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+    
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'quantity1002Logic'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+                                        <input class="localIp" placeholder="Search here.." *ngSwitchCase="'quantity2003Logic'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)">
+    
+    
+    
+                    <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                      (keyup)="searchSet(dt,$event.target.value)"> -->
+                  
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr #tr  id="{{rowData.pkgId}}"  class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+                  <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+                    {{rowData[col.field]}}
+                  </td>
+                </tr>
+              </ng-template>
+      
+            </p-table>
+      
+        
+            </div>
+            </div>
+            <div *ngIf="tableList.length!=0">
+                <div  *ngIf="itemNameTemp=='Turbine Vibration Monitoring System (VMS)'">
+            
+              <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="true" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+                      [value]="tableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+                      <ng-template pTemplate="caption">
+                        <div class="ui-helper-clearfix">
+              
+                          <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+                            Export to Excel</i> -->
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="header" let-columns>
+                        <tr>
+                          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                            
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'type'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                              (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'altMake'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                              (keyup)="searchSet(dt,$event.target.value)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'make'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                              (keyup)="searchSet(dt,$event.target.value)">
+                            <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                              (keyup)="searchSet(dt,$event.target.value)"> -->
+                          
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr #tr id="{{rowData.pkgId}}" class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+                          <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+                            {{rowData[col.field]}}
+                          </td>
+                        </tr>
+                      </ng-template>
+              
+                    </p-table>
+                  </div>
+                  </div>
+
+
+                  <div  *ngIf="itemNameTemp=='Turbine Vibration Monitoring System (VMS)'">
+
+                      <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                              <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+                                <div class="ui-g-12">
+                                  <div class="ui-g-5">
+                                    <label for="vin">Alternator Make</label>
+                                  </div>
+                                  <div class="ui-g-6">
+                                    <label>: {{selectedFrame.altMake}}</label>
+                                  </div>
+                                </div>
+                      
+                                      <div class="ui-g-12">
+                                  <div class="ui-g-5">
+                                    <label for="vin">Gearbox</label>
+                                  </div>
+                                  <div class="ui-g-6">
+                                    <label>: {{selectedFrame.gearbox}}</label>
+                                  </div>
+                                </div>
+                      
+                                      <div class="ui-g-12">
+                                  <div class="ui-g-5">
+                                    <label for="color">Cost</label>
+                                  </div>
+                                  <div class="ui-g-4">
+                                    <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost" />
+                                  </div>
+                                </div>
+                                            <div class="ui-g-12">
+                                  <div class="ui-g-5">
+                                    <label for="color">Note</label>
+                                  </div>
+                                  <div class="ui-g-4">
+                                    <textarea pInputText id="color" style="margin-left:20px;height:100px"[(ngModel)]="selectedFrame.note" ></textarea>
+                                  </div>
+                                </div>
+                             <div class="ui-g-12">
+                                  <div class="ui-g-5">
+                                    <label for="color">ApproxCostFlag</label>
+                                  </div>
+                                  <div class="ui-g-4">
+                                    <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approxCostFlag" />
+                                  </div>
+                                </div>		  		         
+                                <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                                    <div class="ui-g-5">
+                                      <label for="year">prevCost </label>
+                                    </div>
+                                    <div class="ui-g-6">
+                                      <label>: {{selectedFrame.prevCost}}</label>
+                                    </div>
+                                  </div>
+                                <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                                    <div class="ui-g-5">
+                                      <label for="year">prevNote </label>
+                                    </div>
+                                    <div class="ui-g-6">
+                                      <label>: {{selectedFrame.prevNote}}</label>
+                                    </div>
+                                  </div>
+                                <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                                    <div class="ui-g-5">
+                                      <label for="year">prevApproxCostFlag </label>
+                                    </div>
+                                    <div class="ui-g-6">
+                                      <label>: {{selectedFrame.prevApproxCostFlag}}</label>
+                                    </div>
+                                  </div>
+                              
+                              </div>
+                              <p-footer>
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                  <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                                </div>
+                              </p-footer>
+                            </p-dialog>
+                          </div>
+
+                          <div  *ngIf="dropdowndefault=='Set of STG Instruments List'">
+
+                              <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                                      <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+                                        <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="vin">TypeOfInstr</label>
+                                          </div>
+                                          <div class="ui-g-6">
+                                            <label>: {{selectedFrame.typeOfInstr}}</label>
+                                          </div>
+                                        </div>
+                              
+                                        <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">quantity1001Logic</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity1001Logic" />
+                                          </div>
+                                        </div>
+                                              <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">quantity1002Logic</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity1002Logic" />
+                                          </div>
+                                        </div>
+                                                    <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">quantity2003Logic</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.quantity2003Logic" />
+                                          </div>
+                                        </div>
+                                     <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">cost1001</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost1001" />
+                                          </div>
+                                        </div>		  		            <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx1001Flag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1001Flag" />
+                                          </div>
+                                        </div>
+                                         <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">cost1002</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost1002" />
+                                          </div>
+                                        </div>
+                                    
+                                               <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx1002Flag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1002Flag" />
+                                          </div>
+                                        </div>
+                                               <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">cost2003</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost2003" />
+                                          </div>
+                                        </div>
+                                               <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx20003Flag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx20003Flag" />
+                                          </div>
+                                        </div>
+                                        <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">costCe1001</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe1001" />
+                                          </div>
+                                        </div>
+                                               <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx1001CeFlag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                              <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1001CeFlag" />
+                                            </div>
+                                          </div>
+                                               <div class="ui-g-12">
+                                                 
+                                          <div class="ui-g-5">
+                                            <label for="color">costCe1002</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe1002" />
+                                          </div>
+                                        </div>
+                                               <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx1002CeFlag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx1002CeFlag" />
+                                          </div>
+                                        </div>		       <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">costCe2003</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.costCe2003" />
+                                          </div>
+                                        </div>		       <div class="ui-g-12">
+                                          <div class="ui-g-5">
+                                            <label for="color">approx20003CeFlag</label>
+                                          </div>
+                                          <div class="ui-g-4">
+                                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approx20003CeFlag" />
+                                          </div>
+                                        </div>
+                                      <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+
+ <div class="ui-g-5">
+              <label for="year">PrevQuantity1001Logic </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevQuantity1001Logic}}</label>
+            </div>
+          </div>
+		    <div  *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevQuantity1002Logic </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevQuantity1002Logic}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevQuantity2003Logic </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevQuantity2003Logic}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCost1001 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCost1001}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevApprox1001Flag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox1001Flag}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCost1002 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCost1002}}</label>
+            </div>
+          </div>
+          <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+ <div class="ui-g-5">
+              <label for="year">PrevApprox1002Flag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox1002Flag}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCost2003 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCost2003}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevApprox20003Flag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox20003Flag}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCostCe1001 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCostCe1001}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevApprox1001CeFlag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox1001CeFlag}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCostCe1002 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCostCe1002}}</label>
+            </div>
+          </div>
+		  		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevApprox1002CeFlag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox1002CeFlag}}</label>
+            </div>
+          </div>
+		    <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevCostCe2003 </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevCostCe2003}}</label>
+            </div>
+          </div>
+		    <div  *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">PrevApprox20003CeFlag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApprox20003CeFlag}}</label>
+            </div>
+          </div>
+                                      </div>
+                                      <p-footer>
+                                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                                        </div>
+                                      </p-footer>
+                                    </p-dialog>
+                                  </div>
+<div  *ngIf="dropdowndefault=='Main Price'">
+      <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+        <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="vin">ItemName Name</label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.itemName}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">SubItemName </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.subItemName}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="color">Price</label>
+            </div>
+            <div class="ui-g-4">
+              <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.price15" />
+            </div>
+          </div>
+		            <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="color">Approx Flag</label>
+            </div>
+            <div class="ui-g-4">
+              <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approxCostFlag" />
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="color">Error Msg</label>
+            </div>
+            <div class="ui-g-4">
+              <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.itemErrMessage" />
+            </div>
+          </div>
+          
+          <div   *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">Previous Price </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevPrice}}</label>
+            </div>
+          </div>
+          <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">Previous Approx-Cost Flag </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.prevApproxCostFlag}}</label>
+            </div>
+          </div>
+        
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+      </div>
+      <div  *ngIf="dropdowndefault=='AdditionalProbes'">
+        <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+          <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+            <div class="ui-g-12">
+              <div class="ui-g-5">
+                <label for="vin">Additional Instr</label>
+              </div>
+              <div class="ui-g-6">
+                <label>: {{selectedFrame.addInstrNm}}</label>
+              </div>
+            </div>
+            <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+              <div class="ui-g-5">
+                <label for="vin">Previous Cost</label>
+              </div>
+              <div class="ui-g-6">
+                <label>: {{selectedFrame.prevCost}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-5">
+                <label for="color">Cost</label>
+              </div>
+              <div class="ui-g-4">
+                <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.cost" />
+              </div>
+            </div>
+             
+  
+          
+          </div>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+        </div>
+      <div  *ngIf="dropdowndefault=='Addon depending on turbine MW Price'">
+
+        <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+                  <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="vin">ItemName Name</label>
+                    </div>
+                    <div class="ui-g-6">
+                      <label>: {{selectedFrame.itemName}}</label>
+                    </div>
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="year">SubItemName </label>
+                    </div>
+                    <div class="ui-g-6">
+                      <label>: {{selectedFrame.subItemName}}</label>
+                    </div>
+                  </div>
+                  <!-- <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="color">AddOnCostPer</label>
+                    </div>
+                    <div class="ui-g-4">
+                      <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnCostPer" />
+                    </div>
+                  </div> -->
+                  <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="color">AddOnDirCost</label>
+                    </div>
+                    <div class="ui-g-4">
+                      <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnDirCost" />
+                    </div>
+                  </div>
+                        <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="color">Approx Flag</label>
+                    </div>
+                    <div class="ui-g-4">
+                      <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approxCostFlag" />
+                    </div>
+                  </div>
+                              <!-- <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="color">Tech Flag</label>
+                    </div>
+                    <div class="ui-g-4">
+                      <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.techFlag" />
+                    </div>
+                  </div> -->
+                  <div class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="color">Error Msg</label>
+                    </div>
+                    <div class="ui-g-4">
+                      <textarea pInputText id="color" style="margin-left:20px;height:100px"[(ngModel)]="selectedFrame.errorMsg" ></textarea>
+                    </div>
+                  </div>
+                  <!-- <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                    <div class="ui-g-5">
+                      <label for="year">prevAddOnCostPer </label>
+                    </div>
+                    <div class="ui-g-6">
+                      <label>: {{selectedFrame.prevAddOnCostPer}}</label>
+                    </div>
+                  </div> -->
+                  <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                      <div class="ui-g-5">
+                        <label for="year">PrevAddOnDirCost </label>
+                      </div>
+                      <div class="ui-g-6">
+                        <label>: {{selectedFrame.prevAddOnDirCost}}</label>
+                      </div>
+                    </div>
+                  <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                      <div class="ui-g-5">
+                        <label for="year">PrevApproxCostFlag </label>
+                      </div>
+                      <div class="ui-g-6">
+                        <label>: {{selectedFrame.prevApproxCostFlag}}</label>
+                      </div>
+                    </div>
+                  <!-- <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                      <div class="ui-g-5">
+                        <label for="year">prevTechFlag </label>
+                      </div>
+                      <div class="ui-g-6">
+                        <label>: {{selectedFrame.prevTechFlag}}</label>
+                      </div>
+                    </div> -->
+                  <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                      <div class="ui-g-5">
+                        <label for="year">PrevErrMessage </label>
+                      </div>
+                      <div class="ui-g-6">
+                        <label>: {{selectedFrame.prevErrMessage}}</label>
+                      </div>
+                    </div>
+                </div>
+                <p-footer>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                    <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                  </div>
+                </p-footer>
+              </p-dialog>
+            </div>
+            <div  *ngIf="dropdowndefault=='Addon Price'">
+
+              <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                      <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="vin">ItemName Name</label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.itemName}}</label>
+                          </div>
+                        </div>
+                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="year">SubItemName </label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.subItemName}}</label>
+                          </div>
+                        </div>
+                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">Price</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnDirCost" />
+                          </div>
+                        </div>
+                              <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">Approx Flag</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.approxCostFlag" />
+                          </div>
+                        </div>
+                                    <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">Tech Flag</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.techFlag" />
+                          </div>
+                        </div>
+                     <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">addOnFlg</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnFlg" />
+                          </div>
+                        </div>		  		           
+                         <!-- <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">addOnDiffDs</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnDiffDs" />
+                          </div>
+                        </div> -->
+                         <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">addOnCostPer</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.addOnCostPer" />
+                          </div>
+                        </div>
+                        <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+
+                            <div class="ui-g-5">
+                              <label for="year">PrevAddOnDirCost </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevAddOnDirCost}}</label>
+                            </div>
+                          </div>
+                        <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="year">PrevApproxCostFlag </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevApproxCostFlag}}</label>
+                            </div>
+                          </div>
+                        <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="year">PrevTechFlag </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevTechFlag}}</label>
+                            </div>
+                          </div>
+                        <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="year">PrevAddOnFlag </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevAddOnFlag}}</label>
+                            </div>
+                          </div>
+                        <!-- <div  *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="year">PrevtAddOnDiffDs </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevtAddOnDiffDs}}</label>
+                            </div>
+                          </div> -->
+                        <div *ngIf="this.storage.get(this.currentRole)!='DBO_ELE_EDIT'" class="ui-g-12">
+                            <div class="ui-g-5">
+                              <label for="year">PrevAddOnCostPer </label>
+                            </div>
+                            <div class="ui-g-6">
+                              <label>: {{selectedFrame.prevAddOnCostPer}}</label>
+                            </div>
+                          </div>
+                      </div>
+                      <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                        </div>
+                      </p-footer>
+                    </p-dialog>
+                  </div>
+                  <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                      <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+                      <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                          <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+                        </div>
+                      </p-footer>
+                    </p-dialog>
+                  <form #updateDboEleForm="ngForm" (ngSubmit)="update(updateDboEleForm.value)">
+                    <div *ngFor="let c of prevRemarks;let i=index;">
+                      <label class="pcomentslbl">{{c.assingedToname}} </label>
+                      <textarea class="pcomments" disabled placeholder="Enter your comments" cols="50" rows="2">{{c.comment}}</textarea>
+                    </div>
+              
+                    <div>
+                      <label class="comentslbl">Comments
+                        <span class="asterisk_input">*</span>
+                      </label>
+                      <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter Your Comments"
+                        cols="50" rows="4"></textarea>
+                    </div>
+              
+              
+                    <div >
+                      <label class="reviewrlbl"> Accept / Reject the update request here
+                        <span class="asterisk_input">*</span>
+                      </label>
+                      <select class="reviewr" #state="ngModel" required name="status" ngModel>
+                        <option selected hidden>Please select </option>
+                        <option>Accept</option>
+                        <option>Reject</option>
+                      </select>
+                    </div>
+              
+                    <div *ngIf="currentRoleNew!='DBO_ELE_APPROVER'">
+                      <label class="reviewrlbl">{{labelName}}
+                        <span class="asterisk_input">*</span>
+                      </label>
+                      <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+                        <option value="" selected hidden>Please select </option>
+                        <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+                      </select>
+                    </div>
+                    <button class="updateTrans" [disabled]="finalFrameList.length==0" (click)="SaveAsDraft()" type="button">Save As Draft</button>
+                    <button style="margin-left: 25px;" class="updateTrans" [disabled]="(!updateDboEleForm.form.valid) || (finalFrameList.length==0)"
+                      type="submit">Update</button>
+                  </form>
+  </div>

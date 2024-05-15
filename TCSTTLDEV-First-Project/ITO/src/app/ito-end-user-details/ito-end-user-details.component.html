@@ -1,0 +1,34 @@
+<div class="consultantInfo">
+  <form #EndUserSelForm="ngForm" (ngSubmit)="endUserDetails(EndUserSelForm.value)">
+    <div class="radioStylediv">
+      <label>Is End user same as Customer ?</label>
+      <br/>
+      <input class="radioStyl" type="radio" ngModel [(ngModel)]="endUserAvail" name="enableConsultant" value="YES" (click)="disableEndUser()">Yes
+      <input class="radioStyl" type="radio" ngModel [(ngModel)]="endUserAvail" name="enableConsultant" value="NO" (click)="enableEndUser()">No
+    </div>
+    <div *ngIf="enableEndUserDiv" class="consultantDisplay">
+      <div class="btn1" (click)="openEndUserwindow()">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> Create New End User</div>
+      <div class="custStyl">
+        <label>End User Name</label>
+        <div class="istyle">
+          <input type="search" name="endUser" ngModel required [(ngModel)]="endUserName" #endUser="ngModel" list="endUsers" class="inpStyl"
+            placeholder="Type End User Name" />
+          <datalist id="endUsers">
+            <option *ngFor="let endUser of endUserList">{{endUser.endUserName}} </option>
+          </datalist>
+          <span>
+            <i style="display: inline-block" class="fa fa-refresh" aria-hidden="true" *ngIf="getQuotFlag" (click)="onFocus()"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="previouFun">
+      <!-- <button class="btn3" routerLink="/CostEstimation/CustomerInformation/CreateCustomer" routerLinkActive="active">previous</button>  -->
+      <button class="btn2" [disabled]="!EndUserSelForm.form.valid" type="submit" routerLinkActive="active">Next</button>
+    </div>
+  </form>
+</div>
+<div style="float:right;margin-top: 50px;width:10%;">
+  <p-progressSpinner [hidden]="hidespinner" [style]="{width: '50px', height: '50px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+</div>

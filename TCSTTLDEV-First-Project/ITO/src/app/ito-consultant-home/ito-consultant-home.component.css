@@ -1,0 +1,80 @@
+
+.filterField{
+    margin-left: 15px;
+    width: 135px;
+    font-size: 16px;
+    margin-right: 0px;    
+}
+ng-container{
+    background-color:blue;
+    border: 1px solid;
+}
+.mat-form-field-label{
+    top: 30px;
+}
+input{
+    padding-bottom: 0px;
+}
+.mat-form-field-underline {
+    top: 55px;
+}
+
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+th{
+    background-color: gray;
+    text-align: left;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+}
+.datarow:last-child{
+    border-bottom: 1px solid;
+}
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+
+}
+p-sortIcon {
+    float: right;
+    color: white;
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+.container{
+    padding: 50px;
+    padding-top: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h1{
+    color: gray;
+}
+.fa fa-search{
+    color:red;
+}
+.selected {
+    background-color: skyblue !important;
+    color: white;
+  }
+
+
+

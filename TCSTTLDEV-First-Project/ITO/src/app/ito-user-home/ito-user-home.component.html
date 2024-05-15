@@ -1,0 +1,47 @@
+<div class="container">
+
+    <h4 style="text-align: center; color: black;">User Information</h4>
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+            <p-progressSpinner></p-progressSpinner>
+    </div>
+    <p-table *ngIf="hideprogress" #dt [columns]="cols" [value]="Users" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+                <i type="button" (click)="CreateNewUser()" class="fa fa-user" (click)="CreateNewUser()" style="float:right ;background-color:rgb(213,120,23); color:white ;
+                padding:8px; border:1px solid rgb(213,120,23);
+                 margin:25px;margin-top:0px;" >
+                    Create New User</i>
+                    <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" exportPDF(dt)" style="float:right; background-color: white; color:rgb(213,120,23); margin:25px; padding-top:8px;margin-top:0px;" title="Export to PDF"></i>
+                    <i type="button" class="fa fa-file-excel-o fa-2x" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-right:0px; padding: 8px;margin-top:0px;" title="Export to Excel"></i>  
+               
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                </th>
+            </tr>
+            <tr>
+
+                <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'empName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'emailId'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'rolesVal'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'regionsVal'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'userActiveStatus'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="datarow" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" (click)="next(rowData)" class="quesLabel" title=" {{rowData[col.field]}}">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

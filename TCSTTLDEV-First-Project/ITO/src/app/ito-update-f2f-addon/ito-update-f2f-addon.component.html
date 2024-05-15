@@ -1,0 +1,497 @@
+<h4 style=" margin-left: 25px; font-size:15px; margin-top: 0px;">
+  F2F (Steam Turbine)
+</h4>
+
+<div class="UBOContainer">
+
+  <div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <form #ItemDetailsForm="ngForm" (ngSubmit)="getTable()">
+ <label  *ngIf="enableSel && dispDropdown" class="quesLabel" style="margin-left: 100px;"><b>Type</b></label>
+    <!-- <select style="margin-left: 100px;"  class="widthInc" id="{i}}" #opts21   (change)="optionSel6(opts21.value)"  [(ngModel)]="dropdowndefault" ngModel>
+        <option *ngFor="let Dropdown of dropdowntype; let j=index">{{Dropdown}}</option>
+    </select> -->
+    <div *ngIf="enableSel && dispDropdown" class="flex">
+    <select style="margin-left: 100px;" class="widthInc" required ngModel name="dropdowndefault" #dropdowndefault="ngModel" (change)="optionSel6(dropdowndefault.value)" >
+        <option value="" hidden selected>Please select</option>
+        <option [ngValue]="dropdowndefault" *ngFor="let dropdowndefault of dropdowntype">{{dropdowndefault}}</option>
+      </select>
+    <button class="btn2" type="submit" *ngIf="addOnData.length>0"  [disabled]="!ItemDetailsForm.form.valid" (click)="getTable()">Get Data</button> 
+  </div>
+    </form>
+    <div *ngIf="!dispDropdown" style="margin-left:25px;">
+        <div class="reqStyl">
+          <div class="reqStyl">
+            <label style="margin-left: 35px;">
+            <b>Type :</b>
+            </label>
+            <label>
+             <b>{{dropdowndefault}}</b>
+            </label>
+          </div>
+          </div>
+          </div>
+  <!-- <label class="quesLabel">Item</label>
+        <select  class="widthInc" id="{i}}" #opts20 (change)="optionSel3(opts20.value)" [(ngModel)]="defaultvaluepanel" ngModel>
+            <option *ngFor="let Dropdown of panels; let j=index">{{Dropdown.itemName}}</option>
+        </select> -->
+        <!-- <div *ngIf="subItemList.length!=0">
+            <label class="quesLabel">Sub Item</label>
+        <select  class="widthInc" id="{i}}" #opts22  (change)="optionSel4(opts22.value)" [(ngModel)]="subItemDefault" ngModel>
+          <option *ngFor="let Dropdown of subItemList; let j=index">{{Dropdown.subItemName}}</option>
+      </select>
+      </div> -->
+      <!-- <div *ngIf="subItemTypeList.length!=0">
+          <label class="quesLabel">Sub Item Type</label>  
+          <select  class="widthInc" id="{i}}" #opts22  (change)="optionSel5(opts22.value)" [(ngModel)]="subItemTypeDefault" ngModel>
+            <option *ngFor="let Dropdown of subItemTypeList; let j=index">{{Dropdown.subItemTypeName}}</option>
+        </select>
+        </div> -->
+       
+    <div *ngIf="dropdowndefault=='Main Price'">
+        <button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans" *ngIf="tableDiv" (click)="bulkUpd()">Bulk Update</button>
+      </div>
+  <div *ngIf="tableDiv">
+      <p *ngIf="dropdowndefault=='Main Price'" style="text-align: center; font-size: 14px;"><b>F2F (Steam Turbine) Price</b></p>
+      <p *ngIf="dropdowndefault=='AddOn Cost'" style="text-align: center; font-size: 14px;"><b>F2F (Steam Turbine) AddOn Cost</b></p>
+      <p *ngIf="dropdowndefault=='Frame Specific Data'" style="text-align: center; font-size: 14px;"><b>Frame Specific Data</b></p>
+    <!-- <p-tabView (onChange)="handleChange($event)">
+      <p-tabPanel>         -->
+          <p-table #dt [tableStyle]="{'width': '80%' , 'margin-left':'8%'}" [columns]="cols" [value]="addOnData" selectionMode="single"
+            [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+            <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+                <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                  Export to Excel</i> -->
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" style="width:100px;" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+              <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbCodeNm'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'category'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'bleedTypeName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condensingType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevApproxCostFlag'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'subItemName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'subItemTypName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colValCd'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colValNm'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnFlg'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnCostPer'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnCostPer'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnDirCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnDirCost'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'minVal'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxVal'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevPrice'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'totalPrice'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <!-- <tr #tr *ngIf="dropdowndefault=='Frame Specific Data'" id="{{rowData.id}}" class="datarow" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" style="width:100px;">
+                  {{rowData[col.field]}}
+                </td>
+              </tr> -->
+              <tr  #tr id="{{rowData.priceId}}" class="datarow" [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" style="width:100px;">
+                    {{rowData[col.field]}}
+                  </td>
+                </tr>
+            </ng-template>
+          </p-table>
+      <!-- </p-tabPanel>
+      </p-tabView> -->
+      <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" >
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Percentage</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText style="padding:5px;" [(ngModel)]="percentage" />
+            </div>
+          </div>
+          </div>
+          <!-- <div class="ui-g ui-fluid" >
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Sub Contract Percentage</label>
+              </div>
+              <div class="ui-g-8">
+                <input pInputText style="padding:5px;" [(ngModel)]="subContrPercent" />
+              </div>
+            </div>
+            </div>
+            <div class="ui-g ui-fluid" >
+              <div class="ui-g-12">
+                <div class="ui-g-4">
+                  <label for="vin">Shop Conversion Percentage</label>
+                </div>
+                <div class="ui-g-8">
+                  <input pInputText style="padding:5px;" [(ngModel)]="shopConvPercent" />
+                </div>
+              </div>
+              </div> -->
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+          </div>
+          </p-dialog>
+
+      <div style="margin-left:140px;" *ngIf="addOnData.length>0">
+      <form #updateAddOnPriceForm="ngForm" (ngSubmit)="updateAddOnPrice(updateAddOnPriceForm.value,updateAddOnPriceForm)">
+          <div *ngFor="let c of prevRemarks;let i=index;">
+            <label class="pcomentslbl">{{c.assingedToname}} </label>
+            <textarea class="pcomments" disabled placeholder="Enter your comments" cols="50" rows="2">{{c.comment}}</textarea>
+          </div>
+    
+          <div>
+            <label class="comentslbl">Comments
+              <span class="asterisk_input">*</span>
+            </label>
+            <textarea name="coments" [(ngModel)]="remarks" #comments="ngModel" required class="comments" ngModel placeholder="Enter Your Comments"
+              cols="50" rows="4"></textarea>
+          </div>
+    
+    
+          <div *ngIf="(F2FApp || F2FRev)">
+            <label class="reviewrlbl"> Accept / Reject the update request here
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #state="ngModel" required name="status" ngModel>
+              <option selected hidden>Please select </option>
+              <option>Accept</option>
+              <option>Reject</option>
+            </select>
+          </div>
+    
+          <div *ngIf="(F2FEdit || F2FRev) && (enableStatus)">
+            <label class="reviewrlbl">{{labelName}}
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+                <option value="" selected hidden>Please select </option>
+                <option [ngValue]="u.userId" *ngFor="let u of newUsersList">{{u.empName}}</option>
+              </select>
+          </div>
+          <button class="updateTrans" [disabled]="updatedPriceList.length==0" (click)="SaveAsDraft(updateAddOnPriceForm.value,updateAddOnPriceForm)" type="button">Save As Draft</button>
+          <button style="margin-left:25px;" id="updateReq" [disabled]="!(updateAddOnPriceForm.form.valid && updatedPriceList.length!=0)" class="updateTrans" type="submit">Submit</button>
+        </form>
+      </div>
+    <p-dialog header="Request Status" [(visible)]="message" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+      <label class="mesgDiv" *ngFor="let s of successMsg">{{s}}</label>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+    <p-dialog header="Request Status" [(visible)]="DispMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+      <label class="mesgDiv" *ngFor="let s of successMsg">{{s}}</label>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="displayMessage()" label="Ok"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+    <div *ngIf="dropdowndefault=='Main Price'">
+    <p-dialog header="Update Price" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="650">
+      <div class="ui-g ui-fluid" *ngIf="selectedData">
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Frame Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.frameName}}</label>
+              </div>
+            </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Approximate Flag</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Approximate" [(ngModel)]="selectedData.approxCostFlag" />
+          </div>
+        </div>
+        <div class="ui-g-12" *ngIf="selectedData.previousPrice">
+          <div class="ui-g-4">
+            <label for="vin">Previous Price</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedData.previousPrice}}</label>
+          </div>
+        </div>
+        <!-- <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Sub Contract</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Enter Price" [(ngModel)]="selectedData.subContrCost" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Shop Conversion</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Enter Price" [(ngModel)]="selectedData.shopConvCost" />
+          </div>
+        </div> -->
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin"> Price</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Enter Price" [(ngModel)]="selectedData.price" />
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+  <div *ngIf="dropdowndefault=='AddOn Cost'">
+    <p-dialog header="Update Price - AddOn" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="650">
+      <div class="ui-g ui-fluid" *ngIf="selectedData">
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">item Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.itemName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Sub Item Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.subItemName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">SubItem Type Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.subItemTypeName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">LHS</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.colNm}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">RHS Value</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.colValNm}}</label>
+              </div>
+            </div>            
+            <div class="ui-g-12" *ngIf="selectedData.prevAddOnFlg">
+              <div class="ui-g-4">
+                <label for="vin">Previous AddOn Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.prevAddOnFlg}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">AddOn Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <input type=number class="priceField" placeholder="Enter Cost" [(ngModel)]="selectedData.addOnFlg" />
+              </div>
+            </div>
+            <div class="ui-g-12" *ngIf="selectedData.prevAddOnCostPer">
+              <div class="ui-g-4">
+                <label for="vin">Prev AddOn Cost Per</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.prevAddOnCostPer}}</label>
+              </div>
+            </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">AddOn Cost percentage</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Cost percentage" [(ngModel)]="selectedData.addOnCostPer" />
+          </div>
+        </div>
+        <div class="ui-g-12" *ngIf="selectedData.prevAddOnCostPer">
+          <div class="ui-g-4">
+            <label for="vin">Prev AddOn Dir Cost</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedData.prevAddOnDirCost}}</label>
+          </div>
+        </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="vin">AddOn Direct Cost</label>
+      </div>
+      <div class="ui-g-8">
+        <input type=number class="priceField" placeholder="AddOn Direct Cost" [(ngModel)]="selectedData.addOnDirCost" />
+      </div>
+    </div>
+            <div class="ui-g-12" *ngIf="selectedData.prevApproxCostFlag">
+              <div class="ui-g-4">
+                <label for="vin">Previous Approximate Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.prevApproxCostFlag}}</label>
+              </div>
+            </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Approximate Flag</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Approximate" [(ngModel)]="selectedData.approxCostFlag" />
+          </div>
+        </div>
+        
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+  <div *ngIf="dropdowndefault=='Frame Specific Data'">
+    <p-dialog header="Update Frame Specific Data" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="650">
+      <div class="ui-g ui-fluid" *ngIf="selectedData">
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Frame Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.frameName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Item Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.itemName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">LHS</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.colNm}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12" *ngIf="selectedData.prevColValCd">
+                <div class="ui-g-4">
+                  <label for="vin">Previous Rhs Value</label>
+                </div>
+                <div class="ui-g-8">
+                  <label>{{selectedData.prevColValCd}}</label>
+                </div>
+              </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">RHS Value</label>
+              </div>
+              <div class="ui-g-8">
+                  <input type=text class="priceField" placeholder="Rhs Value" [(ngModel)]="selectedData.colValCd" />
+                </div>
+            </div>
+            <div class="ui-g-12" *ngIf="selectedData.prevMinVal">
+              <div class="ui-g-4">
+                <label for="vin">Previous Min Val</label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedData.prevMinVal}}</label>
+              </div>
+            </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Min Value</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Min Val" [(ngModel)]="selectedData.minVal" />
+          </div>
+        </div>
+        <div class="ui-g-12" *ngIf="selectedData.prevMaxVal">
+          <div class="ui-g-4">
+            <label for="vin">Previous Max Value</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedData.prevMaxVal}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin"> Max Val</label>
+          </div>
+          <div class="ui-g-8">
+            <input type=number class="priceField" placeholder="Max Value" [(ngModel)]="selectedData.maxVal" />
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+  </div>
+</div>

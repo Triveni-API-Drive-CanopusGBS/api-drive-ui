@@ -1,0 +1,2198 @@
+<div class="EditQuot-Container">   
+  <div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <!-- header -->
+  <div *ngIf="!hideprogress">
+    <div class="headerClass">
+      <label class="heading">Quotation Number : {{qotNumb}}</label>
+      <label class="heading">Revision NO : {{saveBasicDetails.revNum}}</label>
+      <!-- <span>Revision Number&nbsp;{{saveBasicDetails.}}</span> -->
+      <!-- <div class="headerbtnClass"> -->
+          <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dispCompleteDialog" showEffect="fade" appendTo="body"
+    [modal]="true" [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+    Do you want to Complete the Quotation?
+    <p-footer>
+      <button type="button" class="header2btn" (click)="quotWorkFlow()">Yes</button>
+      <button type="button" class="header2btn" (click)="closeDialog1()">Close</button>
+    </p-footer>
+  </p-dialog>
+ 
+  <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="completeDialog" showEffect="fade" appendTo="body"
+  [modal]="true" [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+  
+  {{succMsg}}   {{message}}
+  <p-footer>
+    <button type="button" class="header2btn" (click)="closeDial()">Close</button>
+  </p-footer>
+  </p-dialog>
+
+
+      <i type="button" class="fa fa-clone" (click)="saveAsfn()" style="display:inline-block; background-color:rgb(213,120,23); color:white; border-radius: 5px; margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                Save As</i> 
+    <button type="button" *ngIf="editModebtn && scopeOfSupplyList?.length>0 && genInputList?.length>0 && saveBasicDetails.statusName=='In Progress'" class="submitButtn12" (click)="proceedComplete()">Complete and Exit</button>
+    <p-progressSpinner [hidden]="!hidespinner" [style]="{width: '25px', height: '25px', float: 'right', top: '14px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+    <div class="iconStyl">
+      <label class="iconLab">Input Report</label>
+  <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" detailedpdf()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+  title="Input Report"></i></div>
+  <div class="iconStyl">
+      <label class="iconLab">AddOn Cost Sheet</label>
+<i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" addOnPdf()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+  title="AddOn Cost Sheet"></i></div>
+  <div class="iconStyl">
+      <label class="iconLab">Final Cost Sheet</label>
+<i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" export()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+  title="Final Cost Sheet"></i></div>
+  <!-- <div class="iconStyl">
+      <label class="iconLab">Save As</label>
+<i type="button" class="fa fa-files-o fa-2x" label="All Data" (click)=" saveAsfn()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px; left:31px"
+  title="Save As"></i>
+  </div>  -->
+   <div class="iconStyl" *ngIf="disableComr && disableComrIcon">
+      <label class="iconLab">Comercial Offer2B</label>
+   <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" comrDownloadNew()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+   title="Comercial Offer2B"></i>
+   </div>
+   <div class="iconStyl" *ngIf="disableComr && disableComrIcon">
+      <label class="iconLab">Comercial Offer2A</label>
+   <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" comrDownload()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+   title="Comercial Offer2A"></i>
+   </div>
+    <div class="iconStyl">
+        <label class="iconLab">Technical Offer</label>
+     <i type="button" class="fa fa-file-word-o fa-2x" label="All Data" (click)=" downloadDoc()" style="background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+         title="Technical Offer"></i>
+        </div>     
+        
+      <!-- <i type="button" class="fa fa-envelope-o  fa-2x" label="Mail" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:10px; padding-top: 3px;"
+        title="Mail"></i>
+      <i type="button" class="fa fa-print fa-2x" label="All Data" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+        title="Print"></i> -->
+        <!-- <div class="iconStyl">
+            <label class="iconLab">Technical Report PDF</label>
+        <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" gettechReport()" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+        title="Technical Report PDF"></i>   </div>      -->
+      <!-- </div> -->
+    </div>
+    <div style="margin-left:40px; font-size: 13px; font-family: Helvetica; width: 300px; font-weight: bold;" *ngIf="frameNm!=''">{{frameNm}} - {{capacity}}MW - {{typeCust}}</div>
+    <!-- header 2 -->
+    <div class="headerClass2">
+      <p class="headerDropdownlabel">Status</p>
+      <input disabled style="border-radius:4px;" class="headerDropdown" name="status" [(ngModel)]="saveBasicDetails.statusName"
+        #status/>
+
+      <!-- approver reviewer section -->
+      <div style="display:inline-block;">
+
+        <form *ngIf="enableERA" #assignQuot="ngForm" style="display:inline-block;" (ngSubmit)="assignQuotForm(assignQuot.value)">
+          <label *ngIf="enableRA" style="font-size:13px;margin-left:15px; font-weight: bold;">{{labelName}}</label>
+          <select *ngIf="enableRA" class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+            <option value="" selected hidden>Please select </option>
+            <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+          </select>
+          <div style="display:inline-block;position:relative;height:20px;width:170px;">
+            <textarea style="position: absolute;border-radius:5px;" name="quotRemark" [(ngModel)]="qRemarks" required placeholder="Add remarks"></textarea>
+          </div>
+          <button class="header2btn" [disabled]="!assignQuot.form.valid" type="submit">Proceed</button>
+        </form>
+      </div>
+        <button class="header2btn" style="margin-right:10px;" *ngIf="editMode" (click)="getPrevComments()">Previous Comments</button>
+        <p-progressSpinner [hidden]="!hidespinner1" [style]="{width: '25px', height: '25px', float: 'right', top: '14px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+    </div>
+    <div class="headerClass2" style="display:block;">
+      <textarea  (keyup)="checkRemarks()" *ngIf="editMode" style="position: absolute;border-radius:4px;margin-left: 20px;" name="quotRemark"
+        [(ngModel)]="quotRemarks" required placeholder="Add remarks"></textarea>
+      <button class="header2btn" style="margin-left:230px;" *ngIf="editMode" [disabled]="disableBtn" (click)="closeQuotation()">Cancel Quotation</button>
+      <div class="actionBtnDiv" *ngIf="enableEngDiv" style="display:inline-block;">
+        <button (click)="submitToCust()" class="header2btn" *ngIf="saveBasicDetails.statusCode =='AP' " [disabled]="disableBtn">Submit To Customer</button>
+        <select *ngIf="saveBasicDetails.statusCode =='SC'" class="reviewr" name="stts" #stat ngModel [(ngModel)]="statusQuot">
+          <option value="" selected hidden>Please select </option>
+          <option>Won</option>
+          <option>Lost</option>
+          <option>Revise</option>
+        </select>
+        <button *ngIf="saveBasicDetails.statusCode =='SC'" (click)="assignQuotToOthers()" [disabled]="(statusQuot=='') || disableBtn"
+          class="header2btn">OK</button>
+      </div>
+      <button class="header2btn" *ngIf="quotApp || quotRev" [disabled]="disableBtn" (click)="assignBack()">Return for Clarification</button>
+    </div>
+    <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="editStatusDialog" showEffect="fade" appendTo="body"
+      [modal]="true" [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      {{quotWorkFlowMsg}}
+      <p-footer>
+        <button type="button" class="header2btn" (click)="closeEditDialog()">Close</button>
+      </p-footer>
+    </p-dialog>
+    <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dispCancel" showEffect="fade" appendTo="body" [modal]="true"
+      [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      Do you want to cancel the Quotation?
+      <p-footer>
+        <button type="button" class="header2btn" (click)="proceedCancel()">Yes</button>
+        <button type="button" class="header2btn" (click)="closeCancelDialog()">Close</button>
+      </p-footer>
+    </p-dialog>
+    
+<!-- save as dialog inputs  -->
+    <p-dialog header="Save As" [(visible)]="displaySaveAs" [modal]="true" [responsive]="true" [width]="550" [minWidth]="200"
+    [minY]="70" [maximizable]="true" [closable]="false" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+    <form #saveAs="ngForm" (ngSubmit)="saveAsForm(saveAs.value)">
+        <!-- Opportunity Sequence Number  -->
+        <label>Opportunity Sequence Number</label>
+        <input type="text" placeholder="Type Opportunity Sequence Number" required [(ngModel)]="opportunitySeqNO" name="opportunitySeqNO" style="padding: 4px; border-radius:5px; width:220px;margin:5px;">
+       <button type="submit" [disabled]="!saveAs.form.valid" class="saveBtn">Save</button>
+       <p-progressSpinner [hidden]="!hidespinner2" [style]="{width: '25px', height: '25px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+        <label style="margin:10px; color:red;font-size:13px;">{{successMesgSaveAs}}</label>
+    </form>
+    <p-footer>
+        <button type="button" pButton class="fa fa-close" style="height:26px;" (click)="closeRef()" class="ui-button-secondary">Close</button>
+    </p-footer>
+</p-dialog>
+    <!-- body -->
+
+
+      <!-- Customer Requirement -->
+  <div class="qotbody">
+    <div class="sectionDiv">
+      <div class="sectionheader2">
+        &nbsp;&nbsp;
+        <!-- <p class="secheading" (click)="techMainTab()">Other Chapters</p> -->
+        <p class="secheading">1) Customer Requirement</p>
+      </div>
+      <div *ngIf="arry[10].value">
+         <!-- User Information -->
+         <section>
+          <div>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+      
+                  <div class="sectionheader2">
+                    &nbsp;&nbsp;
+                    <p class="secheading">User Information</p>
+                    <div class="sectionbtnClass">
+                      <!-- <button class="sectionbtn" *ngIf="editModebtn && dispPerf" (click)="getPerf()">Edit</button> -->
+                      <button class="sectionbtn" *ngIf="editModebtn" (click)="customerInfoTab()">Edit</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- Customer Requirement -->
+        <section>
+          <div>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+      
+                  <div class="sectionheader2">
+                    &nbsp;&nbsp;
+                    <p class="secheading">Customer Requirement</p>
+                    <div class="sectionbtnClass">
+                      <!-- <button class="sectionbtn" *ngIf="editModebtn && dispPerf" (click)="getPerf()">Edit</button> -->
+                      <button class="sectionbtn" *ngIf="editModebtn" (click)="customerReqTab()">Edit</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+
+            <!-- Customer Information -->
+
+    <!-- <div class="qotbody">
+      <div class="sectionDiv">
+        <div class="sectionheader2">
+          &nbsp;&nbsp;
+          <p class="secheading">Customer Information</p>          
+          <p class="secheading" (click)="customerInfo();">Customer Information</p>
+          <div class="sectionbtnClass">
+              <button class="sectionbtn" *ngIf="editModebtn" (click)="customerInfoTab()">Edit</button>
+            </div>
+        </div>
+        <section>
+          <div *ngIf="arry[1].value">
+            <p class="contentlabel" style="margin-left:5px;"> Oppurtunity Sequence Number</p>
+            <p class="contentData" style="margin-left:5px;">{{saveBasicDetails.opportunitySeqNum}}</p>
+            <p class="contentlabel" style="margin-left:5px;"> Type of Offer</p>
+              <p class="contentData" style="margin-left:5px;">{{saveBasicDetails.typeOfOfferNm}}</p>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+
+                  <h4 style="color: black; margin-top:0px; font-size: 14px; margin-top: 0px;margin-bottom: 5px;font-family: helvetica;">Customer Details</h4>
+
+                  <p class="contentlabel">Account Name</p>
+                  <p class="contentData">{{saveBasicDetails.custName}}</p>
+
+
+                  <p class="contentlabel">Oppurtunity Name</p>
+                  <p class="contentData">{{saveBasicDetails.oppName}}</p>
+
+
+
+                  <p class="contentlabel">Customer Type</p>
+                  <p class="contentData">{{saveBasicDetails.custType}}</p>
+                  <p class="contentlabel">Customer Status</p>
+                  <p class="contentData">{{saveBasicDetails.custStatus}}</p>
+
+                  <p class="contentlabel">Contact Person Name</p>
+                  <p class="contentData">{{saveBasicDetails.custContactPersonName}}</p>
+
+                  <p class="contentlabel">Email</p>
+                  <p class="contentData">{{saveBasicDetails.custEmailId}}</p>
+
+                  <p class="contentlabel">Contact Number</p>
+                  <p class="contentData">{{saveBasicDetails.custContactNumber}}</p>
+
+                  <p class="contentlabel">Address</p>
+                  <p class="contentData">{{saveBasicDetails.custAddress}}</p>
+                </div>
+                <div *ngIf="saveBasicDetails.consultantName!=null" class="sectionContent">
+                  <h1>Consultant Details</h1>
+                  <p class="contentlabel">Consultant Name</p>
+                  <p class="contentData">{{saveBasicDetails.consultantName}}</p>
+
+                  <p class="contentlabel">Address</p>
+                  <p class="contentData">{{saveBasicDetails.ConsultantAddress}}</p> -->
+                  <!-- <p class="contentlabel">City/State/Country/Pincode</p>
+                    <p class="contentData">{{consultantData.city}}&nbsp;&nbsp;{{consultantData.state}}&nbsp;&nbsp;{{consultantData.country}}&nbsp;&nbsp;{{consultantData.pincode}}</p>
+  
+                    <p class="contentlabel">Contact Person Name</p>
+                    <p class="contentData">{{consultantData.contactPersonName}}</p>
+  
+                    <p class="contentlabel">Email</p>
+                    <p class="contentData">{{consultantData.emailId}}</p>
+  
+                    <p class="contentlabel">Contact Number</p>
+                    <p class="contentData">{{consultantData.contactNumber}}</p> -->
+                <!-- </div>
+              </td>
+              <td class="sectiontableData"> -->
+
+                <!-- <div *ngIf="endUserData!=null" class="sectionContent"> -->
+                <!-- <div *ngIf="saveBasicDetails.endUserName" class="sectionContent">
+                  <h4 style="color: black; margin-top:0px; font-size: 14px; margin-top: 0px;margin-bottom: 5px;font-family: helvetica;">End User Details</h4>
+                  <p class="contentlabel">End User Name</p>
+                  <p class="contentData">{{saveBasicDetails.endUserName}}</p>
+
+                  <p class="contentlabel">Address</p>
+                  <p class="contentData">{{saveBasicDetails.endUserAddress}}</p> -->
+
+                  <!-- <p class="contentlabel">Contact Person Name</p>
+                                <p class="contentData">{{endUserData.contactPersonName}}</p> -->
+
+                   <!-- <p class="contentlabel">Email</p>
+                    <p class="contentData">{{saveBasicDetails.endUserEmailId}}</p>
+        
+                          <p class="contentlabel">Contact Number</p>
+                    <p class="contentData">{{saveBasicDetails.endUserContactNumber}}</p> 
+                </div>
+                <div *ngIf="!saveBasicDetails.endUserName" class="sectionContent">
+                  <h4 style="color: black; margin-top:0px; font-size: 14px; margin-top: 0px;margin-bottom: 5px;font-family: helvetica;">End User Details</h4>
+                  <p class="contentlabel">End User Name</p>
+                  <p class="contentData">{{saveBasicDetails.custName}}</p>
+
+                  <p class="contentlabel">End User Type</p>
+                  <p class="contentData">{{saveBasicDetails.custType}}</p>
+
+                  <p class="contentlabel">Contact Person Name</p>
+                  <p class="contentData">{{saveBasicDetails.contactPersonName}}</p>
+
+                  <p class="contentlabel">Email</p>
+                  <p class="contentData">{{saveBasicDetails.emailId}}</p>
+
+                  <p class="contentlabel">Contact Number</p>
+                  <p class="contentData">{{saveBasicDetails.contactNumber}}</p>
+
+                  <p class="contentlabel">Address</p>
+                  <p class="contentData">{{saveBasicDetails.address}}</p>
+
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div> -->
+
+ <!-- customer Requirements -->
+<!-- 
+ <div class="qotbody">
+  <div class="sectionDiv">
+    <div class="sectionheader2">
+      &nbsp;&nbsp;
+      <p class="secheading">Customer Requirements</p> -->
+      <!-- <p class="secheading" (click)="customerReq()"> Customer Requirements</p> -->
+      <!-- <div class="sectionbtnClass">
+        <button class="sectionbtn" *ngIf="editModebtn" (click)="customerReqTab()">Edit</button>
+      </div>
+    </div> -->
+    <!-- <section>
+      <div *ngIf="arry[2].value">
+
+        <table class="sectionTable">
+          <td class="sectiontableData">
+
+            <div class="sectionContent">
+              <p class="contentlabel">Type of Blade</p>
+              <p class="contentData">{{saveBasicDetails.typOfBlade}}</p>
+              <p class="contentlabel">Type of Injection</p>
+              <p class="contentData">{{saveBasicDetails.typeOfInjectionNm}}</p>
+              <p class="contentlabel">Type of Varient</p>
+              <p class="contentData">{{saveBasicDetails.typeOfVarientNm}}</p>
+              <p class="contentlabel">Frame</p>
+              <p class="contentData">{{saveBasicDetails.frameName}}</p>
+              <p class="contentlabel">Orientation Type</p>
+              <p class="contentData">{{saveBasicDetails.orientationType}}</p>
+            </div>
+          </td>
+          <td class="sectiontableData">
+
+            <div class="sectionContent">
+              <p class="contentlabel">Turbine Type</p>
+              <p class="contentData">{{saveBasicDetails.typeOfTurbine}}</p>
+              <p class="contentlabel">Capacity</p>
+              <p class="contentData">{{saveBasicDetails.capacity}}</p>
+              <p class="contentlabel">Type of Quotation</p>
+              <p class="contentData">{{saveBasicDetails.typeOfQuotNm}}</p>
+              <p class="contentlabel">Region</p>
+              <p class="contentData">{{saveBasicDetails.region}}</p>
+
+            </div>
+          </td>
+        </table>
+      </div>
+     </section> -->
+  <!-- </div>
+</div>  -->
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+<!-- 
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div class="sectionheader2">
+          &nbsp;&nbsp; -->
+          <!-- <p class="secheading" (click)="userInfo();">User Information</p> -->
+          <!-- <p class="secheading">1) User Information</p>
+          <div class="sectionbtnClass"> -->
+            <!-- <button class="sectionbtn" routerLink="/CostEstimation/CustomerInformation">Edit</button> -->
+          <!-- </div>
+        </div>
+        <section>
+          <div *ngIf="arry[0].value">
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+                  <p class="contentlabel">Employee Id</p>
+                  <p class="contentData">{{saveBasicDetails.creatorEmpId}}</p>
+
+                  <p class="contentlabel">Name(Owner/Creator)</p>
+                  <p class="contentData">{{saveBasicDetails.createdBy}}</p>
+
+                  <p class="contentlabel">Email</p>
+                  <p class="contentData">{{saveBasicDetails.creatorEmail}}</p>
+                </div>
+
+              </td>
+              <td class="sectiontableData">
+                <div class="sectionContent">
+                  <p class="contentlabel">Department</p>
+                  <p class="contentData">{{saveBasicDetails.creatorDeptName}}</p>
+
+                  <p class="contentlabel">Contact Number</p>
+                  <p class="contentData">{{saveBasicDetails.creatorPhoneNumber}}</p>
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div> -->
+
+<!-- Scope Of Supply -->
+<div class="qotbody">
+  <div class="sectionDiv">
+    <div class="sectionheader2">
+      &nbsp;&nbsp;
+      <!-- <p class="secheading" (click)="techMainTab()">Other Chapters</p> -->
+      <p class="secheading">2) Scope Of Supply</p>
+    </div>
+    <div *ngIf="arry[10].value">
+
+      <!-- Scope Of Supply -->
+      <section>
+          <div>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+      
+                  <div [ngClass]="{'sectionheader' : scopeOfSupplyList.length==0, 'sectionheader2': !scopeOfSupplyList.length==0}">
+                    &nbsp;&nbsp;
+                    <p class="secheading">Scope Of Supply</p>
+                    <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn" (click)="SOSTab()">Edit</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- General Inputs-->
+      <section>
+          <div>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent">
+      
+                  <div [ngClass]="{'sectionheader' : genInputList.length==0, 'sectionheader2': !genInputList.length==0}">
+                    &nbsp;&nbsp;
+                    <p class="secheading">General Inputs</p>
+                    <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn" (click)="GITab()">Edit</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </table>
+          </div>
+        </section>
+   
+    <!-- Scope Of Supply Details -->
+
+    <!-- <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : scopeOfSupplyList.length==0, 'sectionheader2': !scopeOfSupplyList.length==0}">
+          &nbsp;&nbsp;
+          <p class="secheading">4) Scope Of Supply</p> -->
+          <!-- <p class="secheading" (click)="scopeOfSupInfo();">Scope Of Supply</p> -->
+          <!-- <div class="sectionbtnClass">
+            <button class="sectionbtn" *ngIf="editModebtn" (click)="SOSTab()">Edit</button>
+          </div>
+        </div>
+        <section>
+          <div>
+            <table class="sectionTable">
+              <td class="sectiontableData">
+                <div class="sectionContent" *ngFor="let scopeOfSupply of scopeOfSupplyList; let i=index">
+                  <li class="contentData">{{i+1}}&nbsp;.&nbsp;{{scopeOfSupplyList[i].scopeName}}</li>
+                </div>
+              </td>
+            </table>
+          </div>
+          <div *ngIf="scopeOfSupplyList.length==0">
+            <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+          </div>
+        </section>
+      </div>
+    </div> -->
+<!-- General Inputs --> 
+
+    <!-- <div class="qotbody">
+    <div class="sectionDiv">
+      <div class="sectionheader2">
+          &nbsp;&nbsp;
+          <p class="secheading">5) General Inputs</p> -->
+          <!-- <p class="secheading" (click)="generalInputsInfo();">General Inputs</p> -->
+          <!-- <div class="sectionbtnClass">
+            <button class="sectionbtn" *ngIf="editModebtn" (click)="GITab()">Edit</button>
+          </div>
+        </div>
+        <section *ngIf="arry[4].value">
+          <div>
+            <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                      <div class="sectionContent" *ngFor="let question of genInputList; let i=index">
+                          <li class="contentData" style="font-weight: bold; font-size:13px; font-family:Helvetica;">{{i+1}} &nbsp;.&nbsp;{{genInputList[i].genInNm}}</li>
+                          <li class="contentData"> &nbsp; &nbsp;{{genInputList[i].categoryValName}}</li>
+                        </div>
+                      </div>
+                    </td>
+                  </table>
+          </div>
+        </section> -->
+        <!-- <div *ngIf="genInputList.length==0">
+          <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+        </div> -->
+      <!-- </div>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+      <!-- F2F SAP --> 
+
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div class="sectionheader2">
+            &nbsp;&nbsp;
+            <p class="secheading">3) F2F SAP</p>
+            <!-- <p class="secheading" (click)="f2fSapNewInfo();">F2F SAP</p> -->
+            <div class="sectionbtnClass">
+              <button class="sectionbtn" *ngIf="editModebtn && f2fBoolean " (click)="f2fSapNewTab()">Edit</button>
+            </div>
+          </div>
+          <section *ngIf="arry[5].value">
+            <div *ngIf="f2fQuesData">
+              <table id="contStyl">
+                <tr>
+                  <th class="contStylData">Variant Code </th>
+                  <th class="contStylData">C-Number</th>
+                  <th class="contStylData">Turbine Material Cost</th>
+                  <th class="contStylData">Shop Conversion Cost</th>
+                  <th class="contStylData">Sub - Contracting Cost</th>
+                  <th class="contStylData">Total</th>
+                </tr>
+                <tr>
+                  <td class="contStylData">{{latestCProjectData.variantCode}}</td>
+                  <td class="contStylData">{{latestCProjectData.cNum}}</td>
+                  <td class="contStylData">{{latestCProjectData.turbineMaterialCost}}</td>
+                  <td class="contStylData">{{latestCProjectData.shopCoverCost}}</td>
+                  <td class="contStylData">{{latestCProjectData.subContrCost}}</td>
+                  <td class="contStylData">{{latestCProjectData.total}}</td>
+                </tr>
+              </table>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="custStyl" *ngFor="let f2fQues of f2fQuesData; let i=index">
+                    <p class="contentlabel">Q{{[i+1]}} - &nbsp;{{f2fQuesData[i].questionDesc}}</p>
+                    <p class="contentData">{{f2fQuesData[i].answerCd}} - &nbsp;{{f2fQuesData[i].answerDesc}}</p>
+                  </div>
+                </td>
+              </table>
+            </div>
+            <div *ngIf="!f2fQuesData">
+              <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+            </div>
+          </section>
+          </div>
+        </div>
+  
+
+    <!-- AddOn Components Details -->
+
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : !f2fQuesData || !f2fExcel || submittedAddOnListCost.length==0, 'sectionheader2': f2fQuesData && f2fExcel && !submittedAddOnListCost.length==0}">
+          &nbsp;&nbsp;
+          <!-- <p class="secheading" (click)="turbineDetTab()">Turbine Details</p> -->
+          <p class="secheading">4) Turbine Details</p>
+        </div>
+        <div *ngIf="arry[6].value">
+
+            <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+                        <div [ngClass]="{'sectionheader' : !onLineBomExcel.f2fCostFlag, 'sectionheader2': onLineBomExcel.f2fCostFlag }">
+                          &nbsp;&nbsp;
+                          <p class="secheading">Turbine Details - F2F</p>
+                          <!-- <p class="secheading" (click)="f2fSap()">Turbine Details - F2F</p> -->
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispF2F" (click)="F2FSapTab()">Edit</button>
+                          </div>
+                        </div>
+                        <section *ngIf="subArry1[0].value">
+                          <div *ngIf="f2fQuesData">
+                            <table id="contStyl">
+                              <tr>
+                                <th class="contStylData">Variant Code </th>
+                                <th class="contStylData">C-Number</th>
+                                <th class="contStylData">Turbine Material Cost</th>
+                                <th class="contStylData">Shop Conversion Cost</th>
+                                <th class="contStylData">Sub - Contracting Cost</th>
+                                <th class="contStylData">Total</th>
+                              </tr>
+                              <tr>
+                                <td class="contStylData">{{latestCProjectData.variantCode}}</td>
+                                <td class="contStylData">{{latestCProjectData.cNum}}</td>
+                                <td class="contStylData">{{latestCProjectData.turbineMaterialCost}}</td>
+                                <td class="contStylData">{{latestCProjectData.shopCoverCost}}</td>
+                                <td class="contStylData">{{latestCProjectData.subContrCost}}</td>
+                                <td class="contStylData">{{latestCProjectData.total}}</td>
+                              </tr>
+                            </table>
+                            <table class="sectionTable">
+                              <td class="sectiontableData">
+                                <div class="custStyl" *ngFor="let f2fQues of f2fQuesData; let i=index">
+                                  <p class="contentlabel">Q{{[i+1]}} - &nbsp;{{f2fQuesData[i].questionDesc}}</p>
+                                  <p class="contentData">{{f2fQuesData[i].answerCd}} - &nbsp;{{f2fQuesData[i].answerDesc}}</p>
+                                </div>
+                              </td>
+                            </table>
+                          </div>
+                          <div *ngIf="!f2fQuesData">
+                            <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+                          </div>
+                        </section>
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+
+          <!-- <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : !f2fQuesData, 'sectionheader2': f2fQuesData }">
+                      &nbsp;&nbsp;
+                      <p class="secheading" (click)="f2f()">F2F Turbine Details</p>
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn" (click)="F2FTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry1[1].value">
+                      <div *ngIf="f2fQuesData">
+                        <table id="contStyl">
+                          <tr>
+                            <th class="contStylData">Variant Code </th>
+                            <th class="contStylData">C-Number</th>
+                            <th class="contStylData">Turbine Material Cost</th>
+                            <th class="contStylData">Shop Conversion Cost</th>
+                            <th class="contStylData">Sub - Contracting Cost</th>
+                            <th class="contStylData">Total</th>
+                          </tr>
+                          <tr>
+                            <td class="contStylData">{{latestCProjectData.variantCode}}</td>
+                            <td class="contStylData">{{latestCProjectData.cNum}}</td>
+                            <td class="contStylData">{{latestCProjectData.turbineMaterialCost}}</td>
+                            <td class="contStylData">{{latestCProjectData.shopCoverCost}}</td>
+                            <td class="contStylData">{{latestCProjectData.subContrCost}}</td>
+                            <td class="contStylData">{{latestCProjectData.total}}</td>
+                          </tr>
+                        </table>
+                        <table class="sectionTable">
+                          <td class="sectiontableData">
+                            <div class="custStyl" *ngFor="let f2fQues of f2fQuesData; let i=index">
+                              <p class="contentlabel">Q{{[i+1]}} - &nbsp;{{f2fQuesData[i].questionDesc}}</p>
+                              <p class="contentData">{{f2fQuesData[i].answerCd}} - &nbsp;{{f2fQuesData[i].answerDesc}}</p>
+                            </div>
+                          </td>
+                        </table>
+                      </div>
+                      <div *ngIf="!f2fQuesData">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section> -->
+
+          <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : !f2fExcel, 'sectionheader2': f2fExcel }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">Turbine Details - Supply Chain</p>
+                      <!-- <p class="secheading" (click)="f2fEx()">Turbine Details - Supply Chain</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispF2F" (click)="F2FTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry1[2].value">
+                      <div *ngIf="f2fExcel">
+                        <table class="sectionTable">
+                          <tr>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                    <p class="contentlabel">Turbine Material Cost</p>
+                                    <p class="contentData">{{f2fExcel.turbineMaterialCost}}</p>
+                                  </div>
+                                </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Sub Contracting Cost</p>
+                                <p class="contentData">{{f2fExcel.subContrCost}}</p>
+                              </div>
+                            </td>
+                              <td class="subsectiontableData">
+                                  <div class="sectionContent">
+                                    <p class="contentlabel">ShopConversion Cost</p>
+                                    <p class="contentData">{{f2fExcel.shopCoverCost}}</p>
+                                  </div>
+                                </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Total Cost</p>
+                                <p class="contentData">{{f2fExcel.totalF2FCost}}</p>
+                              </div>
+                            </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel" *ngIf="f2fExcel.overwrittenPriceFlg">Overwritten Cost</p>
+                                <p class="contentData" *ngIf="f2fExcel.overwrittenPriceFlg">{{f2fExcel.overwrittenPrice}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div *ngIf="!f2fExcel">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+          <!-- <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : submittedAddOnListCost.length==0, 'sectionheader2': !submittedAddOnListCost.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading" (click)="addOnInfo();">AddOn Components</p>
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn" (click)="addOnTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry1[3].value">
+                      <div *ngIf="submittedAddOnListCost.length>0">
+                        <table class="sectionTable">
+                          <tr>
+                            <td>
+                              <div>
+
+                                <p class="contentlabel">Total Addon Cost</p>
+                                <p class="contentData">{{submittedAddOnListCost[0].addOnTotal}}</p>
+
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+
+
+                                <p class="contentlabel" *ngIf="submittedAddOnListCost[0].selectedCostFlag==1">Overwritten Cost</p>
+                                <p class="contentData" *ngIf="submittedAddOnListCost[0].selectedCostFlag==1">{{submittedAddOnListCost[0].selectedCost}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr *ngFor="let addOns of submittedAddOnListCost; let i=index">
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">AddOn Component Name</p>
+                                <p class="contentData">{{addOns.addOnCompoName}}</p>
+                              </div>
+                            </td>
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Cost</p>
+                                <p class="contentData">{{addOns.excelCost}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div *ngIf="submittedAddOnListCost.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section> -->
+
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : dboMechList.length==0 || dboMechExtList.length == 0 || dboMechAuxList.length == 0,
+         'sectionheader2': !dboMechList.length==0 && !dboMechExtList.length == 0 && !dboMechAuxList.length == 0}">
+          &nbsp;&nbsp;
+          <!-- <p class="secheading" (click)="mechMainTab()">Mechanical</p> -->
+          <p class="secheading">5) Mechanical</p>
+        </div>
+        <div *ngIf="arry[7].value">
+    
+          <!-- DBO Mechanical Starts-->
+          <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : dboMechList.length==0, 'sectionheader2': !dboMechList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">DBO Mechanical Details</p>
+                      <!-- <p class="secheading" (click)="dboMechInfo()">DBO Mechanical Details</p> -->
+                      
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispDboMech" (click)="dboMechTab()">Edit</button>
+                      </div>
+                    </div>
+                    
+                    
+                    <section *ngIf="subArry[0].value">
+                      <div *ngIf="dboMechList.length>0">
+                        <table class="sectionTable">
+                          <tr>
+                            <td>
+                              <div>
+                                <p class="contentlabel">Total DBO Mechanical Cost</p>
+                                <p class="contentData">{{onLineBomExcel.dboMechCost}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr *ngFor="let dboMech of dboMechList; let i=index">
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Component</p>
+                                <p class="contentData">{{dboMech.categoryDetDesc}}</p>
+                              </div>
+                            </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Cost</p>
+                                <p class="contentData">{{dboMech.price}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div *ngIf="dboMechList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica;">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+
+           <!-- DBO Mechanical Aux-->
+           <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                        <div [ngClass]="{ 'sectionheader' : dboMechAuxList.length==0, 'sectionheader2': !dboMechAuxList.length==0}">
+                            &nbsp;&nbsp;
+                            <p class="secheading">DBO Mechanical Aux</p>
+                            <!-- <p class="secheading" (click)="dboMechAuxInfo()">DBO Mechanical Aux</p> -->
+                            
+                            <div class="sectionbtnClass">
+                              <button class="sectionbtn" *ngIf="editModebtn && dispDboMech" (click)="dboMechAuxTab()">Edit</button>
+                            </div>
+                      </div>
+                      </div>
+                      </td>
+                      </table>
+                      </div>
+                      </section>
+
+                       <!-- DBO Mechanical Extended scope-->
+          <section>
+              <div *ngIf="dispDboMech">
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      
+                      <div [ngClass]="{ 'sectionheader' : dboMechExtList.length==0, 'sectionheader2': !dboMechExtList.length==0}">
+                        &nbsp;&nbsp;
+                        <!-- <p class="secheading" (click)="dboMechInfo()">Mechanical Extended Scope</p> -->
+                    <p class="secheading">Mechanical Extended Scope</p>
+                                
+                    <div class="sectionbtnClass">
+                      <button class="sectionbtn" *ngIf="editModebtn && dispDboMech" (click)="dboMechAuxExtTab()">Edit</button>
+                    </div>
+                    </div>
+                  </div>
+                      </td>
+                      </table>
+                      </div>
+                      </section>
+
+          
+          <!-- DBO Mechanical Ends -->
+
+        </div>
+      </div>
+    </div>
+
+
+  <!-- Electrical starts -->
+  <div class="qotbody">
+      <div class="qotbody">
+    <div class="sectionDiv">
+      <div [ngClass]="{'sectionheader' : dboEleList.length==0 || dboEleAuxList.length == 0 || dboEleExtList.length == 0,
+       'sectionheader2': !dboEleList.length==0 && !dboEleAuxList.length == 0 && !dboEleExtList.length == 0}">
+        &nbsp;&nbsp;
+        <!-- <p class="secheading" (click)="eleMainTab()">Electrical</p> -->
+        <p class="secheading">6) Electrical</p>
+      </div>
+      <div *ngIf="arry[8].value">
+          <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      <div [ngClass]="{'sectionheader' : dboEleList.length==0, 'sectionheader2': !dboEleList.length==0 }">
+                        &nbsp;&nbsp;
+                        <p class="secheading">DBO Electrical Details</p>
+                        <!-- <p class="secheading" (click)="dboEleInfo()">DBO Electrical Details</p> -->
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && dispDboEle" (click)="dboEleTab()">Edit</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+            <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+                        <div [ngClass]="{'sectionheader' : dboEleAuxList.length==0, 'sectionheader2': !dboEleAuxList.length==0 }">
+                          &nbsp;&nbsp;
+                          <p class="secheading">DBO Electrical Aux Details</p>
+                          <!-- <p class="secheading" (click)="dboEleAuxInfo()">DBO Electrical Aux Details</p> -->
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispDboEle" (click)="dboEleAuxTab()">Edit</button>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+              <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+                        <div [ngClass]="{'sectionheader' : dboEleExtList.length==0, 'sectionheader2': !dboEleExtList.length==0 }">
+                          &nbsp;&nbsp;
+                          <p class="secheading">DBO Electrical Extended Scope</p>
+                          <!-- <p class="secheading" (click)="dboEleAuxInfo()">DBO Electrical Extended Scope</p> -->
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispDboEle" (click)="dboEleExtTab()">Edit</button>
+                          </div>
+                        </div>
+                      
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+        </div>
+      </div>
+    </div>
+
+
+      <!-- C&I starts -->
+  <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : dboCIList.length==0 || dboCIAuxList.length == 0 || dboCIExtList.length == 0,
+         'sectionheader2': !dboCIList.length==0 && !dboCIAuxList.length == 0 && !dboCIExtList.length == 0}">
+          &nbsp;&nbsp;
+          <!-- <p class="secheading" (click)="ciMainTab()">Control & Instrumentation</p> -->
+          <p class="secheading">7) Control & Instrumentation</p>
+        </div>
+        <div *ngIf="arry[9].value">
+          
+            <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+                        <div [ngClass]="{'sectionheader' : dboCIList.length==0, 'sectionheader2': !dboCIList.length==0 }">
+                          &nbsp;&nbsp;
+                          <p class="secheading">Control and Instrumentation Details</p>
+                          <!-- <p class="secheading" (click)="dboEleInfo()">Control and Instrumentation Details</p> -->
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispDboEleCI" (click)="dboCITab()">Edit</button>
+                          </div>
+                        </div>
+                       
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+  
+  
+  
+            <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      <div [ngClass]="{'sectionheader' : dboCIAuxList.length==0, 'sectionheader2': !dboCIAuxList.length==0 }">
+                        &nbsp;&nbsp;
+                        <!-- <p class="secheading" (click)="dboEleInfo()">Control and Instrumentation Aux Details</p> -->
+                        <p class="secheading">Control and Instrumentation Aux Details</p>
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && dispDboEleCI" (click)="dboCIAuxTab()">Edit</button>
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+  
+            <section>
+                <!-- <section *ngIf="dispDboEleCI"> -->
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      <div [ngClass]="{'sectionheader' : dboCIExtList.length==0, 'sectionheader2': !dboCIExtList.length==0 }">
+                        &nbsp;&nbsp;
+                        <p class="secheading">Control and Instrumentation Extended Scope</p>
+                        <!-- <p class="secheading" (click)="dboEleInfo()">Control and Instrumentation Extended Scope</p> -->
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && dispDboEleCI" (click)="dboCIExtTab()">Edit</button>
+                        </div>
+                      </div>
+                       </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical starts -->
+  <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : !perfListBool || ecBeanList.length==0 || scopeList.length == 0 || qualitylist.length == 0 || tenderList.length==0 || attachListCD.length==0 ||terminalList.length==0 ||supplierList.length==0 ||exclusionList.length==0 || attachListTD.length==0,
+         'sectionheader2': perfListBool && !ecBeanList.length==0 && !scopeList.length==0 && !qualitylist.length == 0 && !tenderList.length == 0 && !attachListCD.length==0 && !terminalList.length==0 && !supplierList.length==0 && !exclusionList.length==0 && !attachListTD.length==0}">
+          &nbsp;&nbsp;
+          <!-- <p class="secheading" (click)="techMainTab()">Other Chapters</p> -->
+          <p class="secheading">8) Other Chapters</p>
+        </div>
+        <div *ngIf="arry[10].value">
+           <!-- >Performance & Utilities List Details -->
+  <section>
+      <div>
+        <table class="sectionTable">
+          <td class="sectiontableData">
+            <div class="sectionContent">
+  
+              <div [ngClass]="{'sectionheader' : !perfListBool, 'sectionheader2': perfListBool }">
+                &nbsp;&nbsp;
+                <p class="secheading">Performance & Utilities List</p>
+                <div class="sectionbtnClass">
+                  <button class="sectionbtn" *ngIf="editModebtn && dispPerf" (click)="getPerf()">Edit</button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </table>
+      </div>
+    </section>
+  
+  
+            <!-- Scope Of Service -->
+            <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+  
+                      <div [ngClass]="{'sectionheader' : ecBeanList.length==0, 'sectionheader2': !ecBeanList.length==0 }">
+                        &nbsp;&nbsp;
+                        <p class="secheading">Scope Of Service</p>
+                        <!-- <p class="secheading" (click)="errAndComInfo()">Scope Of Service</p> -->
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && dispSS" (click)="erecCommTab()">Edit</button>
+                        </div>
+                      </div>
+                      <section *ngIf="subArry[3].value">
+                        <div *ngIf="ecBeanList.length>0">
+  
+                          <table class="sectionTable">
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+  
+                                <p class="contentlabel">Customer Type</p>
+                                <p class="contentData">{{saveBasicDetails.custType}}</p>
+  
+                                <p class="contentlabel" *ngIf="ecBean.loadingId>0">Type of loading</p>
+                                <p class="contentData" *ngIf="ecBean.loadingId>0">{{ecBean.loadingName}}</p>
+                                <p class="contentlabel" *ngIf="!custCode && ecBean.lodgingId>0">No of Man Days</p>
+                                <p class="contentData" *ngIf="!custCode && ecBean.lodgingId>0">{{ecBean.noOfManDays}}</p>
+                                <p class="contentlabel">Cost</p>
+                                <p class="contentData">{{ecBean.price}}</p>
+  
+                              </div>
+                            </td>
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+                                <p class="contentlabel">Type Of Charge</p>
+                                <p class="contentData">{{ecBean.typeOfCharge}}</p>
+                                <p class="contentlabel" *ngIf="ecBean.lodgingId>0">Type of Boarding & Lodging</p>
+                                <p class="contentData" *ngIf="ecBean.lodgingId>0">{{ecBean.lodgingName}}</p>
+  
+  
+                                <p class="contentlabel" *ngIf="ecBean.overwrittenPriceFlag">Overwritten Cost</p>
+                                <p class="contentData" *ngIf="ecBean.overwrittenPriceFlag">{{ecBean.overwrittenPrice}}</p>
+                              </div>
+                            </td>
+                          </table>
+                        </div>
+                        <div *ngIf="ecBeanList.length==0">
+                          <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                        </div>
+                      </section>
+                    </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+  
+  
+                 <!-- Quality Assuarnec-->
+            <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+            
+                        <div [ngClass]="{'sectionheader' : qualitylist.length==0, 'sectionheader2': !qualitylist.length==0 }">
+                          &nbsp;&nbsp;
+                          <p class="secheading" >Quality Assurance</p>
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispQA" (click)="quality()">Edit</button>
+                          </div>
+                        </div>
+  
+                              
+                         
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+            
+            
+                      <!-- >Drawing and Documentation Schedule-->
+                      <section>
+                        <div>
+                          <table class="sectionTable">
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+            
+                                <div [ngClass]="{'sectionheader' : tenderList.length==0, 'sectionheader2': !tenderList.length==0 }">
+                                  &nbsp;&nbsp;
+                                  <p class="secheading">Drawing and Documentation Schedule</p>
+                                  <div class="sectionbtnClass">
+                                    <button class="sectionbtn" *ngIf="editModebtn && dispDR" (click)="tender1()">Edit</button>
+                                  </div>
+                                </div>
+                                                          </div>
+                            </td>
+                          </table>
+                        </div>
+                      </section>
+  
+                        <!-- >Clarifications -->
+                      <section>
+                        <div>
+                          <table class="sectionTable">
+                            <td class="sectiontableData">
+                              <div class="sectionContent">
+            
+                                <div [ngClass]="{'sectionheader' : attachListCD.length==0, 'sectionheader2': !attachListCD.length==0 }">
+                                  &nbsp;&nbsp;
+                                  <p class="secheading">Clarifications Deviation</p>
+                                  <div class="sectionbtnClass">
+                                    <button class="sectionbtn" *ngIf="editModebtn && dispCD" (click)="Clarifi()">Edit</button>
+                                  </div>
+                                </div>
+                                                          </div>
+                            </td>
+                          </table>
+                        </div>
+                      </section>
+  
+        <!-- >Tender Drawing -->
+        <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+  
+                    <div [ngClass]="{'sectionheader' : attachListTD.length==0, 'sectionheader2': !attachListTD.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">Tender Drawings</p>
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispTD" (click)="tendDr()">Edit</button>
+                      </div>
+                    </div>
+                                              </div>
+                </td>
+              </table>
+            </div>
+          </section>
+  
+  
+                         <!-- terminal-->
+            <section>
+                <div>
+                  <table class="sectionTable">
+                    <td class="sectiontableData">
+                      <div class="sectionContent">
+            
+                        <div [ngClass]="{'sectionheader' : terminalList.length==0, 'sectionheader2': !terminalList.length==0 }">
+                          &nbsp;&nbsp;
+                          <p class="secheading" >Terminal Points</p>
+                          <div class="sectionbtnClass">
+                            <button class="sectionbtn" *ngIf="editModebtn && dispTP" (click)="terminal1()">Edit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </table>
+                </div>
+              </section>
+            
+               <!-- Sub Supplier-->
+               <section>
+                  <div>
+                    <table class="sectionTable">
+                      <td class="sectiontableData">
+                        <div class="sectionContent">            
+                          <div [ngClass]="{'sectionheader' : supplierList.length==0, 'sectionheader2': !supplierList.length==0 }">
+                            &nbsp;&nbsp;
+                            <p class="secheading">Sub-Supplier List</p>
+                            <div class="sectionbtnClass">
+                              <button class="sectionbtn" *ngIf="editModebtn && dispSSL" (click)="supplier1()">Edit</button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </table>
+                  </div>
+                </section>
+              
+     <!-- Exclusion -->
+     <section>
+        <div>
+          <table class="sectionTable">
+            <td class="sectiontableData">
+              <div class="sectionContent">
+    
+                <div [ngClass]="{'sectionheader' : exclusionList.length==0, 'sectionheader2': !exclusionList.length==0 }">
+                  &nbsp;&nbsp;
+                  <p class="secheading" >Exclusion List</p>
+                  <div class="sectionbtnClass">
+                    <button class="sectionbtn" *ngIf="editModebtn && dispEL" (click)="exclusion1()">Edit</button>
+                  </div>
+                </div>
+                
+              </div>
+            </td>
+          </table>
+        </div>
+      </section>
+    
+      <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : scopeList.length==0, 'sectionheader2': !scopeList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">Tools & Tackles</p>
+                      <!-- <p class="secheading" (click)="sparesInfo()">Tools & Tackles, Spares</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispSpares" (click)="sparesTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry[7].value">
+                      <div *ngIf="sparesCostList.length>0">
+                        <table class="sectionTable">
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Overheads of Spares Cost</p>
+                              <p class="contentData">{{sparesCost.ovrheadSparesCost}}</p>
+                              <p class="contentlabel">Overheads on Total Sale Value</p>
+                              <p class="contentData">{{sparesCost.ovrheadTotSaleCost}}</p>
+                              <p class="contentlabel">Total Spares Cost</p>
+                              <p class="contentData">{{sparesCost.totalSparesCost}}</p>
+                            </div>
+                          </td>
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Order Booking Price for Spares</p>
+                              <p class="contentData">{{sparesCost.orderBookingSpares}}</p>
+                              <p class="contentlabel">Net Profit</p>
+                              <p class="contentData">{{sparesCost.sparesNetProfit}}</p>
+                              <p class="contentlabel" *ngIf="sparesCost.sparesNewFlag">Overwritten Cost</p>
+                              <p class="contentData" *ngIf="sparesCost.sparesNewFlag">{{sparesCost.sparesNewCost}}</p>
+                            </div>
+                          </td>
+                        </table>
+                      </div>
+                      <div *ngIf="sparesCostList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+
+  
+          </div>
+
+        </div>
+      </div>
+
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : disableComr|| transDetailList.length==0 || pkgBeanList.length==0 || varCostList.length==0 || section2AData.length==0 || section2Data.length==0 || projectCostList.length==0, 
+        'sectionheader2': !disableComr || !transDetailList.length==0 && !pkgBeanList.length==0 && !varCostList.length==0 && !sparesCostList.length==0 && !section2AData.length==0 && !section2Data.length==0 && !projectCostList.length==0 }">
+          &nbsp;&nbsp;
+          <!-- <p class="secheading" (click)="estimateInfo();">Comercial</p> -->
+          <p class="secheading">9) Comercial</p>
+        </div>
+        <div *ngIf="arry[11].value">
+
+
+
+
+           <!-- Transportation Details -->
+          <section>
+            <div>
+
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+
+                    <div [ngClass]="{'sectionheader' : transDetailList.length==0, 'sectionheader2': !transDetailList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">Transportation Details</p>
+                      <!-- <p class="secheading" (click)="transInfo()">Transportation Details</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispTC && disableComr" (click)="transTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry[4].value">
+                      <div *ngIf="transDetailList.length>0">
+
+                        <table class="sectionTable">
+                          <tr>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+
+                                <p class="contentlabel">Customer Type</p>
+                                <p class="contentData">{{saveBasicDetails.custType}}</p>
+                              </div>
+                            </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+
+                                <p class="contentlabel">Transportation Type</p>
+                                <p class="contentData">{{transDetailList[0].transType}}</p>
+                              </div>
+                            </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+
+                                <p class="contentlabel">Total cost</p>
+                                <p class="contentData">{{transDetailList[0].totalPrice}}</p>
+                              </div>
+                            </td>
+                            <td class="subsectiontableData">
+                              <div class="sectionContent">
+
+                                <p class="contentlabel" *ngIf="transDetailList[0].overwrittenPriceFlag==1">Over-Written cost</p>
+                                <p class="contentData" *ngIf="transDetailList[0].overwrittenPriceFlag==1">{{transDetailList[0].overwrittenPrice}}</p>
+                              </div>
+                            </td>
+                          </tr>
+                          <div *ngIf="transDetailList[0].transType!='EX-WORKS'">
+                            <tr *ngFor="let transData of transDetailList; let i=index">
+                              <td class="subsectiontableData" *ngIf="custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel">Component</p>
+                                  <p class="contentData">{{transData.compoName}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel"> From Place</p>
+                                  <p class="contentData">{{transData.fobplace}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel">Distance(Km)</p>
+                                  <p class="contentData">{{transData.distance}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel">Cost</p>
+                                  <p class="contentData">{{transData.compPrice}}</p>
+                                  <!-- <p class="contentData" *ngIf="ecBean.overwrittenPriceFlag>0">{{transData.compPrice}}</p> -->
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr *ngFor="let transData of transDetailList; let i=index">
+                              <td class="subsectiontableData" *ngIf="!custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel"> Fob Cost</p>
+                                  <p class="contentData">{{transData.fobPrice}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="!custCode">
+                                <div class="sectionContent">
+                                  <p class="contentlabel" *ngIf="transData.countryName">Country Name</p>
+                                  <p class="contentData" *ngIf="transData.countryName">{{transData.countryName}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="!custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel" *ngIf="transData.portName">Port Name</p>
+                                  <p class="contentData" *ngIf="transData.portName">{{transData.portName}}</p>
+                                </div>
+                              </td>
+                              <td class="subsectiontableData" *ngIf="!custCode">
+                                <div class="sectionContent">
+
+                                  <p class="contentlabel" *ngIf="transData.portName">Cost</p>
+                                  <p class="contentData" *ngIf="transData.portName">{{transData.compPrice }}</p>
+                                </div>
+                              </td>
+
+                            </tr>
+                          </div>
+                        </table>
+                      </div>
+                      <div *ngIf="transDetailList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+
+          <!-- >Packaging Details -->
+          <section>
+            <div>
+
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : pkgBeanList.length==0, 'sectionheader2': !pkgBeanList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading">Packaging Details</p>
+                      <!-- <p class="secheading" (click)="packgInfo()">Packaging Details</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispPF && disableComr" (click)="pkgTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry[5].value">
+                      <div *ngIf="pkgBeanList.length>0">
+
+                        <table class="sectionTable">
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+
+                              <p class="contentlabel">Customer Type</p>
+                              <p class="contentData">{{saveBasicDetails.custType}}</p>
+
+                              <p class="contentlabel">Type of Packaging</p>
+                              <p class="contentData">{{packageBean.packageTypeName}}</p>
+
+                            </div>
+                          </td>
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Cost</p>
+                              <p class="contentData">{{packageBean.price}}</p>
+                              <p class="contentlabel" *ngIf="packageBean.overwrittenPriceFlag>0">Overwritten Cost</p>
+                              <p class="contentData" *ngIf="packageBean.overwrittenPriceFlag>0">{{packageBean.overwrittenPrice}}</p>
+
+                            </div>
+                          </td>
+                        </table>
+                      </div>
+                      <div *ngIf="pkgBeanList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+
+                </td>
+              </table>
+            </div>
+          </section>
+          <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : varCostList.length==0, 'sectionheader2': !varCostList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading"> Variable Cost Details</p>
+                      <!-- <p class="secheading" (click)="varCostInfo()"> Variable Cost Details</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispVC && disableComr" (click)="varCostTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry[6].value">
+                      <div *ngIf="varCostList.length>0">
+                        <table class="sectionTable">
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Total Order Price</p>
+                              <p class="contentData">{{varCost.totOrderCost}}</p>
+                              <p class="contentlabel">LD for Performance</p>
+                              <p class="contentData">{{varCost.ldPerformance}}</p>
+                              <p class="contentlabel">BG Charges For ABG</p>
+                              <p class="contentData">{{varCost.bankingCharges1}}</p>
+                              <p class="contentlabel">BG Charges For PBG</p>
+                              <p class="contentData">{{varCost.bankingCharges2}}</p>
+                              <p class="contentlabel">Warranty cost</p>
+                              <p class="contentData">{{varCost.warrantyCost}}</p>
+                              <p class="contentlabel">Insurance</p>
+                              <p class="contentData">{{varCost.insurance}}</p>
+                              <p class="contentlabel">Travel Expenses</p>
+                              <p class="contentData">{{varCost.travelExpenses}}</p>
+                              <p class="contentlabel">Contingency for Turbine</p>
+                              <p class="contentData">{{varCost.turbineContigency}}</p>
+                              <p class="contentlabel">Sales Expenses</p>
+                              <p class="contentData">{{varCost.salesExpenses}}</p>
+                              <p class="contentlabel">Special Provision</p>
+                              <p class="contentData">{{varCost.splProvision}}</p>
+                              <p class="contentlabel">Total Variable Cost</p>
+                              <p class="contentData">{{varCost.totalVariableCost}}</p>
+                            </div>
+                          </td>		 		
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Contigency General</p>
+                              <p class="contentData">{{varCost.contigencyGeneral}}</p>
+                              <p class="contentlabel">LD for Late Delivery</p>
+                              <p class="contentData">{{varCost.ldforLateDelivery}}</p>
+                              <p class="contentlabel">Overhead on Total Sale Value</p>
+                              <p class="contentData">{{varCost.ovrheadSaleCost}}</p>
+                              <p class="contentlabel">Interest charges</p>
+                              <p class="contentData">{{varCost.intrestCharges}}</p>
+                              <p class="contentlabel">Contingency for DBO</p>
+                              <p class="contentData">{{varCost.dboContigency}}</p>
+                              <p class="contentlabel">Engineering Charges</p>
+                              <p class="contentData">{{varCost.engineCharges}}</p>
+                              <p class="contentlabel">Agency Commission</p>
+                              <p class="contentData">{{varCost.agencyCommCharges}}</p>
+                              <p class="contentlabel">Others</p>
+                              <p class="contentData">{{varCost.others}}</p>
+                              <p class="contentlabel">Number Of Visit</p>
+                              <p class="contentData">{{varCost.inNoOfVisit}}</p>
+                              <p class="contentlabel">Cost For Each Visit</p>
+                              <p class="contentData">{{varCost.inCostForEachVisit}}</p>
+                              <p class="contentlabel" *ngIf="varCost.varNewFlag">Overwritten Cost</p>
+                              <p class="contentData" *ngIf="varCost.varNewFlag">{{varCost.varNewCost}}</p>
+                            </div>
+                          </td>
+                        </table>
+                      </div>
+                      <div *ngIf="varCostList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+          
+          <!-- Comercial Section 1 -->
+
+          <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      <div [ngClass]="{'sectionheader' : section2AData.length==0, 'sectionheader2': !section2AData.length==0 }">
+                        &nbsp;&nbsp;
+                        <p class="secheading">Comercial  Section-IIA</p>
+                        <!-- <p class="secheading" (click)="sparesInfo()">Tools & Tackles, Spares</p> -->
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && disableComr" (click)="comSec1Tab()">Edit</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+
+          <!-- Comercial Section 2 -->
+
+          <section>
+              <div>
+                <table class="sectionTable">
+                  <td class="sectiontableData">
+                    <div class="sectionContent">
+                      <div [ngClass]="{'sectionheader' : section2Data.length==0, 'sectionheader2': !section2Data.length==0 }">
+                        &nbsp;&nbsp;
+                        <p class="secheading">Comercial  Section-IIB</p>
+                        <!-- <p class="secheading" (click)="sparesInfo()">Tools & Tackles, Spares</p> -->
+                        <div class="sectionbtnClass">
+                          <button class="sectionbtn" *ngIf="editModebtn && disableComr" (click)="comSec2Tab()">Edit</button>
+                        </div>
+                      </div>
+                     
+                    </div>
+                  </td>
+                </table>
+              </div>
+            </section>
+
+
+          <!-- Spares Cost Details End -->
+          <!-- Project Cost Details -->
+          <section>
+            <div>
+              <table class="sectionTable">
+                <td class="sectiontableData">
+                  <div class="sectionContent">
+                    <div [ngClass]="{'sectionheader' : projectCostList.length==0, 'sectionheader2': !projectCostList.length==0 }">
+                      &nbsp;&nbsp;
+                      <p class="secheading"> Project Cost Details</p>
+                      <!-- <p class="secheading" (click)="projectCostInfo()"> Project Cost Details</p> -->
+                      <div class="sectionbtnClass">
+                        <button class="sectionbtn" *ngIf="editModebtn && dispPR && disableComr" (click)="projectCostTab()">Edit</button>
+                      </div>
+                    </div>
+                    <section *ngIf="subArry[8].value">
+                      <div *ngIf="projectCostList.length>0">
+                        <table class="sectionTable">
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Supply Price</p>
+                              <p class="contentData">{{projectCost.projSupply}}</p>
+                              <p class="contentlabel">Supply Cost</p>
+                              <p class="contentData">{{projectCost.supplyCost}}</p>
+                              <p class="contentlabel">Transportation Price</p>
+                              <p class="contentData">{{projectCost.projTransport}}</p>
+                              <p class="contentlabel">Order Booking Price For Turbine And Spares</p>
+                              <p class="contentData">{{projectCost.turbineOrderBookCost}}</p>
+                              <p class="contentlabel">Cost For Turbine And Spares</p>
+                              <p class="contentData">{{projectCost.totalProjectCost}}</p>
+                            </div>
+                          </td>
+                          <td class="sectiontableData">
+                            <div class="sectionContent">
+                              <p class="contentlabel">Services Price</p>
+                              <p class="contentData">{{projectCost.projServices}}</p>
+                              <p class="contentlabel">Services Cost</p>
+                              <p class="contentData">{{projectCost.serviceCost}}</p>
+                              <p class="contentlabel">Transportation Price</p>
+                              <p class="contentData">{{projectCost.transCost}}</p>
+                              <p class="contentlabel">Net Profit</p>
+                              <p class="contentData">{{projectCost.totOrderCostNetProfit}}</p>
+                              <p class="contentlabel">Percent Profit</p>
+                              <p class="contentData">{{projectCost.percentProfit}}</p>
+                              <p class="contentlabel" *ngIf="projectCost.projectNewFlag">Overwritten Price</p>
+                              <p class="contentData" *ngIf="projectCost.projectNewFlag">{{projectCost.projectNewCost}}</p>
+                            </div>
+                          </td>
+                        </table>
+                      </div>
+                      <div *ngIf="projectCostList.length==0">
+                        <label style="color:blue; font-size:13px; font-family:Helvetica; ">No Data Found, Please Update.</label>
+                      </div>
+                    </section>
+                  </div>
+                </td>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Cost Sheet -->
+
+    <div class="qotbody">
+      <div class="sectionDiv">
+        <div [ngClass]="{'sectionheader' : dboMechList.length==0 && dboEleList.length==0 && ecBeanList.length==0 && transDetailList.length==0 && pkgBeanList.length==0 && varCostList.length==0 && sparesCostList.length==0 && projectCostList.length==0 && !f2fExcel && !f2fQuesData && submittedAddOnListCost.length==0, 
+        'sectionheader2': !dboMechList.length==0 || !dboEleList.length==0 || !ecBeanList.length==0 || !transDetailList.length==0 || !pkgBeanList.length==0 || !varCostList.length==0 || !sparesCostList.length==0 ||f2fExcel || f2fQuesData || !submittedAddOnListCost.length==0}">
+          &nbsp;&nbsp;
+          <p class="secheading" (click)="costSheetSumInfo();">10) Final Cost Sheet</p>
+          <!-- <p class="secheading">13) Final Cost Sheet</p> -->
+          <!-- <div class="sectionbtnClass">
+        <button class="sectionbtn" (click)="turbineConfigTab()">Edit</button>
+      </div> -->
+        </div>
+        <section *ngIf="arry[12].value" style="margin: 10px; padding-right:40px; width: 460px; border: 1px solid black;">
+          <div>
+            <ul>
+              <li>
+                <label class="nameCell">
+                  <b>Total F2F Cost</b>
+                </label>
+                <label [ngClass]="{'priceCell' : !totalCostBool, 'priceCell1': totalCostBool }">
+                  <b>{{onLineBomExcel.totalF2FCost}}</b>
+                </label>
+
+              </li>
+              <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+              <ul>
+                  <li *ngFor="let f2f of f2fList">
+                      <label class="subitemName" title="{{f2f.categoryDetDesc}}">{{f2f.categoryDetDesc}}</label>
+                      <label class="subitemPrice">{{f2f.price}}</label>
+                    </li>
+                <li>
+                  <label class="subitemName" style="font-weight: bold;">Turbine Material Cost</label>
+                  <label class="subitemPrice" style="font-weight: bold;">{{onLineBomExcel.turbineMaterialCost}}</label>
+                </li>
+                <li>
+                  <label class="subitemName">Sub-Contracting Cost</label>
+                  <label [ngClass]="{'subitemPrice' : !subCtrcCost, 'subitemPrice1': subCtrcCost }">{{onLineBomExcel.subContrCost}}</label>
+                </li>
+                <li>
+                  <label class="subitemName">ShopConversion Cost</label>
+                  <label class="subitemPrice">{{onLineBomExcel.shopCoverCost}}</label>
+                </li>               
+              </ul>
+              <div *ngIf="addOnsCostList.length!=0">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell">
+                    <b>AddOn components</b>
+                  </label>
+                  <label [ngClass]="{'priceCell' : !addOnCostBool, 'priceCell1': addOnCostBool }">
+                    <b>{{onLineBomExcel.addonCost}}</b>
+                  </label>
+                </li>
+
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <ul>
+                  <li *ngFor="let addon of addOnsCostList">
+                    <label class="subitemName">{{addon.addOnCompo_cd}}</label>
+                    <label class="subitemPrice">{{addon.selectedCost}}</label>
+                  </li>
+                </ul>
+              </div>
+    <!-- Mech Aux -->
+    <label *ngIf="f2fAddOnCostFlag" class="nameCell">
+        <b>F2F Add On</b>
+      </label>
+      <label *ngIf="f2fAddOnList.length!=0" class="priceCell">
+        <b>{{onLineBomExcel.totalF2fAddOnCost}}</b>
+      </label>
+      <ul>
+        <li *ngFor="let f2fAdd of f2fAddOnList">
+          <label class="subitemName">{{f2fAdd.categoryDetDesc}}</label>
+          <label class="subitemPrice">{{f2fAdd.price}}</label>
+        </li>
+      </ul>
+
+              <div *ngIf="dboMechList.length!=0">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell">
+                    <b>DBO Mechanical components</b>
+                  </label>
+                  <label class="priceCell">
+                    <b>{{onLineBomExcel.totalMechCost}}</b>
+                  </label>
+                </li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <label *ngIf="dboMechList.length!=0" class="nameCell">
+                  <b>DBO Mechanical</b>
+                </label>
+                <label *ngIf="dboMechList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboMechCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboMech of dboMechList">
+                    <label class="subitemName">{{dboMech.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboMech.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- Mech Aux -->
+                <label *ngIf="dboMechAuxList.length!=0" class="nameCell">
+                  <b>DBO Mechanical Auxilaries</b>
+                </label>
+                <label *ngIf="dboMechAuxList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboMechAuxCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboMechA of dboMechAuxList">
+                    <label class="subitemName">{{dboMechA.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboMechA.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- Mech Ext-->
+                <label *ngIf="dboMechExtList.length!=0" class="nameCell">
+                  <b>DBO Mechanical Extended</b>
+                </label>
+                <label *ngIf="dboMechExtList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboMechExtCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboMechE of dboMechExtList">
+                    <label class="subitemName">{{dboMechE.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboMechE.price}}</label>
+                  </li>
+                </ul>
+
+              </div>
+
+              <div *ngIf="dboEleList.length!=0">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell">
+                    <b>DBO Electrical components</b>
+                  </label>
+                  <label class="priceCell">
+                    <b>{{onLineBomExcel.totalDboEleCost}}</b>
+                  </label>
+                </li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <!-- DBO ELectrical -->
+                <label *ngIf="dboEleList.length!=0" class="nameCell">
+                  <b>DBO Electrical</b>
+                </label>
+                <label *ngIf="dboEleList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboEleCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboEle of dboEleList">
+                    <label class="subitemName">{{dboEle.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboEle.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- DBO ELectrical Aux -->
+                <label *ngIf="dboEleAuxList.length!=0" class="nameCell">
+                  <b>DBO Electrical Auxilaries</b>
+                </label>
+                <label *ngIf="dboEleAuxList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboEleAuxCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboEleA of dboEleAuxList">
+                    <label class="subitemName">{{dboEleA.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboEleA.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- DBO ELectrical EXT -->
+                <label *ngIf="dboEleExtList.length!=0" class="nameCell">
+                  <b>DBO Electrical Extended</b>
+                </label>
+                <label *ngIf="dboEleExtList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.dboEleExtCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let dboEleE of dboEleExtList">
+                    <label class="subitemName">{{dboEleE.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{dboEleE.price}}</label>
+                  </li>
+                </ul>
+                </div>
+
+                <!-- CII -->
+
+                <div *ngIf="dboCIList.length!=0">
+                  <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                  <li>
+                    <label class="nameCell">
+                      <b>C&I components</b>
+                    </label>
+                    <label class="priceCell">
+                      <b>{{onLineBomExcel.totalDboCiCost}}</b>
+                    </label>
+                  </li>
+                  <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+
+                <!-- CI -->
+                <label *ngIf="dboCIList.length!=0" class="nameCell">
+                  <b>Control and Instrumentation</b>
+                </label>
+                <label *ngIf="dboCIList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.cICost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let ci of dboCIList">
+                    <label class="subitemName">{{ci.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{ci.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- CI Aux -->
+                <label *ngIf="dboCIAuxList.length!=0" class="nameCell">
+                  <b>Control and Instrumentation Auxilaries</b>
+                </label>
+                <label *ngIf="dboCIAuxList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.cIAuxCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let ciA of dboCIAuxList">
+                    <label class="subitemName">{{ciA.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{ciA.price}}</label>
+                  </li>
+                </ul>
+
+                <!-- Control and Instrumentation Ext -->
+                <label *ngIf="dboCIExtList.length!=0" class="nameCell">
+                  <b>Control and Instrumentation Extended</b>
+                </label>
+                <label *ngIf="dboCIExtList.length!=0" class="priceCell">
+                  <b>{{onLineBomExcel.cIExtCost}}</b>
+                </label>
+                <ul>
+                  <li *ngFor="let ciE of dboCIExtList">
+                    <label class="subitemName">{{ciE.categoryDetDesc}}</label>
+                    <label class="subitemPrice">{{ciE.price}}</label>
+                  </li>
+                </ul>
+
+              </div>
+              <div>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <ul>
+                  <li *ngFor="let c of costSheetList;let j=index;">
+                    <label class="subitemName"><b>{{c.categoryDetCode}}</b> </label>
+                    <label class="subitemPrice" [ngStyle]="{'color':(c.categoryDetCode =='Transportation Cost' && transpBool==true) ||  (c.categoryDetCode =='Errection Cost' && errecBool==true)
+                    ||(c.categoryDetCode =='Packaging Cost' && pckBool==true)?'red': 'black'}">
+                     <b>{{c.price}}</b> 
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div *ngIf="onLineBomExcel.varCostFlag">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell">
+                    <b>Variable Cost</b>
+                  </label>
+                  <label [ngClass]="{'priceCell' : !variableCostBool, 'priceCell1': variableCostBool }">
+                    <b>{{otherCostsOneLine.totalVariableCost}}</b>
+                  </label>
+                </li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <ul>
+                  <li>
+                    <label class="subitemName">Contigency General</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.contigencyGeneral}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">LD for Performance</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.ldPerformance}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">LD for Late delivery</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.ldforLateDelivery}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Total Order Price</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.totOrderCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">BG Charges For ABG</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.bankingCharges1}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">BG Charges For PBG</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.bankingCharges2}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Overhead on Total Sale Value</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.ovrheadSaleCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Warranty Cost</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.warrantyCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Interest Charges</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.intrestCharges}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Insurance">Insurance</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.insurance}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Travel Expenses">Travel Expenses</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.travelExpenses}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Contingency for Turbine">Contingency for Turbine</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.turbineContigency}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Sales Expenses">Sales Expenses</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.salesExpenses}}</label>
+                  </li>
+                  <li>
+               
+                  <label class="subitemName" title="Contingency for DBO">Contingency for DBO</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.dboContigency}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Engineering Charges">Engineering Charges</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.engineCharges}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Agency Commission">Agency Commission</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.agencyCommCharges}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Overhead Raw Material Cost">Overhead Raw Material Cost</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.overRawMaterialCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName" title="Others">Others</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.others}}</label>
+                  </li>
+                </ul>
+              </div>
+              <div *ngIf="onLineBomExcel.sparesFlag">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell"><b>Spares</b></label>
+                  <label [ngClass]="{'priceCell' : !sparesCostBool, 'priceCell1': sparesCostBool }">
+                    <b>{{otherCostsOneLine.totalSparesCost}}</b>
+                  </label>
+                </li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <ul>
+                  <li>
+                    <label class="subitemName">Over Heads of Spares cost</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.ovrheadSparesCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Over heads on Total Sale Value</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.ovrheadTotSaleCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Order Booking Price for spares</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.orderBookingSpares}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Net Profit</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.sparesNetProfit}}</label>
+                  </li>
+                </ul>
+              </div>
+              <div *ngIf="onLineBomExcel.projectCostFlag">
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+                <li>
+                  <label class="nameCell">
+                    <b>Project Cost</b>
+                  </label>
+                  <label [ngClass]="{'priceCell' : !projectCostBool, 'priceCell1': projectCostBool }">
+                    <b>{{otherCostsOneLine.turbineOrderBookCost}}</b>
+                  </label>
+                </li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;">
+                <ul>
+                  <li>
+                    <label class="subitemName">Cost For Turbine And Spares</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.turbineSparesCost}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Net Profit</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.totOrderCostNetProfit}}</label>
+                  </li>
+                  <li>
+                    <label class="subitemName">Percent Profit</label>
+                    <label class="subitemPrice">{{otherCostsOneLine.percentProfit}}</label>
+                  </li>
+
+                </ul>
+              </div>
+              <li>
+                <hr style="width:410px;margin-left:10px; margin-right:15px;margin-top:5px;color:black">
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+    <p-dialog class="dialog" header="Previous Comments" [closable]="false" [(visible)]="dispPrevComments" showEffect="fade" appendTo="body"
+      [modal]="true" [maximizable]="true" [responsive]="true" [width]="680" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      <div style="padding:15px;text-align:center;margin-left: 12%;">
+        <table id="alertTbl" style="border-collapse: collapse;">
+          <th style="width:auto ; min-width:auto;border: 1px solid;">
+            Rev No
+          </th>
+          <th style="border: 1px solid;">
+            Role
+          </th>
+          <th style="border: 1px solid;">
+            Remarks
+          </th>
+          <th style="border: 1px solid;">
+            Modified Date
+          </th>
+          <tr *ngFor="let oc of oldComments">
+            <td style="width:auto ; min-width:auto;border: 1px solid;">
+              {{oc.revNo}}
+            </td>
+            <td style="border: 1px solid;">
+              {{oc.roleName}}
+            </td>
+            <td style="border: 1px solid;">
+              {{oc.comment}}
+            </td>
+            <td style="border: 1px solid;">
+              {{oc.modifiedDate}}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p-footer>
+        <button type="button" (click)="closeDialog()" style="padding:5px;background-color:rgb(213,120,23);" class="ui-button-secondary">Close</button>
+      </p-footer>
+    </p-dialog>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<div class="UBOContainer">
+
+    <div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <div *ngIf="!hideprogress">
+        <div >
+            <div class="frameDet">
+                <label style="font-weight: bold; margin-right:20px;">
+                    Turbine Material Cost:
+                </label>
+                <label>
+                    
+                    <input class="costfield" type="text" disabled value="{{uboData.turbineMaterialCost}}" />
+                </label>
+            </div>
+            <div class="frameDet">
+                <label style="font-weight: bold; margin-right:12px;">
+                    Shop Conversion Cost :
+                </label>
+                <label>
+                    <input class="costfield" type="text" disabled value="{{uboData.shopCoverCost}}" />
+
+                </label>
+            </div>
+            <div class="frameDet">
+                <label style="font-weight: bold; margin-right:10px;">
+                    Sub - Contracting Cost :
+                </label>
+                <label>
+                    <input class="costfield" type="text" disabled value="{{uboData.subContrCost}}" />
+
+                </label>
+            </div>
+            <div class="frameDet">
+                <label style="font-weight: bold; margin-right:61px;">
+                    Total F2F Cost :
+                </label>
+
+                <input class="costfield" [(ngModel)]="ExlCost" type="text" disabled [ngModelOptions]="{standalone: true}" />
+                <!-- <button type="button" [disabled]="disableOverWriteBtn" (click)="OverWrite()" class="importbtn"> Overwrite</button>
+                  <button type="button" (click)="getPrevComments()" class="importbtn">Previous Remarks</button> -->
+
+            </div>
+        </div>
+        <div class="excelDiv">
+
+            <form #f2fUpdateForm="ngForm" (ngSubmit)="savef2fTotal(f2fUpdateForm.value)">
+                <div *ngIf="enableOverWrite">
+                    <label style="font-weight: bold;" id="overwriteLbl">Overwritten Cost<span class="asterisk_input">*</span></label>
+                    <input style="width: 151px;" required class="costfield" placeholder="Enter Cost" ngModel name="updatedCost" #updatedCost="ngModel"
+                        [(ngModel)]="overWrittenCost" type="number" [disabled]="!enableOverWrite1" />
+
+                    <button  *ngIf="enableOverWrite1" class="importbtn" (click)="cancelOverWrite(f2fUpdateForm.value);f2fUpdateForm.reset();" type="reset">Cancel</button>
+                    <br>
+                    <label *ngIf="enableOverWrite1" style="font-weight: bold;">Remarks<span class="asterisk_input">*</span></label>
+                    <textarea *ngIf="enableOverWrite1" required [(ngModel)]="remarksVal"(keyup)="checkRemarks()"  #remarks="ngModel" cols="50" rows="2" name="remarks" ngModel class="remarks"
+                        placeholder="Enter your remarks"></textarea>
+                </div>
+                <div *ngIf="message" class="msgDiv">
+                    {{successMsg}}
+                </div>
+                <div *ngIf="saveDiv">
+                    <div class="previouFun">
+                            <button class="ovrWriteBtn" style="width: 60px; margin-top:15px;" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+                     <button class="detBtn" type="button" (click)="getDetailedCost()">Detailed Cost</button>
+                        <button [disabled]="(!f2fUpdateForm.form.valid ||disableBtn)" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" class="btn2" type="submit">Save</button>
+                        <p-progressSpinner *ngIf="hidespinner" [hidden]="!hidespinner" [style]="{width: '25px', height: '25px', top: '10px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="margin-top: 170px;" *ngIf="showNoCostMsg">
+            <label class="successMsg">Cost is Not available for the selected Frame .</label>
+        </div>
+        <div *ngIf="uboListArray.length>0" style="margin-top:2%;">
+
+            <p-table #dt [tableStyle]="{'width': '85%' , 'margin-left':'5%'}" [value]="uboListArray" dataKey="cat_ID">
+                <!-- <ng-template pTemplate="caption">
+                    F2F Excel Data
+                </ng-template> -->
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Material Name</th>
+                        <th>Category Code</th>
+                        <th>Sub-Category Code</th>
+                        <th>Cost</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template *ngIf="!enablePrevPrice" pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                    <tr *ngIf="rowGroupMetadata[rowData.cat_ID].index === rowIndex">
+                        <td colspan="4" style="padding: 8px;font-size: 14px;">
+                            <a href="#" [pRowToggler]="rowData">
+                                <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></i>
+                                <span>
+                                    <b>{{rowData.cat_NM}}</b>
+                                </span>
+                            </a>
+                            <label class="countDsply">{{rowData.matPrice}}</label>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template *ngIf="enablePrevPrice" pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                    <tr *ngIf="rowGroupMetadata[rowData.cat_ID].index === rowIndex">
+                        <td colspan="5" style="padding: 8px;">
+                            <a href="#" [pRowToggler]="rowData">
+                                <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'"></i>
+                                <span>{{rowData.cat_NM}}</span>
+                            </a>
+                            <label class="countDsply"> {{rowData.matPrice}}</label>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                    <tr id="{{rowData.f2F_DET_ID}}">
+                        <td>{{rowData.mtrl_NM}}</td>
+                        <td>{{rowData.mtrl_CD}}</td>
+                        <td>{{rowData.mtrl_CD}}</td>
+                        <td style="text-align: right;"> {{rowData.price}}</td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+            <table class="supTable">
+                <tr>
+                    <td style="color:blue;font-weight: bolder; border: 1px solid black;font-family:helvetica;font-size:13px;">Supply Chain Cost </td>
+                    <td style="color:indigo;text-align:right;font-weight: normal; border: 1px solid black;font-family:helvetica;font-size:13px;">{{grandTotal}}</td>
+                </tr>
+                <!-- <tr>
+                    <td style="color:blue;background-color:  #f2f2f2; font-weight: bolder; border: 1px solid black;font-family:helvetica;font-size:13px;"> Turbine Instrument cost </td>
+                    <td style="color:indigo;background-color: #f2f2f2;text-align:right;font-weight: normal; border: 1px solid black;font-family:helvetica;font-size:13px;">{{turbineCost}}</td>
+                </tr>
+                <tr>
+                        <td style="color:blue;background-color:white; font-weight: bolder; border: 1px solid black;font-family:helvetica;font-size:13px;"> Condensing Instrument cost </td>
+                        <td style="color:indigo;background-color:white;text-align:right;font-weight: normal; border: 1px solid black;font-family:helvetica;font-size:13px;">{{condensingCost}}</td>
+                    </tr>
+                <tr>
+                    <td style="color:blue;font-weight: bolder;background-color:  #f2f2f2; border: 1px solid black;font-family:helvetica;font-size:13px;">Estimate Cost </td>
+                    <td style="color:indigo;text-align:right;background-color:  #f2f2f2;font-weight: normal; border: 1px solid black;font-family:helvetica;font-size:13px;">{{estimateCost}}</td>
+                </tr> -->
+            </table>
+        </div>
+
+    </div>
+</div>

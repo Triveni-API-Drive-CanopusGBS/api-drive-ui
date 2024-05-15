@@ -1,0 +1,13 @@
+<div class="alignOrder">
+  <nav>
+    <table>
+      <tr>
+        <td><div class="decoLink1"><button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Scope Of supply</button></div></td>
+        <!-- <td><div class="decoLink1"><button [routerLink]="['EndUserDetails']"  routerLinkActive="active decoLink1" >End User Details</button></div></td> -->
+        <td><div class="decoLink1"><button [disabled]="!enableGITab" [routerLink]="['GeneralInputs']"  routerLinkActive="active decoLink1" >General Inputs</button></div></td>
+      </tr>
+    </table>
+</nav>
+<router-outlet></router-outlet>
+</div>
+  

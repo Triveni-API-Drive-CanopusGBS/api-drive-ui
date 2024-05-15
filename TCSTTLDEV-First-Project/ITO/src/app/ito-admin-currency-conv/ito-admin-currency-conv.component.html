@@ -1,0 +1,132 @@
+<div class="example-container">
+        <p-progressSpinner [hidden]="spinner" class="spinnerWidth" [style]="{width: '50px', height: '50px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+  <h4>Currency Details</h4>
+      <div class="custStyl" >
+          <div>
+              <button class="addStyle" (click)="saveNew()" style="float:right;width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);">Add</button>
+          </div>
+          <div class="tableStyle" style="margin-bottom:10px;">
+              <p-table [columns]="cols" #dt [value]="currencyListArray" selectionMode="single" [paginator]="true"
+                  [rows]="10">
+                  <ng-template pTemplate="header" let-columns>
+                      <tr>
+                          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                              {{col.header}}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                          </th>
+                          <th style="border:1px solid white; background-color:white;"></th>
+                      </tr>
+                      <tr>
+                          <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'cur_NM'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'cur_CD'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'rupee'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'active'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+  
+                          </th>
+                          <th style="border:1px solid white; background-color:white;"></th>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rowData let-columns="columns">
+                      <tr>
+                          <td *ngFor="let col of columns" style="border:1px solid black">
+                              {{rowData[col.field]}}
+                          </td>
+                          <td style="text-align:left;">
+                              <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editUSD(rowData)"></i>
+                          </td>
+  
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="summary" let-rowData>
+  
+                  </ng-template>
+              </p-table>
+              <div class='btnStylediv'>
+                        <button (click)="addOrEditUSDList();"  style="float:right; width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:3px; border:1px solid rgb(213,120,23);">Save</button> 
+                  
+                      </div>
+              <p-dialog header="Currency Details" [(visible)]="displayDialogadd" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+                  <form #addCurrencyForm="ngForm" (ngSubmit)="createCurrency(addCurrencyForm.value)">
+                      <div class="userCreation">
+                          <h2>Add Currency</h2>
+                          <div class="custStyl">
+                            <label>Currency Name
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <input class="inpStyl" type="text" required ngModel name="currencyName" #currencyName="ngModel"  />
+                        </div>
+                        <div class="custStyl">
+                          <label>Currency Code
+                              <span class="asterisk_input">*</span>
+                          </label>
+                          <input class="inpStyl" type="text" required ngModel name="currencyCode" #currencyCode="ngModel"  />
+                      </div>
+                      <div class="custStyl">
+                        <label>Rupee
+                            <span class="asterisk_input">*</span>
+                        </label>
+                        <input class="inpStyl" type="text" required ngModel name="rupeee" #rupeee="ngModel"  />
+                    </div>
+
+                          <div class="btn1">
+                              <button class="btn2Style" type="reset">Cancel</button>
+                              <button [disabled]="!addCurrencyForm.form.valid" class="btn2" type="submit">Save</button>
+                          </div>
+  
+                      </div>
+                  </form>
+              </p-dialog>
+  
+              <p-dialog header="Currency Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                  <form #editCurrencyForm="ngForm" (ngSubmit)="UpdateExistingCurrency(editCurrencyForm.value)">
+                      <div class="ui-g ui-fluid" *ngIf="newCurremcyArray">
+                          <div class="ui-g-12">
+                              <div class="ui-g-4">
+                                  <label for="name">Currency Name</label>
+                              </div>
+                              <div class="ui-g-8">
+                                  <label>{{newCurremcyArray.cur_NM}}</label>
+                              </div>
+                          </div>
+                          <div class="ui-g-12">
+                            <div class="ui-g-4">
+                                <label for="currencyCode">Currency Code</label>
+                            </div>
+                            <div class="ui-g-8">
+                                <label>{{newCurremcyArray.cur_CD}}</label>
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                       <div class="ui-g-4">
+                         <label for="rupee">Rupee</label>
+                       </div>
+                        <div class="ui-g-8">
+                           <input pInputText name="rupee" [(ngModel)]="newCurremcyArray.convertionRate" />
+                        </div>
+                        </div>
+                          <div class="ui-g-12">
+                              <div class="ui-g-4">
+                                  <label for="status">Status</label>
+                              </div>
+                              <div class="ui-g-8">
+                                  <select name="status" #status="ngModel" [(ngModel)]="newCurremcyArray.active" style="border-radius:3px; width:150px;">
+                                      <option value="Active">Active</option>
+                                      <option value="InActive">Inactive</option>
+                                  </select>
+                              </div>
+                          </div>
+                          
+                      </div>
+                      <p-footer>
+                          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                              <button type="submit " class="btn2">Ok</button>
+  
+                          </div>
+                      </p-footer>
+                  </form>
+              </p-dialog>
+  
+          </div>
+      </div>
+  </div>

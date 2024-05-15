@@ -1,0 +1,219 @@
+<div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+<div *ngIf="!hideprogress">
+    <h2 style="margin-left:25px;font-size: 15px;">
+      {{headingValue}}
+    </h2>
+    <div class="contentDiv">
+        <div *ngIf = "dispDropdown">
+            <label class="newVehicleLbl">Please Export Type</label>
+            <select name="typeOfTransport" [(ngModel)]="typeOfTr" #typeOfTrans="ngModel" ngModel (change)="expTypeSel(typeOfTrans.value)">
+          <option hidden>Please select</option>
+          <option [selected]="tr.defaultVal" *ngFor="let tr of newTransportationType">{{tr.categoryDetDesc}}</option>
+            </select>
+            <button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans"  (click)="bulkUpd()"  >Bulk Update</button>
+
+          </div>
+          <div *ngIf="!dispDropdown" style="margin-left:25px;">
+            <div class="reqStyl">
+              <label style="font-weight:bolder; font-size:15px; margin-left:10px;">
+                Transport Type :
+              </label>
+              <label style="font-size:12px; margin-left:10px;">
+                {{transTypNm}}
+              </label>
+            </div>
+          </div>
+
+      <div class="priceDiv" *ngIf = "gridDisp">
+        <p-table #dt [style]="{width:'100%'}" [scrollable]="true" [columns]="cols" [value]="FrameVehicleUpdateArray" selectionMode="single"
+          [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+                <i type="button" class="fa fa-user" routerLink="/addNewframeLink" routerLinkActive="active"  style="float:right ;background-color:rgb(213,120,23); color:white ;padding:8px; border:1px solid rgb(213,120,23); margin:25px;margin-top:0px;">
+                    Add New</i>
+                <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                    Export to Excel</i> -->
+                    <i type="button" class="fa fa-file-excel-o fa-2x" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; " title="Export to Excel"></i>
+            </div>
+        </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns"  [pSortableColumn]="col.field" >
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condensingTypeName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'countryName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'portName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">                
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'previousPrice'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr #tr id="{{rowData.transId}}" class="datarow" [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns" >
+                {{rowData[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+  
+        </p-table>
+  
+        <p-dialog header="Vehicle Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+          <div class="ui-g ui-fluid" *ngIf="selectedRange">
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Frame Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.frameName}}</label>
+              </div>
+            </div>
+            <!-- <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="year">Frame Power </label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.maxPower}}</label>
+              </div>
+            </div> -->
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Model</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.turbineType}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">SubType</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.condensingTypeName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Country Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.countryName}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Port Name</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.portName}}</label>
+              </div>
+            </div>
+            <div *ngIf="(transpApp || transRev)" class="ui-g-12">
+              <div class="ui-g-4">
+                <label>Previous Price</label>
+              </div>
+              <div class="ui-g-8">
+                <label>: {{selectedRange.previousPrice}}</label>
+              </div>
+            </div>
+            <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="color">Price</label>
+              </div>
+              <div class="ui-g-8">
+                <input type="number" id="color" [(ngModel)]="selectedRange.price" />
+              </div>
+            </div>
+          </div>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+        <form #updatePriceTrans="ngForm" (ngSubmit)="updatePriceTransForm(updatePriceTrans.value)">
+          <div style="margin-left: 2%;" *ngFor="let c of prevRemarks;let i=index;">
+            <label class="pcomentslbl">{{c.assingedToname}} </label>
+            <textarea class="pcomments" disabled placeholder="Enter yor comments" cols="50" rows="2">{{c.comment}}</textarea>
+          </div>
+        
+          <div style="margin-left: 2%;">
+            <label class="comentslbl">Comments
+              <span class="asterisk_input">*</span>
+            </label>
+            <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter yor comments"
+              cols="50" rows="4"></textarea>
+          </div>
+  
+  
+          <div style="margin-left: 2%;" *ngIf="(transpApp || transRev)">
+            <label class="reviewrlbl"> Accept / Reject the update request here
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #state="ngModel" required name="status" ngModel>
+              <option selected hidden>Please select </option>
+              <option>Accept</option>
+              <option>Reject</option>
+            </select>
+          </div>
+  
+          <div style="margin-left: 2%;" *ngIf="(transpEdit || transRev)">
+            <label class="reviewrlbl">{{labelName}}
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+              <option value="" selected hidden>Please select </option>
+              <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+            </select>
+          </div>
+          <button style="margin-left: 2%;" class="updateTrans" [disabled]="finalRangeList.length==0" (click)="SaveAsDraft()" type="button">Save As Draft</button>
+          <button style="margin-left: 17px;" class="updateTrans" [disabled]="!updatePriceTrans.form.valid" type="submit">Update</button>
+        </form>
+        <!-- <label class="successMsg">{{successMsg}}</label> -->
+        <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+          <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+      </div>
+      <div>
+        <p-dialog header="Request Status" [(visible)]="displayMessageBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+          <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+          <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+            </div>
+          </p-footer>
+        </p-dialog>
+      </div>
+      <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" >
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Percentage</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText [(ngModel)]="percentage" />
+            </div>
+          </div>
+          </div>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+          </div>
+          </p-dialog>
+    </div>
+  </div>

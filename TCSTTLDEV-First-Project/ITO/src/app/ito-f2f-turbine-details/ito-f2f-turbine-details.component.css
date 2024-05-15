@@ -1,0 +1,234 @@
+.custStyl{
+    margin-top: 10px;
+    float: left;
+    margin-left: 15px;
+    position: relative;
+    width: 45%;
+    display: block;
+    margin-bottom: 0px;
+}
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.btn2{
+    border-radius: 5px;
+    width:100px;
+    height: 30px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgb(213,120,23);
+    border-color: none;
+    font-family: Helvetica;
+    margin-left: 27px;
+    }
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+th{
+    background-color: gray;
+    text-align: center;
+    color: white;
+    height: 30px;
+    border: 1px solid gray;
+}
+.widthInc{
+    height:27px;
+    width: 400px;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 15px;
+    display: block;
+    font-size: 13px;
+    font-family: helvetica;
+}
+.example-container{
+    padding-left: 10px;
+    margin-top:0px;
+    margin-bottom: 20px;
+    overflow-x: hidden;
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+label{
+    display:block;
+    font-weight: bolder;
+}
+option{
+    margin: 5px;
+    padding: 4px;
+}
+.newDiv{
+    float: left;
+    display: inline-flex;
+    margin-top: 5px;
+    width: 100%;
+}
+.radioStyl{
+    margin: 15px;
+    margin-left: 7px;
+}
+h4{
+    margin: 15px;
+    margin-bottom: 20px;
+    color: black;
+    font-size:13px;
+    font-family:helvetica;
+}
+label{
+   font-size:13px;
+   font-family:helvetica;
+}
+.submitBtn{
+    margin-left: 15px;
+    color: white;
+    background-color: rgb(213,120,23);
+    border: 1px solid rgb(213,120,23);
+    padding: 6px;
+    width: 120px;
+    height: 30px;
+    border-radius: 7px;
+    margin-top:25px;
+}
+.cOrderDiv{
+    height: auto;
+    width: 969px;
+    /* margin-left: 30px;   */
+    padding: 20px;
+    padding-top: 0px;
+    margin-bottom: 25px;
+    position: relative;
+    margin-top: 5px;
+    text-align: left;
+    max-height: 200px;
+    overflow: hidden;
+    overflow-y:auto;
+}
+listC{
+    list-style: none;
+}
+li{
+    background-color: lightblue;
+}
+.checkbox{
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+    color: blue;
+}
+th{
+    border: 1px 0px 1px 0px solid black;
+    padding: 8px;
+    width: 25%;
+    margin: 0px;
+    background-color: grey;
+    color: white;
+    /* text-align:center; */
+    /* font-weight:normal; */
+}
+td{
+    border: 1px 0px 1px 0px solid black;
+    padding: 15px;
+    margin: 0px;
+    width: 25%;
+}
+table{
+    border: 1px solid;
+    margin-left: 10px;
+    padding: 0px;
+    width: 90%;
+    border-collapse: collapse;
+}
+.BOMButton{
+    background-color:  rgb(213,120,23);
+    border: rgb(213,120,23);
+    margin-left: 29px;
+    color:white;
+    padding: 6px;
+    width: 120px;
+    height: 30px;
+    border-radius: 7px;
+}
+.outerDiv{  
+    height: max-content;
+    padding: 12px;
+    width: fit-content;
+    padding-right: 25px;
+    padding-bottom: 35px;
+}
+.msgDiv{
+    margin-top: 15px;
+    padding-bottom: 8px;
+    color: blue;
+    /* margin-left: 50%; */
+    margin-left: 28px;
+    font-family: helvetica;
+    font-size: 13px;
+    margin-top: 6px;
+}
+.cnumCls{
+    margin-left: 30px;
+    display: flex;
+    margin-top: 25px;
+}
+.selected {
+    background-color: skyblue !important;
+    color: white;
+  }
+  .showAllC{
+      background-color: rgb(213,120,23);;
+      color: white;
+      border:1px solid rgb(213,120,23);
+      font-family:helvetica;
+      font-size:13px;
+      padding: 5px;
+    margin-left: 64%;
+  }
+  .button:disabled{
+    background-color: gray;
+}
+.disableContent{
+    z-index: 1;
+    height: max-content;
+    padding: 12px;
+    width: 100%;
+    padding-right: 25px;
+    padding-bottom: 35px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+.frameDet{
+    margin-top: 20px;
+    margin-left: 27px;
+   /* width: 25%;
+     margin-bottom: 15px; */
+    /* display: inline-block; */
+}
+.manualDip{
+    width: 80px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid;
+    margin-left: 10px;
+}

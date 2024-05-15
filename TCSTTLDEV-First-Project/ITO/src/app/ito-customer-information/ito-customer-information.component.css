@@ -1,0 +1,72 @@
+table{
+    width:100%;
+}
+td{
+    width:33.333%;
+    /* border:solid 1px black; */
+}
+.decoLink1 {
+    position:relative;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:white;
+    height: 25px !important;
+    width:100%;
+    /* width:326px !important; */
+    border:solid 1px black;
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+ .decoLink1:after{
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-top: solid 5px black;
+    border-left: solid 5px transparent;
+    border-right: solid 5px transparent;
+} 
+.active {
+    color: white;
+    background-color: grey;
+    /* font-size:12px;
+    bottom: 3px; */
+}
+button{
+    width: 100%;
+    background-color: transparent;
+    padding: 0px;
+    height: 100%;
+    border-color: transparent;
+    outline: none;
+}
+.alignOrder{
+    border:solid 1px black;
+   height:500px;
+   overflow-y:scroll;
+}
+
+
+
+
+
+

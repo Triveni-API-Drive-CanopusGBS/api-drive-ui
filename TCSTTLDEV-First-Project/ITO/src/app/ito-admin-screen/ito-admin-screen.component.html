@@ -1,0 +1,309 @@
+<div class="example-container">
+        <form class="example-form" >
+          <h4> Add/Update</h4> 
+          
+          <!-- <p-dialog class="dialog" header="Confirm Message" [(visible)]="dialogMsg" showEffect="fade" appendTo="body" [modal]="true"
+            [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'rgb(213,120,23)'}">
+            {{dialogMsgVal}}
+        </p-dialog>
+        <p-dialog class="dialog" header="Confirm Message" [(visible)]="dialogErrorMsg" showEffect="fade" appendTo="body" [modal]="true"
+        [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'Red'}">
+        {{dialogErrorMsgVal}}
+      </p-dialog> -->
+          <button class="collapsible" (click)="displayRegion()">Region</button>
+          <div *ngIf="showMsgRegion" style="margin:10px; color:red;font-size:13px;">
+            {{showMsg}}
+          </div>
+          <div class="custStyl" *ngIf='display'>
+            <div>
+          <form #addNewRegForm="ngForm" (ngSubmit)="addRegion(addNewRegForm.value)">
+          <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="region" #region="ngModel" ngModel placeholder="Type Region" required />
+          <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="regionCode" ngModel #regionCode="ngModel" placeholder="Type Region Code"  required />
+            <button class="addStyle" type="submit" [disabled]="!addNewRegForm.form.valid" style="width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);">Add</button>
+            <button style="width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);">Reset</button> 
+          </form>
+          </div> 
+          <form  #adddRegionForm="ngForm" (ngSubmit)="createRegion()">
+      
+          <div class="tableStyle" >
+      
+        <p-table [columns]="regCols" #dt [value]="RegionArray" selectionMode="single" [paginator]="true"
+        [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+            <tr>
+                <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'active'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'code'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'value'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    
+                </th>
+                <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns" style="border:1px solid black">
+                    {{rowData[col.field]}}
+                </td>
+                <td style="text-align:left;">
+                    <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editRegion(rowData)"></i>
+                </td>
+      
+            </tr>
+        </ng-template>
+      </p-table> 
+      <p-dialog header="Region Details" [(visible)]="displayRegionDialog" [responsive]="true" showEffect="fade" 
+      [modal]="true" [width]="700" [closable]="false">
+          <form #editRegionForm="ngForm" (ngSubmit)="UpdateRegion(editRegionForm.value)">
+              <div class="ui-g ui-fluid" *ngIf="newRegionArray1">
+                  <div class="ui-g-12">
+                      <div class="ui-g-6">
+                          <label >Region Name:</label>
+                      </div>
+                       <div class="ui-g-6">
+                          <!-- <input pInputText name="value" [(ngModel)]="newRegionArray1.value" /> -->
+                           <label>{{newRegionArray1.value}}</label>
+                       </div> 
+                       
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <label for="code">Region Code:</label>
+                    </div>
+                    <div class="ui-g-6">
+                        <label>{{newRegionArray1.code}}</label>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <label for="status">Status:</label>
+                    </div>
+                    <div class="ui-g-6">
+                        
+                        <input  type="checkbox" required ngModel name="active" #active="ngModel" [(ngModel)]="newRegionArray1.active"
+                        />
+                    </div>
+                </div>
+               
+              </div>
+              <p-footer>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                          <button type="button" (click)="closeRegion()" class="btn2">Close</button>
+                      <button type="submit" class="btn2">Ok</button>
+                  </div>
+              </p-footer>
+          </form>
+      </p-dialog> 
+        </div>
+        
+        <div class='btnStylediv'>
+              <button style="width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);" type="submit">Save</button>
+       </div>
+      </form>
+      </div>
+        <button class="collapsible" (click)="displayRole()">Role</button>
+          <div class="custStyl" *ngIf='dispRole'>
+                  <div *ngIf="showMsgRole" style="margin:10px; color:red;font-size:13px;">
+                          {{showMsg1}}
+                        </div>
+              <div>
+              <form #addNewRoleForm="ngForm" (ngSubmit)="addRole(addNewRoleForm.value)">
+                  <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="role" #role="ngModel" ngModel placeholder="Type Role" required/>
+                  <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="roleCode" #roleCode="ngModel" ngModel placeholder="Type Role Code" required />
+                  <button class="addStyle" type="submit" [disabled]="!addNewRoleForm.form.valid" style="width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);" >Add</button>
+                  <button style="width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);">Reset</button> 
+              </form>   
+          <!-- <input style="border: 1px solid black; width:250x;" class="inpStyl"  type="text" ngModel name="role" #role="ngModel" placeholder="Type Role"/>
+          <input style="border: 1px solid black; width:250px;" class="inpStyl"  type="text" ngModel name="roleCode" #roleCode="ngModel" placeholder="Type Role Code"/>
+            <button class="addStyle" (click)="addRole(role.value,roleCode.value)" style="width:100px; background-color:white; color:rgb(213,120,23) ; border:1px solid rgb(213,120,23);"  type="reset" >Add</button>
+            <button   style="width:100px; border-radius:5px; background-color:white; color:rgb(213,120,23) ; margin:5px;margin-top:0px;padding:3px; border:1px solid rgb(213,120,23);" type="reset" >Reset</button>  -->
+            </div>
+            <form  #adddRoleForm="ngForm" (ngSubmit)="createRole(adddRoleForm.value)">
+            <div class="tableStyle">
+                <p-table [columns]="rolCols" #dt [value]="RoleArray" selectionMode="single" [paginator]="true"
+                [rows]="10">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                    <tr>
+                        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'active'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'code'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'value'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns" style="border:1px solid black">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td style="text-align:left;">
+                            <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editRole(rowData)"></i>
+                        </td>
+              
+                    </tr>
+                </ng-template>
+              </p-table> 
+          <p-dialog header="Role Details" [(visible)]="displayRoleDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="700" [closable]="false">
+                  <form #editRoleForm="ngForm" (ngSubmit)="UpdateRole(editRoleForm.value)">
+                      <div class="ui-g ui-fluid" *ngIf="newRoleArray1">
+                          <div class="ui-g-12">
+                              <div class="ui-g-6">
+                                  <label >Role Name:</label>
+                              </div>
+                              <div class="ui-g-6">
+                                  <input pInputText name="value" [(ngModel)]="newRoleArray1.value" />
+                               </div>
+                          </div>
+                          <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="code">Role Code:</label>
+                            </div>
+                            <div class="ui-g-6">
+                                <label>{{newRoleArray1.code}}</label>
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="status">Status:</label>
+                            </div>
+                            <div class="ui-g-6">
+                                
+                                <input  type="checkbox" required ngModel name="active" #active="ngModel" [(ngModel)]="newRoleArray1.active"
+                                />
+                            </div>
+                        </div>
+                       
+                      </div>
+                      <p-footer>
+                          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                  <button type="button" (click)="closeRole()" class="btn2">Close</button>
+                              <button type="submit" class="btn2">Ok</button>
+                          </div>
+                      </p-footer>
+                  </form>
+              </p-dialog> 
+          <div class='btnStylediv'>
+              <button  style="width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);" type="submit">Save</button> 
+      
+          </div>
+        </div>
+        </form>
+      </div>
+   
+          <button class="collapsible" (click)="displayGroup()">Department</button>
+          <div class="custStyl" *ngIf='dispGrp'>
+                  <div *ngIf="showMsgGroup" style="margin:10px; color:red;font-size:13px;">
+                          {{showMsg2}}
+                        </div>
+                        <div>     
+           <form #addNewGroupForm="ngForm" (ngSubmit)="addGroup(addNewGroupForm.value)">
+                <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="group" #group="ngModel" ngModel placeholder="Type group" required />
+                 <input style="border: 1px solid black; width:250x;" class="inpStyl" pInputText name="groupCode" #groupCode="ngModel" ngModel placeholder="Type Group Code" required />
+                  <button class="addStyle" type="submit" [disabled]="!addNewGroupForm.form.valid" style="width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);" >Add</button>
+                    <button   style="width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);">Reset</button> 
+                 </form>
+            
+            </div>
+            <form  #adddGroupForm="ngForm" (ngSubmit)="createGroup()">
+      
+            <div class="tableStyle">
+           
+        <p-table [columns]="groupCols" #dt [value]="GroupArray" selectionMode="single" [paginator]="true"
+        [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+            <tr>
+                <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'active'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'code'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'value'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    
+                </th>
+                <th style="border:1px solid white; background-color:white;"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns" style="border:1px solid black">
+                    {{rowData[col.field]}}
+                </td>
+                <td style="text-align:left;">
+                    <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editGroup(rowData)"></i>
+                </td>
+      
+            </tr>
+        </ng-template>
+      </p-table> 
+      <p-dialog header="Department Details"  [closable]="false" [(visible)]="displayGroupDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="700">
+          <form #editGroupForm="ngForm" (ngSubmit)="UpdateGroup(editGroupForm.value)">
+              <div class="ui-g ui-fluid" *ngIf="newGroupArray1">
+                  <div class="ui-g-12">
+                      <div class="ui-g-6">
+                          <label >Group Name:</label>
+                      </div>
+                      <div class="ui-g-6">
+                          <input pInputText name="value" [(ngModel)]="newGroupArray1.value" />
+                       </div>
+                  </div>
+                  <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <label for="code">Group Code:</label>
+                    </div>
+                    <div class="ui-g-6">
+                        <label>{{newGroupArray1.code}}</label>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-6">
+                        <label for="status">Status:</label>
+                    </div>
+                    <div class="ui-g-6">
+                        
+                        <input  type="checkbox" required ngModel name="active" #active="ngModel" [(ngModel)]="newGroupArray1.active"
+                        />
+                    </div>
+                </div>
+               
+              </div>
+              <p-footer>
+                  <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                          <button type="button" (click)="closeGroup()" class="btn2">Close</button>
+                      <button type="submit" class="btn2">Ok</button>
+                  </div>
+              </p-footer>
+          </form>
+      </p-dialog>
+          <div class='btnStylediv'> 
+              <button style="width:100px; border-radius:5px;
+               background-color:rgb(213,120,23); color:white ; margin:5px;margin-bottom:35px; margin-top:0px;padding:5px; border:1px solid rgb(213,120,23);" type="submit">Save</button> 
+      
+          </div>
+        </div>
+        </form>
+       </div>   
+        </form>
+      </div>      
+      
+      

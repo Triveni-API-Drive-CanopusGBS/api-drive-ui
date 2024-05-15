@@ -1,0 +1,45 @@
+<div style="margin-top: 15px; margin-left: 10px;">
+    <h3 style="text-decoration: underline;">Clarifications & Deviations</h3>
+    <!-- <form #addPdfForm="ngForm" (ngSubmit)="addToFolder(addPdfForm.value)"> -->
+    <label for="brand">Upload PDF</label>
+    <input multiple type="file" id="image" accept="/image*" (change)="fileUpload($event)" ngModel name="image" #fileInput>
+    <!-- <div><button class="btn2" *ngIf="fileNm?.length > 0"  type="submit">Add</button></div> -->
+    <!-- </form> -->
+    <button class="btn2" *ngIf="fileName?.length > 0" type="button" (click)="saveFileNm()">Upload</button>
+    <div *ngIf="fileNm?.length > 0">
+        <table id="addOnTabl" class="addOnTable">
+          <th class="tabBackColor"  *ngIf="fileNm[0].name!=null">Attached PDF</th>
+          <th class="tabBackColor"  *ngIf="fileNm[0].name!=null">Action</th>
+          <th class="tabBackColor" *ngIf="attachmentList.length > 0 && fileNm[0].name!=null">Download</th>
+        <tr *ngFor="let o of fileNm;let i=index">
+            <td class="tabBackColor" *ngIf="o.name!=null">
+                    <input type="text" required #yesR (keyup)="drpCheckQty(yesR.value, o)" 
+                    value="{{o.name}}"> 
+            </td>
+            <td class="tabBackColor" *ngIf="o.name!=null">
+              <i style="color:rgb(213,120,23); margin-left: 15px; position : relative;" class="fa fa-times fa-2x" (click)="cancelAddOn(o)" aria-hidden="true"></i>
+            </td>
+            <td class="tabBackColor" *ngIf="attachmentList.length > 0 && o.name!=null">
+            <i style="color:rgb(213,120,23); margin-left: 15px; position : relative; margin-top:2px;" class="fa fa-download fa-2x" (click)="downloadFile(o)" aria-hidden="true"></i>
+          </td>
+    </tr>
+    </table>   
+    </div>
+    <div *ngIf="fileNm?.length>0">
+    <b class="labB">Remarks</b>
+    <div>
+        <textarea  (keyup)="remks()"  name="remark"  class="othersipOutRem" 
+         style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+    [(ngModel)]="rmkValOut"></textarea>
+</div>
+</div>
+<p><b>Note:</b> Please dont change the formate of the File.</p>
+<div *ngIf="dialogMsgApp" class="msgDiv">
+        {{dialogMsgVal}}
+    </div>
+    <div style="margin-top: 10px;">
+     <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-right:10px;margin-bottom:50px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+            *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+    <button class="btn2" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" *ngIf="fileNm?.length > 0" type="button" (click)="finalSave()">Submit</button></div>
+    
+</div>

@@ -1,0 +1,29 @@
+export class endUserDetials{
+    endUserId:number;
+    endUserName:string;
+    contactPersonName:string;
+    emailId:string;
+    contactNumber:string;
+    city:string;
+    state:string;
+    country:string;
+    district:string;
+    pincode:string;
+    address:string;
+    active:boolean;
+
+    constructor(obj){
+        this.endUserId=obj.endUserId;
+        this.endUserName=obj.endUserName;
+        this.contactPersonName=obj.contactPersonName;
+        this.emailId=obj.emailId;
+        this.contactNumber=obj.contactNumber;
+        this.city=obj.city;
+        this.state=obj.state;
+        this.country=obj.country;
+        this.district=obj.district;
+        this.pincode=obj.pincode;
+        this.address=obj.address;
+        this.active=obj.active;
+    }
+}

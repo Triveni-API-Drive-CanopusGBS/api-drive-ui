@@ -1,0 +1,136 @@
+.domDiv{
+    margin-left:50px;
+    padding: 10px;
+    display: block;
+}
+.expDiv{
+    /* margin-left:25px;
+    padding: 10px; */
+    display: block; 
+    margin-top:10px;
+}
+.selRadioClass{
+    margin: 5px;
+    border-radius: 7px;
+    border: 1px solid;
+    padding: 5px;
+}
+.typeOfCust{
+     margin-left:30px; 
+    /* font-weight: bold; */
+    /* padding: 5px; */
+    display: inline-block;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.btn2{
+    width:100px;
+    height: 32px;
+    margin-top: 10px;
+    margin-left: 35px;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(213,120,23);
+    border: 1px solid rgb(213,120,23);
+    font-family: Helvetica;
+
+}
+.samllLbl{
+    font-size: 13px;
+    /* font-weight: normal; */
+    display: block;
+    margin: 0px;
+    padding: 10px 10px 10px 0px;
+}
+.ipStyle{
+    display: block;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid;
+}
+.costDiv{
+    display: inline-block;
+    margin-left: 35px;
+}
+.savebtn{
+    margin:5px;
+    border: 1px solid rgb(213,120,23);
+    background-color: rgb(213,120,23);
+    color: white;
+    padding: 5px;
+    display: inline-block;
+    outline-style: none;
+    border-radius: 5px;
+}
+button:disabled{
+    background-color: gray;
+}
+.selClass{
+    padding: 4px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+h4{
+    font-size:13px;
+    font-family:helvetica;
+   
+}
+label{
+    font-size:13px;
+    font-family:helvetica;
+    font-weight:bold;
+}
+
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+.typeOfPkg{
+    font-weight: bold;
+    margin-left: 30px;
+}
+.overwriteDiv{
+    display: block;
+}
+.btnClass{
+    margin:5px;
+    display: inline-block;
+}
+.succesMsg{
+    
+    color: blue;
+    margin: 10px;
+    margin-left: 40px;
+    font-family:helvetica;
+    font-size:13px;
+}
+.msgDiv{
+    margin-left: 35px;
+    color:blue;
+    font-family:helvetica;
+    font-size:13px;
+}
+.remarksField{
+    display: block;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    padding: 7px;
+    outline-style: none;
+    width: 207px;
+    height: 47px;
+    border: 1px solid black;
+}

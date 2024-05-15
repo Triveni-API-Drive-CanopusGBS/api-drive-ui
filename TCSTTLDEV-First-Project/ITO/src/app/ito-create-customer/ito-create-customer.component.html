@@ -1,0 +1,241 @@
+<!-- <div class="example-container">
+  <form class="example-form" #custCreationForm="ngForm" (ngSubmit)="createCustomer(custCreationForm.value)">
+    <h3>Customer Creation</h3> 
+      <div class="userCreation">
+          <div class="custStyl">
+              <label>Customer Name</label> 
+              <input type="text" class="inpStyl" required ngModel name="custName" #custName="ngModel"
+                [ngClass]="{'bordercolor': custName.errors && custName.dirty}" placeholder="Type Customer Name"/>
+            </div>
+            <div class="custStyl">
+                <label>SAP Code</label> 
+                <input type="text" class="inpStyl" required ngModel name="custCode" #custCode="ngModel"
+                [ngClass]="{'bordercolor': custCode.errors && custCode.dirty}" placeholder="Type SAP Code"/>
+              </div>
+            <div class="custStyl">
+            <label>Customer Type</label> 
+            <select class="widthInc" required ngModel name="custType" #custType="ngModel"
+            [ngClass]="{'bordercolor': custType.errors && custType.dirty}">
+                <option value="Domestic">Domestic</option>
+                <option value="Export">Export</option>
+              </select>
+            </div>
+            <div class="custStyl">
+                <label>Contact Person Name</label> 
+                <input type="text" class="inpStyl" required ngModel name="contactPersonName" #contactPersonName="ngModel"
+                [ngClass]="{'bordercolor': contactPersonName.errors && contactPersonName.dirty}" placeholder="Type Contact person name"/>
+              </div>
+            <div class="custStyl">
+                <label>Contact Number</label> 
+                <input type="number" class="inpStyl" required [pattern]="mobnumPattern" ngModel name="contactNumber" #contactNumber="ngModel"
+                [ngClass]="{'bordercolor': contactNumber.errors && contactNumber.dirty}" placeholder="Type Contact Number"/>
+              </div>
+              <div *ngIf="contactNumber.errors?.pattern" style="margin:10px; color:red;" >
+                  Contact number should be of 10 digits
+              </div>
+              <div class="custStyl">
+                  <label>Email Id</label> 
+                  <input type="email" class="inpStyl" required [pattern]="emailPattern" ngModel name="emailId" #emailId="ngModel"
+                  [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }" placeholder="Type Email Id"/>
+              </div>
+              <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+                    Please enter valid Email Id
+                </div>
+              <div class="custStyl">
+                  <label>Address</label> 
+                  <textarea  class="textAreaStyl" minlength="15" required ngModel name="address" #address="ngModel"
+                  [ngClass]="{'bordercolor': address.errors && address.dirty}" placeholder="Type Address"></textarea>
+              </div>
+              <div class="custStyl">
+                  <label>City</label> 
+                  <input type="text" class="inpStyl" required ngModel name="city" #city="ngModel"
+                  [ngClass]="{'bordercolor': city.errors && city.dirty}" placeholder="Type City "/>
+              </div>
+              <div class="custStyl">
+                  <label>State</label> 
+                  <input type="text" class="inpStyl" required ngModel name="state" #state="ngModel"
+                  [ngClass]="{'bordercolor': state.errors && state.dirty}" placeholder="Type State"/>
+              </div>
+              <div class="custStyl">
+                  <label>Country</label> 
+                  <input type="text" class="inpStyl" required ngModel name="country" #country="ngModel"
+                  [ngClass]="{'bordercolor': country.errors && country.dirty}" placeholder="Type Country"/>
+              </div>
+              <div class="custStyl">
+                  <label>Pincode</label> 
+                  <input type="number" class="inpStyl" required ngModel min="0" name="pincode" #pincode="ngModel"
+                  [ngClass]="{'bordercolor': pincode.errors && pincode.dirty}" placeholder="Type Pincode"/>
+              </div>
+              <div class="checkStyl">
+                  <input type="checkbox" class="checkBoxStyl" required ngModel name="active" #active="ngModel"
+                  [ngClass]="{'bordercolor': active.errors}" value="Active">
+                  <label class="valStyl">Is Active?</label>
+              </div>
+              <div *ngIf="custCreationForm.form.errors && custCreationForm.form.dirty">
+              <div [hidden]="custCreationForm.form.valid">
+                  Please enter all mandaotory fields 
+              </div>
+              </div>
+              <div class="btn1">
+                  <button class="btn2Style" type="reset">Reset</button>
+                  <button class="btn2" type="submit">Save</button>                   
+              </div>
+      </div>
+  </form>
+</div>       -->
+
+<div class="example-container">
+    <h2>Customer Creation</h2>
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <form class="example-form" *ngIf="hideprogress" #custCreationForm="ngForm" (ngSubmit)="createCustomer(custCreationForm.value)">
+        <div class="userCreation">
+            <div class="custStyl">
+                <label>Customer Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" required ngModel name="custName" #custName="ngModel" [ngClass]="{'bordercolor': custName.errors && custName.dirty}"
+                [pattern]="emptyTextPattern" placeholder="Type Customer Name" />
+            </div>
+            <!-- <div class="custStyl">
+                  <label>SAP Code</label> 
+                  <input type="text" class="inpStyl" required ngModel name="custCode" #custCode="ngModel"
+                  [ngClass]="{'bordercolor': custCode.errors && custCode.dirty}" placeholder="Type SAP Code"/>
+                </div> -->
+            <div class="custStyl">
+                <label>Customer Type
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" required ngModel name="custType" #custType="ngModel" (blur)="selectedType(custType.viewModel)" [ngClass]="{'bordercolor': custType.errors && custType.dirty}">
+                        <option selected hidden value="Please select">Please select</option>
+                    <option value="Domestic">Domestic</option>
+                    <option value="Export">Export</option>
+                </select>
+            </div>
+            <div class="custStyl">
+                <label>Contact Person Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" required ngModel name="contactPersonName" #contactPersonName="ngModel" [ngClass]="{'bordercolor': contactPersonName.errors && contactPersonName.dirty}"
+                [pattern]="emptyTextPattern" placeholder="Type Contact person name" />
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label>
+                <input type="number" class="inpStyl" [pattern]="mobnumPattern" ngModel name="contactNumber" #contactNumber="ngModel" [ngClass]="{'bordercolor': contactNumber.errors && contactNumber.dirty}"
+                    placeholder="Type Contact Number" />
+            </div>
+            <div *ngIf="contactNumber.errors?.pattern" style="margin:10px; color:red;">
+                Contact number should be of 10 digits
+            </div>
+            <div class="custStyl">
+                <label>Email Id
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="email" class="inpStyl" required [pattern]="emailPattern" ngModel name="emailId" #emailId="ngModel" [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }"
+                    placeholder="Type Email Id" />
+            </div>
+            <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+                Please enter valid Email Id
+            </div>
+            <div class="custStyl">
+                <label>Address</label>
+                <textarea class="textAreaStyl" minlength="15" ngModel name="address" #address="ngModel" [ngClass]="{'bordercolor': address.errors && address.dirty}"
+                 placeholder="Type Address"></textarea>
+            </div>
+            <div *ngIf="address.errors?.minlength" style="margin:10px; color:red;">
+                Minimum length must be 15 characters
+            </div>
+            <!-- <div class="custStyl">
+                    <label>City</label> 
+                    <input type="text" class="inpStyl" required ngModel name="city" #city="ngModel"
+                    [ngClass]="{'bordercolor': city.errors && city.dirty}" placeholder="Type City "/>
+                </div>
+                <div class="custStyl">
+                    <label>State</label> 
+                    <input type="text" class="inpStyl" required ngModel name="state" #state="ngModel"
+                    [ngClass]="{'bordercolor': state.errors && state.dirty}" placeholder="Type State"/>
+                </div>
+                <div class="custStyl">
+                    <label>Country</label> 
+                    <input type="text" class="inpStyl" required ngModel name="country" #country="ngModel"
+                    [ngClass]="{'bordercolor': country.errors && country.dirty}" placeholder="Type Country"/>
+                </div> -->
+
+            <div class="custStyl">
+                <label>Country
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="country" value="countries.locationName" #country="ngModel" (blur)="selectedCountry(country.value)"
+                    [ngClass]="{'bordercolor': country.errors && country.dirty}" required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let countries of CountryList">{{countries.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="!disableDropdownList" class="custStyl">
+                <label>States
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="state" value="state.locationName" #state="ngModel" (blur)="selectedStates(state.value)"
+                    [ngClass]="{'bordercolor': state.errors && state.dirty}" required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let state of StatesList">{{state.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="!disableDropdownList" class="custStyl">
+                <label>Districts
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="district" #district="ngModel" required [ngClass]="{'bordercolor': district.errors && district.dirty}">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let district of DistrictsList">{{district.locationName}}</option>
+                </select>
+            </div>
+
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>State
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" required ngModel name="state" #state="ngModel" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                [pattern]="emptyTextPattern" placeholder="Type State" />
+            </div>
+
+            <div class="custStyl">
+                <label>City
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="city" #city="ngModel" placeholder="Type City " [pattern]="emptyTextPattern" required [ngClass]="{'bordercolor': city.errors && city.dirty}"
+                />
+            </div>
+
+            <div class="custStyl">
+                <label>Pincode</label>
+                <input type="number" class="inpStyl" ngModel min="0" name="pincode" #pincode="ngModel" [ngClass]="{'bordercolor': pincode.errors && pincode.dirty}"
+                [pattern]="emptyTextPattern" placeholder="Type Pincode" />
+            </div>
+            <div class="custStyl">
+                <label hidden>Modified By</label>
+                <input hidden type="text" [(ngModel)]="modifiedById" ngModel name="modifiedById" class="inpStyl" />
+            </div>
+            <!-- <div class="checkStyl">
+                    <input type="checkbox" class="checkBoxStyl" required ngModel name="active" #active="ngModel"
+                    [ngClass]="{'bordercolor': active.errors}" value="Active">
+                    <label class="valStyl">Is Active?</label>
+                </div> -->
+            <div *ngIf="custCreationForm.form.errors && custCreationForm.form.dirty">
+                <div [hidden]="custCreationForm.form.valid">
+                    Please enter all mandaotory fields
+                </div>
+            </div>
+            <div class="btn1">
+                <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+                <button class="btn2Style" type="reset">Reset</button>
+                <button [disabled]="!custCreationForm.form.valid" class="btn2" type="submit">Save</button>
+            </div>
+        </div>
+
+    </form>
+    <div style="margin-left:50%; margin-top: 20%">
+        <p-progressSpinner [hidden]="hidespinner"></p-progressSpinner>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+.example-container{
+    padding-left: 100px;
+    margin-top:0px;
+  
+    padding-bottom: 25px;
+    margin-bottom: 20px;
+}
+.userCreation{
+    float: left;
+    display:flex;
+    flex-direction:column;
+}
+.custStyl{
+    margin-top: 10px;
+    float: left;
+    display:flex;
+    flex-direction:column;
+}
+.inpStyl{
+    width: 400px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.checkStyl{
+    margin-top: 10px;
+}
+.valStyl{
+    margin-left: 5px;
+}
+.btn1{
+    margin-top: 20px;
+    margin-bottom:20px;
+}
+.btn2{
+    border-radius: 3px;
+    width:100px;
+    margin: 15px;
+    color: white;
+    padding: 8px;
+    background-color: rgb(213,120,23);
+}
+.btn2Style{
+    margin-left: 60px;
+    border-radius: 3px;
+    width:100px;
+    margin: 15px;
+    color: white;
+    padding: 8px;
+    background-color: rgb(213,120,23);
+}
+.widthInc{
+    height:27px;
+    border-radius: 5px;
+    border: 1px solid;
+    padding: 1px;
+}
+button:disabled{
+    background-color: gray;
+}
+.bordercolor{
+    border: 1px solid red;
+}
+label{
+    font-weight: bold;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+.textAreaStyl{
+    border: 1px solid black;
+    border-radius:3px;
+}
+

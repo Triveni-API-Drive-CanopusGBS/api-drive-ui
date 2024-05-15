@@ -1,0 +1,110 @@
+.scopeOfSupCtr{
+    padding-left: 20px;
+    padding-top:20px;
+    float:left;
+    display:flex;
+    flex-direction: column;
+    width:50%;
+}
+.custStyl{
+    margin-top: 10px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+.inpStyl{
+    width: 200px;
+}
+.btn2{
+    border-radius: 5px;
+    width:100px;
+    height: 32px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgb(213,120,23);
+    border: 1px solid rgb(213,120,23);
+    /* margin-left: 200px; */
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.checkBoxStyl{
+    margin-left: 10px;
+}
+.checkStyl{
+    margin-top: 10px;
+}
+.radioStyl{
+    margin-left: 10px;
+}
+.previouFun {
+    /* position: relative;
+    margin-left:900px; */
+    float: right;
+    margin-right: 250px;
+}
+.checkbox{
+    list-style: none;
+    font-family:helvetica;
+    font-size:13px;
+}
+h4{
+    margin: 11px;
+    margin-bottom: 20px;
+    font-size:13px;
+    font-family:helvetica;
+}
+.btn3{
+    border-radius: 3px;
+    width:130px;
+    height: 35px;
+    margin-top: 10px;
+    color: white;
+    margin-left: 60px;
+    margin-bottom: 55px;
+    background-color: rgb(213,120,23);   
+}
+.scopeOfSup-container{
+    border:1px solid;
+    height:450px;
+    overflow-y: hidden;
+}
+.scopeOfSup-container{
+overflow-y: auto;
+}
+button:disabled{
+    background-color: gray;
+}
+.quotNumber{
+    position: absolute;
+    margin-top: 2%;
+    margin-left: 60%;
+    font-size: 13px;
+    /* color: rgb(213,120,23); */
+    font-weight: bold;
+    font-family: helvetica;
+    border: 1px solid black;
+    padding: 5px;
+}
+.noteMsg{
+    font-family: helvetica;
+    font-size: 13px;
+    width: 90%;
+    padding-top: 272px;
+    padding-left: 28px;
+}
+.msgDiv{
+    color: blue;
+}

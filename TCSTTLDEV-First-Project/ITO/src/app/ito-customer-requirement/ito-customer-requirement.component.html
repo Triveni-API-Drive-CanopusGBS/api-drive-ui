@@ -1,0 +1,109 @@
+<p-dialog class="dialog" header="Note" [closable]="false" [(visible)]="dialogMsgApp" showEffect="fade" appendTo="body" [modal]="true"
+    [responsive]="true" [width]="600" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+  {{dialogMsgVal}}
+    <p-footer>
+        <button type="button" class="dialogClosebtn" (click)="close()">Close</button>
+    </p-footer>
+  </p-dialog>
+<div class="example-container">
+  <form class="example-form" #CustInfoCE="ngForm" (ngSubmit)="saveBasicDetails(CustInfoCE.value)">
+    <div class="reqStyl">
+      <label>Type of Blade  <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel [(ngModel)]="turbineCat" (change)="TOBladeSel(typeOfblade.value)" name="typeOfblade"
+        required #typeOfblade="ngModel">
+        <option hidden>Please select</option>
+        <option *ngFor="let turbineCat of turbineCategoryList">{{turbineCat.categoryDetDesc}}</option>
+      </select>
+      <!-- <div class="reqStyl" style="padding-bottom: 0px;" *ngIf="enablePerImp">
+        <label>
+          Percentage % Increment
+        </label>
+        <input disabled type="text" class="widthInc" [(ngModel)]="impPer" required ngModel name="impIncPer" #impIncPer="ngModel" 
+            style="padding-left: 10px; width: 240px;"/>
+      </div> -->
+      <!-- Type Of injection Commented -->
+      <!-- <label>Type of Injection  <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel [(ngModel)]="injectionType" (change)="TOInjection(typeOfInject.value)" name="typeOfInject" required #typeOfInject="ngModel">
+        <option hidden>Please select</option>
+        <option *ngFor="let typeOfInject of typeOfInjectionList">{{typeOfInject.categoryDetDesc}}</option>
+      </select> -->
+      <label>Turbine Type <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel [(ngModel)]="turbineTyp" name="turbineType" required value="turbine.categoryDetDesc" #turbineType="ngModel"
+        (change)="TOTSel(turbineType.value)">
+        <option hidden>Please select</option>
+        <option *ngFor="let turbine of turbineTypesList">{{turbine.categoryDetDesc}}</option>
+      </select>
+      <label>Frames <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel name="frames" (click)="focusFrame()" [(ngModel)]="frame" required #frames="ngModel" (change)="frameSel(frames.value)">
+          <option value="" hidden selected>Please select</option>
+        <option *ngFor="let frame of frameList">{{frame.frameDesc}}</option>
+      </select>
+      <label [hidden]="!enableCT">Condenser Type <span class="asterisk_input">*</span></label>
+      <select [hidden]="!enableCT" class="widthInc" [(ngModel)]="CondenserTyp" ngModel #condenserType name="condenserType" (change)="TOCSel(condenserType.value)">
+        <option hidden>Please select</option>
+         <option [selected]="condenser.categoryDetDesc == CondenserTyp" *ngFor="let condenser of condenserTypeList">{{condenser.categoryDetDesc}}</option>
+      </select>
+      <label>Bleed Type <span class="asterisk_input">*</span></label>
+      <select class="widthInc" [(ngModel)]="BleedTyp" ngModel name="bleedtype" #bleedtype="ngModel" (change)="TOBSel(bleedtype.value)">
+        <option selected hidden>Please select</option>
+        <option *ngFor="let BleedTyp of bleedtypNwLst">{{BleedTyp.categoryDetDesc}}</option>
+      </select>
+      <label>Type of Varient  <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel [(ngModel)]="varientType"  name="typeOfVarient" required  (change)="TOVSel(typeOfVarient.value)" #typeOfVarient="ngModel">
+        <option hidden>Please select</option>
+        <option *ngFor="let typeOfVarient of typeOfVarientList">{{typeOfVarient.categoryDetDesc}}</option>
+      </select>
+      
+      <label>Capacity (in MW) <span class="asterisk_input">*</span></label>
+      <input class="inpStyl" type="number" [(ngModel)]="capacit" (keyup)="onKey($event)" min="0" required #capacity="ngModel" style="width:100px;"
+        ngModel name="capacity" [ngClass]="{'bordercolor': capacity.errors && capacity.dirty}" />
+      <div *ngIf="showMsg" style="margin:10px; color:red;font-size:13px;">
+        Value should be between {{minPower}} and {{maxPower}}
+      </div>
+      <p class="frameSel">{{framesMsg}}</p>
+
+    </div>
+    <div class="oppSeqStyl">
+      <!-- <label>Opportunity Sequence Number</label>
+      <input type="search" ngModel #opportunitySeqNO="ngModel" [(ngModel)]="opportunitySNO" required name="opportunitySeqNO" style="width:250px;"
+        class="inpStyl" placeholder="Type Opportunity Sequence Number" /> -->
+        <!-- Orientation Type commented -->
+      <!-- <label>Orientation Type
+        <span class="asterisk_input">*</span>
+      </label>
+      <select class="widthInc" ngModel [(ngModel)]="orientationTyp" (change)="orientaionSel()" required #Orientation="ngModel" name="Orientation">
+          <option value="" hidden selected>Please select</option>
+        <option *ngFor="let orientation of orientationTypeList">{{orientation.categoryDetDesc}}</option>
+      </select> -->
+      <label>Type of Quotation  <span class="asterisk_input">*</span></label>
+      <select class="widthInc" ngModel [(ngModel)]="typOfQuoot" (change)="quotSel()"  name="TypOffQuot" required #typOffQuot="ngModel">
+        <option hidden>Please select</option>
+        <option *ngFor="let TypOffQuot of typeOfQuotationList">{{TypOffQuot.categoryDetDesc}}</option>
+      </select>
+      <label>Region : {{regn}} ( {{regnCd}} )</label>
+      <div class="newDiv">
+        <label>
+          New development ?
+        </label>
+        <input class="radioStyl" type="radio" ngModel [(ngModel)]="newDev" name="newDevelop" value="YES" (click)="enableMult()">Yes
+        <input class="radioStyl" type="radio" ngModel [(ngModel)]="newDev" name="newDevelop" value="NO" (click)="disableMul()">No
+      </div>
+      <div class="reqStyl" *ngIf="enableMul">
+        <label>
+          Multiplication Factor (in %)
+        </label>
+        <input type="text" class="widthInc" [(ngModel)]="multFactor" required ngModel name="mulFactor" #mulFactor="ngModel" [ngClass]="{'bordercolor': mulFactor.errors && mulFactor.dirty}"
+          style="padding-left: 15px;" (keyup)="onKeyMultyFactor($event)" placeholder="Enter Multiplication Factor" />
+      </div>
+     
+      <div class="previouFun">
+        <!-- <button class="btn3" routerLink="/CostEstimation/ScopeOfSupply" routerLinkActive="active">previous</button>  -->
+        <button class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+        <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" [disabled]="!(CustInfoCE.form.valid && showMsg==false)" class="btn2" type="submit">Next</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div style="float:right;margin-top: 40px;width:8%;">
+  <p-progressSpinner [hidden]="hidespinner" [style]="{width: '50px', height: '50px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+</div>

@@ -1,0 +1,177 @@
+<div  [appDisable]="disableData">
+<div>
+    <form #errectionForm="ngForm" (ngSubmit)="getDataValue(errectionForm.value)">
+        <div>
+            <div>
+            <h4 style="text-decoration: underline;">Type of Customer - {{custTypeVal}} </h4>
+            <div class="reqStyl" style="margin-left: 50px;">
+                <label>Type of Charges
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" required [(ngModel)]="typOfChargeCd" ngModel name="typOfChargeId" #typOfChargeId="ngModel" value="charge.categoryDetDesc"
+                    (change)="onChangeChargers(typOfChargeId.value)">
+                    <!-- <option [ngValue]="undefined" hidden selected>Please select</option> -->
+                    <option *ngFor="let charge of ChargerType" [ngValue]="charge.categoryDetCode" [selected]="charge.categoryDetCode == typOfChargeCd">{{charge.categoryDetDesc}}</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div class="reqStyl" *ngIf="enableLoadingDiv" style="margin-left: 48px;">
+                <label>Type of loading
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" required [(ngModel)]="loadingName" ngModel name="loadingId" #loadingId="ngModel" (change)="onChangeLoadings(loadingId.value)">
+                    <option [ngValue]="undefined" hidden selected>Please select</option>
+                    <option [ngValue]="loading.categoryDetId" [selected]="loading.categoryDetId == loadingName" *ngFor="let loading of loadingType">{{loading.categoryDetDesc}}</option>
+                </select>
+            </div>
+        </div>
+            <div class="reqStyl" *ngIf="enableLodingDiv" style="margin-left: 48px;">
+                <label>Type of Boarding & Lodging
+                    <span class="asterisk_input">*</span>
+                </label>
+                <div *ngIf="custype">
+                    <select class="widthInc" required [(ngModel)]="lodgingName" ngModel name="lodgingId" #lodgingId="ngModel" (change)="onChangeLodgings(lodgingId.value)">
+                        <option [ngValue]="undefined" hidden selected>Please select</option>
+                        <option [ngValue]="lodging.categoryDetId" [selected]="lodging.categoryDetId == lodgingName" *ngFor="let lodging of lodgingList">{{lodging.categoryDetDesc}}</option>
+                    </select>
+                </div>
+                <div *ngIf="!custype">
+                    <select class="widthInc" required ngModel [(ngModel)]="lodgingName" name="lodgingId" #lodgingId="ngModel" (change)="onChangeLodgings(lodgingId.value)">
+                        <option [ngValue]="undefined" hidden selected>Please select</option>
+                        <option [ngValue]="lodging.categoryDetId" [selected]="lodging.categoryDetId == lodgingName" *ngFor="let lodging of lodgingType">{{lodging.categoryDetDesc}}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="reqStyl" *ngIf="custype && !costDiv"  style="margin-left: 48px;">
+                <label>State
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" required [(ngModel)]="state" ngModel name="stateId" #stateId="ngModel" (change)="onStateChange(stateId.value)">
+                    <option [ngValue]="undefined" hidden selected>Please select</option>
+                    <option [ngValue]="states.locationId" [selected]="states.locationId == stateId" *ngFor="let states of statesList">{{states.locationName}}</option>
+                </select>
+            </div> -->
+            <div *ngIf="!custype" class="reqStyl"  style="margin-left:48px;">
+                <div *ngIf="expManualDaysDiv">
+                    <label>No of Man Days
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <input class="widthInc" required [(ngModel)]="manDays" ngModel name="manualDays" #manualDays="ngModel" placeholder="Enter No of Man Days"
+                        type="number" (input)="onInputChange($event.target.value)" />
+                </div>
+            </div>
+
+            <!-- <div *ngIf="!custype" class="reqStyl" style="margin-left: 50px;">
+                <div *ngIf="expManualDaysDiv">
+                    <label>Currency
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" required ngModel [(ngModel)]="currency" name="curName" #curName="ngModel" (change)="onChangeCurrency(curName.value)">
+                        <option [ngValue]="undefined" hidden [selected]="!currency.categoryDetId == currency">Please select</option>
+                        <option [ngValue]="currency.categoryDetId" [selected]="currency.categoryDetId == currency" *ngFor="let currency of currencyList">{{currency.categoryDetDesc}}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="!custype" class="reqStyl1" style="margin-left: 50px;">
+                <div *ngIf="expManualDaysDiv">
+                    <label>Currency Price
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <input class="inpPrice" required [(ngModel)]="currencyVal" [ngModelOptions]="{standalone: true}" placeholder="Enter Currency Value"
+                        type="number" />
+                </div>
+            </div> --> 
+            <div class="flexCollll" *ngIf="noOfdaysboolean">
+                <p style="font-weight: bold;margin-left: 50px;font-size:15px;margin-top:30px; margin-bottom:20px; margin-right:15px;">
+                    No of Days    &nbsp;&nbsp;&nbsp;&nbsp;       :     &nbsp;&nbsp;&nbsp;   {{noOfdays}}
+                 </p>
+
+                </div>
+            <div  *ngIf="!disableDescription">
+            <p style="font-weight: bold;margin-left: 50px;font-size:15px;margin-top:30px; margin-bottom:20px; margin-right:10px;">
+                Description :
+             </p>
+            <textarea name="techremarks" 
+            [(ngModel)]="techremarks"    (keyup)="mainSaveColor()" style="height:50px;width:420px;border:1px solid black;margin-left: 50px; border-radius: 5px;" type="text"></textarea> 
+        </div>
+        <div  *ngIf="!disableDescription">
+            <p style="font-weight: bold;margin-left: 50px;font-size:15px;margin-top:30px; margin-bottom:20px; margin-right:10px;">
+                Services :
+             </p>
+            <textarea name="description" 
+            [(ngModel)]="description"    (keyup)="mainSaveColor()" style="height:150px;width:600px;border:1px solid black;margin-left: 50px; border-radius: 5px;" type="text"></textarea> 
+        </div>
+            <div class="costDivs" *ngIf="expECDiv">
+                <div class="flexCollll">
+                <label>Cost
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input class="priceField" (keyup)="CostCheck()" [(ngModel)]="lumpsomeCost" required ngModel name="manualCost"  placeholder="Enter Cost" #manualCost="ngModel"
+                    type="number" />
+                    <button type="submit"   [ngStyle]="{ 'background-color':mainSave2? 'rgb(213,120,23)' : 'green' }" id="expEcSave" class="btn21" [disabled]="!errectionForm.form.valid">Submit Cost</button>
+</div>
+            </div>
+            <div class="costDivs" *ngIf="costDiv">
+                <label>No Cost Available </label>
+                <input class="priceField" [(ngModel)]="noCost" type="number" disabled [ngModelOptions]="{standalone: true}" />
+            </div>
+
+            <div style=" margin-left: 50px;margin-top: 10px;" *ngIf="enablePriceDiv">
+                <label>Cost</label>
+            </div>
+            <div class="excelDiv" *ngIf="enablePriceDiv">
+                <input class="costfield" [(ngModel)]="ExlCost" type="text" disabled [ngModelOptions]="{standalone: true}" />
+                <button type="submit"  id="expEcSave" class="btn2" [ngStyle]="{ 'background-color':mainSave2? 'rgb(213,120,23)' : 'green' }" [disabled]="!errectionForm.form.valid">Get Cost</button>
+<div>
+                <!-- <button type="submit" [disabled]="!errectionForm.form.valid" class="importbtn">Get Cost</button> -->
+                <button type="button" [disabled]="disableOverWriteBtn"  *ngIf="rewApp" (click)="OverWrite()" class="importbtn"> Overwrite</button>
+                <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+                    Previous comments
+                  </i> -->
+                  <button type="button" (click)="getPrevComments()"   *ngIf="rewApp" class="importbtn"> Previous Remarks</button>
+</div>
+            </div>
+
+            <!-- EXPORT -->
+         
+        </div>
+    </form>
+</div>
+
+
+<div class="excelDiv">
+    <div *ngIf="enablePriceDiv">
+        <input style="width: 173px;" class="costfield" *ngIf="!enableOverWrite && overWrittenCost>0" name="updatedCostTemp" [(ngModel)]="overWrittenCost"
+            type="number" disabled />
+    </div>
+    <form #errectionUpdateForm="ngForm" (ngSubmit)="saveErecCommission(errectionUpdateForm.value)">
+        <div *ngIf="enablePriceDiv">
+            <input style="width: 173px;" required class="costfield" placeholder="Enter Cost" *ngIf="enableOverWrite" ngModel name="updatedCost"
+                #updatedCost="ngModel" [(ngModel)]="overWrittenECCost" type="number" />
+
+            <button class="importbtn" *ngIf="enableOverWrite" (click)="cancelOverWrite(errectionUpdateForm.value)" type="Cancel">Cancel</button>
+            <br>
+            <label *ngIf="enableOverWrite">Remarks
+                <span class="asterisk_input">*</span>
+            </label>
+            <textarea *ngIf="enableOverWrite" required [(ngModel)]="remarksVal"(keyup)="checkRemarks()" #remarks="ngModel" cols="50" rows="2" name="remarks"
+                ngModel class="remarks" placeholder="Enter your remarks"></textarea>
+        </div>
+       
+        <div *ngIf="message" class="msgDiv">
+            {{successMsg}}
+        </div>
+        <div >
+            <div class="previouFun">
+                <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" id="ecsave" [disabled]="(!errectionUpdateForm.form.valid) || (disableBtn)" class="btn2" type="submit">Save</button>
+            </div>
+        </div>
+        <button class="ovrWriteBtn" style=" margin-bottom: 50px;"  *ngIf="backBtn" type="button" (click)="backButton()">Back</button>
+
+    </form>
+</div>
+</div>
+<div>
+       
+    </div>

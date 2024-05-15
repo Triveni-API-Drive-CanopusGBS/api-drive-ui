@@ -1,0 +1,83 @@
+<div class="vCostDiv">
+  <div class="vCostDivContainer">
+    <h4>Spares</h4>
+    <div class="indComp" [ngStyle]="{'display':v.dropDownType.dependKey=='SP' ? 'block' : 'none' }" *ngFor="let v of sparesArray; let i=index">
+      <div class="QnAStyle">
+        <label class="Qstyle">{{v.dropDownType.value}}</label>
+        <input class="manualDip" type="text" disabled [value]="v.dropDownValueList[0].percentage + '%'">
+      </div>
+    </div>
+    <div class="mIstyle">
+      <label class="Qstyle">Spares Cost
+        <span class="asterisk_input">*</span>
+      </label>
+      <input class="manualip" style="margin-left:10px;" type="number" name="sparesCost" [(ngModel)]="sparesCst" />
+    </div>
+    <div class="mIstyle">
+      <label class="Qstyle">Profit %
+        <span class="asterisk_input">*</span>
+      </label>
+      <input class="manualip" style="margin-left:10px;" type="number" required ngModel name="profit" [(ngModel)]="profitVal" />
+    </div>
+  </div>
+  <button type="submit" [disabled]="sparesCst==0" class="btn2" (click)="getSpareCost()">Get Cost</button>
+  <div *ngIf="spareSuc">
+
+    <div class="frameDet">
+      <label class="Qstyle">Overheads of Spares Cost</label>
+      <input class="manualDip" type="text" disabled [value]="ovrheadSparesCost">
+    </div>
+    <div class="frameDet">
+      <label class="Qstyle">Overheads on Total Sale Value</label>
+      <input class="manualDip" type="text" disabled [value]="ovrheadTotSaleCost">
+    </div>
+
+    <div class="frameDet">
+      <label class="Qstyle">Order Booking Price for Spares</label>
+      <input class="manualDip" type="text" disabled [value]="orderBookingSpares">
+    </div>
+
+    <div class="frameDet">
+      <label class="Qstyle">Net Profit</label>
+      <input class="manualDip" type="text" disabled [value]="sparesNetProfit">
+    </div>
+    <div class="btnClass">
+      <label class="Qstyle">Total Project Cost for Spares
+      </label>
+      <div style="display: flex;margin-top: 10px;">
+      <input type="number" name="totalSparesCost" disabled [(ngModel)]="totalSparesCost" ngModel class="ipStyle">
+
+      <button class="importbtn" (click)="enableOverWrite()" type="button">Overwrite</button>
+      <button class="importbtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite()" type="button">Cancel</button>
+      <!-- <i (click)="getPrevComments()" class="fa fa-comments-o fa-2x" aria-hidden="true" title="Previous comments"></i> -->
+      <button type="button" (click)="getPrevComments()"class="importbtn"> Previous Remarks</button>
+    </div>
+    </div>
+  </div>
+  <div class="costDiv" *ngIf="!enableOverwriteDiv && overWrittenCost>0">
+    <label class="samllLbl">Overwritten Cost
+    </label>
+    <input style="width: 168px;" class="inpStyle" disabled type="number" [(ngModel)]="overWrittenCost" name="overwrittenCst">
+  </div>
+  <form #sparesForm="ngForm" (ngSubmit)="saveSparesCost(sparesForm.value)">
+    <div class="costDiv" *ngIf="enableOverwriteDiv">
+      <label class="samllLbl">Overwritten Cost
+        <span class="asterisk_input">*</span>
+      </label>
+      <input style="width: 168px;" required class="inpStyle" placeholder="Enter Cost" *ngIf="enableOverwriteDiv" ngModel name="updatedCost"
+        #updatedCost="ngModel" [(ngModel)]="sparesNewCost" type="number" />
+      <label class="samllLbl">Remarks
+        <span class="asterisk_input">*</span>
+      </label>
+      <textarea *ngIf="enableOverwriteDiv" class="remarkss" name="remarks" [(ngModel)]="remarksValue" #remarks="ngModel" required
+        ngModel  placeholder="Enter remarks.."></textarea>
+    </div>
+        <div *ngIf="spareSuc">
+      <button type="submit" class="btnSave" [disabled]="!sparesForm.form.valid">Save</button>
+    </div>
+    <div *ngIf="message" class="msgDiv">
+      {{successMsg}}
+  </div>
+  </form>
+
+</div>

@@ -1,0 +1,182 @@
+.style{
+    width: 150px;
+    font-size: 11px;
+}
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    padding: 5px;
+    width: auto;
+    font-size: 11px;
+    word-wrap: break-word;
+}
+th{
+    background-color: grey;
+    text-align: left;
+    color: white;
+    height: 40px;
+    padding: 5px;
+    width:auto;
+    font-size: 12px;
+    border: 1px solid black;
+
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+th:first-child{
+    width: 250px;  
+}
+td:first-child{
+    width: 250px;  
+}
+/* tr:nth-child(even){
+    background-color: #f2f2f2;
+} */
+.treeContainer{
+    padding: 10px;
+    color:black;
+}
+
+#shopConv th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: grey;
+    color: white;
+    border: 1px solid #ddd;
+}
+#shopConv tr:nth-child(even){background-color: #f2f2f2;}
+
+#overHead th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: grey;
+    color: white;
+    border: 1px solid #ddd;
+}
+#overHead tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.ui-treetable .ui-treetable-frozen-view .ui-treetable-tbody > tr > td,
+.ui-treetable .ui-treetable-unfrozen-view .ui-treetable-tbody > tr > td {
+    height: 24px !important;
+}
+
+.ui-treetable{
+    height: 300px;
+}
+
+
+.filterField{
+    margin-left: 15px;
+    width: 135px;
+    font-size: 16px;
+    margin-right: 0px;    
+}
+.mat-form-field-label{
+    top: 30px;
+}
+input{
+    padding-bottom: 0px;
+}
+.mat-form-field-underline {
+    top: 55px;
+}
+
+#f2fTree tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+#f2fTree td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+#f2fTree td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+ #f2fTree th{
+    background-color: gray;
+    text-align: left;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+} 
+.datarow:last-child{
+    border-bottom: 1px solid;
+}
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+
+}
+p-sortIcon {
+    float: right;
+    color: white;
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 50%;
+    border: none;
+}
+
+h1{
+    color: gray;
+}
+.fa fa-search{
+    color:red;
+}
+
+.inpStyl{
+    width: 400px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid;
+}
+.selected {
+    background-color: skyblue !important;
+    color: white;
+  }
+  .ui-button-secondary{
+    height: 35px;
+    width: auto;
+    background-color: steelblue;
+    color: black;
+    outline-style: none;
+    margin-right: 20px;
+    border-radius: 2px;
+    padding: 4px;
+    font-weight: bold;
+}
+#f2fTree th:first-child{
+    width: 100px;
+    
+}
+.treetable{
+    overflow-y: scroll;
+    height: 500px;
+}
+.ui-toast{
+    background-color: red;
+}

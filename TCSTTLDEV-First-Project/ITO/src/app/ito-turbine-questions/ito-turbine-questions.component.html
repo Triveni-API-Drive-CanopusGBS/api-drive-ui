@@ -1,0 +1,426 @@
+<div class="example-container">
+    <h2>Turbine Questions</h2>
+    <!-- <div *ngIf="hideprogress" style="margin-left:40%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>   -->
+    <!-- Edit Question -Answers Tab Code Starts -->
+    <p-tabView [activeIndex]="tabIndex" (onChange)="handleChange($event)">
+        <p-tabPanel header=" Edit Turbine Question-Answers" leftIcon="fa fa-pencil-square-o">
+            <form class="turbineQues-form" #turbineQues="ngForm" (ngSubmit)="geAllQuestions(turbineQues.value)">
+                <div class="reqStyl">
+                    <label>Type of Blade</label>
+                    <select class="widthInc" ngModel name="turbineCategory" required #turbineCategory="ngModel" (change)="turbineDesnSel(turbineCategory.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbineCat.categoryDetCode" *ngFor="let turbineCat of turbineCategoryList">{{turbineCat.categoryDetDesc}}</option>
+                    </select>
+                </div>
+                <div class="reqStyl">
+                    <label>Turbine Type</label>
+                    <select class="widthInc" ngModel name="turbineType" value="turbineT.categoryDetDesc" #turbineType="ngModel" (change)="TOTSel(turbineType.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbineT.categoryDetCode" *ngFor="let turbineT of turbineTypesList">{{turbineT.categoryDetDesc}}</option>
+                    </select>
+                </div>
+
+                <button [disabled]="!turbineQues.form.valid" class="btn2" type="submit">Get Questions</button>
+            </form>
+
+            <div class="tabContainer" *ngIf="dropdownValues.length>0">
+                <p-table [value]="dropdownValues" sortField="questionId" [scrollable]="true" scrollHeight="500px" selectionMode="single-column"
+                    [(selection)]="selectedQues">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:25%">Question</th>
+                            <th>Answer</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr [pSelectableRow]="rowData">
+                            <td (click)=onQuesSelect(rowData) *ngIf="rowGroupdata[rowData.questionId].index === rowIndex" [attr.rowspan]="rowGroupdata[rowData.questionId].size">
+                                {{rowData.questionDesc}}</td>
+                            <td (click)=onAnsSelect(rowData)>{{rowData.answerDesc}}</td>
+
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <p-dialog header=" Edit Turbine Questions" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+                [width]="600" [style]="{'background-color': ' #f2f1f0'}" [maximizable]="true">
+                <div *ngIf="questionsBean!=null">
+                    <div class="labelDiv">
+                        <label for="quesId">
+                            <b>Question</b>
+                        </label>
+                    </div>
+                    <div>
+                        <input pInputText class="inpStyl" [(ngModel)]="questionsBean.questionDesc" [ngModelOptions]="{standalone: true}" />
+                    </div>
+                </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane">
+                        <button type="button" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-check" (click)="saveQuesName()"
+                            label="Save"></button>
+                        <!-- <button type="reset" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-close" (click)="Close()" label="Close"></button> -->
+                    </div>
+                </p-footer>
+            </p-dialog>
+
+
+            <p-dialog header=" Edit Turbine Answers" [(visible)]="displayAnsDialog" [responsive]="true" showEffect="fade" [modal]="true"
+                [width]="600" [style]="{'background-color': ' #f2f1f0'}" [maximizable]="true">
+
+                <div class="labelDiv">
+                    <label>
+                        <b>Question - {{questionsBean.questionDesc}} </b>
+                        <br>
+                        <br>
+                    </label>
+                    <label>
+                        <b>Answer</b>
+                    </label>
+                </div>
+                <div *ngFor="let Dropdown of Dropdowns; let j=index">
+                    <!-- <input pInputText class="inpStyl" ngModel  name="ansList" #ansList="ngModel" [(ngModel)]="Dropdowns[j]" /> -->
+                    <input pInputText class="inpStyl" [(ngModel)]="Dropdown.answerDesc" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+                <p-footer>
+                    <div class="ui-dialog-buttonpane">
+                        <button type="button" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-check" (click)="updateAns()" label="Save"></button>
+                        <!-- <button type="reset" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-close" (click)="Close()" label="Close"></button> -->
+                    </div>
+                </p-footer>
+            </p-dialog>
+        </p-tabPanel>
+
+        <!-- Edit Question -Answers Tab Code ends -->
+
+
+        <!-- Add Question -Answers Tab Code Starts -->
+        <p-tabPanel header="Add Turbine Questions" leftIcon="fa fa-plus-square">
+            <h3> Add New Question-Answers</h3>
+            <form #turbineQuesAns="ngForm" (ngSubmit)="addNewQues(turbineQuesAns.value,turbineQuesAns)">
+                <table id="addQues" style="border-collapse: collapse;">
+                    <tr>
+                        <td>
+                            <tr>
+                                <div class="labelDiv">
+                                    <label>
+                                        <b>Question Desc</b>
+                                        <span class="asterisk_input">*</span>
+                                    </label>
+                                </div>
+                            </tr>
+                            <tr>
+                                <input pInputText placeholder="Enter New Question..." style="width:400px;" required ngModel name="quesName" #quesName="ngModel"
+                                />
+                            </tr>
+                        </td>
+                        <td>
+
+                            <tr>
+                                <div class="labelDiv">
+                                    <label>
+                                        <b>Question Code</b>
+                                        <span class="asterisk_input">*</span>
+                                    </label>
+                                </div>
+                            </tr>
+                            <tr>
+                                <input [maxLength]="2" pInputText placeholder="Enter 2 letter Question Code..." required style="width:220px;" ngModel name="quesCode"
+                                    #quesCode="ngModel" oninput="this.value = this.value.toUpperCase()" (keyup)="onKeyQues($event)"
+                                />
+                            </tr>
+                        </td>
+                    </tr>
+                </table>
+                <table id="addAns" style="border-collapse: collapse;">
+                    <tr>
+                        <div class="labelDiv">
+                            <label>
+                                <b>Add Answers</b>
+                            </label>
+                        </div>
+                    </tr>
+                    <tr style="padding: 5px;text-align: center">
+                        <th>Answer
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <th>Answer Code
+                            <span class="asterisk_input">*</span>
+                        </th>
+                        <th>Select Frames
+                            <span class="asterisk_input">*</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="tdStyle">
+                            <input pInputText style="margin: 15px;" required class="ansDiv" placeholder="Enter New Answer..." ngModel name="{{count+4}}"
+                                #ansName="ngModel" />
+                        </td>
+                        <td>
+                            <input [maxLength]="2" style="margin: 15px;" pInputText required class="ansDiv" placeholder="Enter 2 letter Answer Code..."
+                                ngModel name="{{count+4*2}}" #ansCode="ngModel" oninput="this.value = this.value.toUpperCase()"
+                            />
+                        </td>
+                        <td>
+                            <p-listbox [options]="framesPowerList" placeholder="Search Fames.." required ngModel name="{{count+4*3}}" #selectedFrames="ngModel"
+                                multiple="multiple" checkbox="checkbox" filter="filter" optionLabel="framePowerDesc" [listStyle]="{'max-height':'200px'}"
+                                [style]="{'width':'250px','margin': '15px'}">
+                            </p-listbox>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let field of fieldArray; let i = index">
+                        <td>
+                            <input pInputText class="ansDiv" style="margin: 15px;" required placeholder="Enter New Answer..." ngModel name="{{count+4}}"
+                                #ansName{{count}}="ngModel" />
+                        </td>
+                        <td>
+                            <input [maxLength]="2" pInputText class="ansDiv" style="margin: 15px;" required placeholder="Enter 2 letter Answer Code..."
+                                oninput="this.value = this.value.toUpperCase()" ngModel name="{{count+4*2}}" #ansCode{{count}}="ngModel"
+                            />
+                        </td>
+                        <td>
+                            <p-listbox [options]="framesPowerList" placeholder="Search Fames.." required ngModel name="{{count+4*3}}" #selectedFrames{{count}}="ngModel"
+                                multiple="multiple" checkbox="checkbox" filter="filter" optionLabel="framePowerDesc" [listStyle]="{'max-height':'200px'}"
+                                [style]="{'width':'250px','margin': '15px'}">
+                            </p-listbox>
+
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+                <br>
+                <div class="buttonDiv">
+                    <button style="float: left;" type="button" pButton icon="fa fa-plus" (click)="addNewRow()" label="Add"></button>
+                    <button type="submit" [disabled]="!turbineQuesAns.form.valid" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-check"
+                        label="Save"></button>
+                    <button type="button" *ngIf="fieldArray.length>0;" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-close"
+                        (click)="removeItem()" label="Cancel"></button>
+                </div>
+            </form>
+
+            <p-dialog header=" Choose Default Answer" [(visible)]="displayAddDialog" [responsive]="true" showEffect="fade" [modal]="true"
+                [width]="600" [closable]="false" [style]="{'background-color': ' #f2f1f0'}" [maximizable]="true">
+
+                <div class="labelDiv">
+                    <label>
+                        <b>Choose Default Answers</b>
+                    </label>
+                </div>
+                <div *ngFor="let answer of answersList; let j=index">
+                    <input type="radio" name="defaultAns" (change)="checkedAnswer(answer)">{{answer}}
+                </div>
+
+                <p-footer>
+                    <div class="ui-dialog-buttonpane">
+                        <button type="button" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-check" (click)="saveAddAns()" label="Save"></button>
+                    </div>
+                </p-footer>
+
+            </p-dialog>
+        </p-tabPanel>
+
+        <!-- Add Question -Answers Tab Code Ends -->
+
+        <!--  Edit Default Answers Tab Code Starts -->
+
+        <p-tabPanel header="Edit Default Answer" leftIcon="fa fa-pencil-square-o">
+            <form #turbineQuesDefault="ngForm" (ngSubmit)="getQuestions(turbineQuesDefault.value)">
+                <div class="reqStyl">
+                    <label>Type of Blade
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="turbineCate" required #turbineCate="ngModel" (change)="turbineDesnSel(turbineCate.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbineCate.categoryDetCode" *ngFor="let turbineCate of turbineCategoryList">{{turbineCate.categoryDetDesc}}</option>
+                    </select>
+                </div>
+                <div class="reqStyl">
+                    <label>Turbine Type
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="typeOfTurbine" required value="turbine.categoryDetDesc" #typeOfTurbine="ngModel" (change)="TOTSel(typeOfTurbine.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="turbine.categoryDetCode" *ngFor="let turbine of turbineTypesList">{{turbine.categoryDetDesc}}</option>
+                    </select>
+                </div>
+                <div class="reqStyl">
+                    <label>Frames
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="frames" required #frames="ngModel" (change)="FrameSel(turbineQuesDefault.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="frame.frameId" *ngFor="let frame of frameList">{{frame.frameDesc}}</option>
+                    </select>
+                </div>
+                <div class="reqStyl" *ngIf="powerList.length>0">
+                    <label>Frame Power
+                        <span class="asterisk_input">*</span>
+                    </label>
+                    <select class="widthInc" ngModel name="framePower" required #framePower="ngModel" (change)="powerSel(framePower.value)">
+                        <option value="" hidden selected>Please select</option>
+                        <option [ngValue]="power.framePowerId" *ngFor="let power of powerList">{{power.power}}</option>
+                    </select>
+                </div>
+                <button [disabled]="!turbineQuesDefault.form.valid" class="btn2" type="submit">Get Questions</button>
+            </form>
+
+            <div class="tabContainer" *ngIf="defaultQuestions.length>0">
+                <p-table [value]="defaultDropdownValues" sortField="questionId" [scrollable]="true" scrollHeight="500px" selectionMode="single-column"
+                    [(selection)]="selectedQues">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:25%">Question</th>
+                            <th style="width:55%">Answer</th>
+                            <th style="width:25%">Add Answer</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr [pSelectableRow]="rowData">
+                            <td style="width:25%" (click)=AnswerSel(rowData) *ngIf="rowGroupMetadata[rowData.questionId].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.questionId].size">
+                                {{rowData.questionDesc}}
+                            </td>
+                            <td style="width:55%" (click)=AnswerSel(rowData)>{{rowData.answerDesc}}</td>
+                            <td style="width:25%" (click)="openAddAnsWindow(rowData)" *ngIf="rowGroupMetadata[rowData.questionId].index === rowIndex"
+                                [attr.rowspan]="rowGroupMetadata[rowData.questionId].size">
+                                <button style="background-color: #ff9933;color:white" type="button" pButton icon="fa fa-plus" label="Add New Answer"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <p-dialog header=" Edit Default Answers" [(visible)]="displayDefaultDialog" [responsive]="true" showEffect="fade" [modal]="true"
+                [width]="600" [style]="{'background-color': ' #f2f1f0'}" [maximizable]="true">
+
+                <div *ngIf="selectedDetails!=null">
+
+                    <div class="labelDiv">
+                        <label>
+                            <b>Question - {{selectedDetails.questionDesc}} </b>
+                            <br>
+                            <br>
+                        </label>
+                        <label>
+                            <b>Answer</b>
+                        </label>
+                    </div>
+                    <div *ngFor="let Dropdown of selectedDetails.ansList; let j=index">
+                        <!-- <input type="radio" ngModel name="Dropdown.defaultVal" [checked]="Dropdown.defaultVal" >{{Dropdown.value}} -->
+                        <input type="radio" name="defaultAnswer" [checked]="Dropdown.defaultVal" (change)="onDefaultChange(Dropdown)">{{Dropdown.value}}
+                    </div>
+                </div>
+
+                <p-footer>
+                    <div class="ui-dialog-buttonpane">
+
+                        <button type="button" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-check" (click)="saveDefaultAns()"
+                            label="Save"></button>
+                        <!-- <button type="reset" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-close" (click)="Close()" label="Close"></button> -->
+                    </div>
+                </p-footer>
+            </p-dialog>
+        </p-tabPanel>
+
+        <!--  Edit Default Answers Tab Code Ends -->
+
+        <p-tabPanel header=" Add Turbine Answers" leftIcon="fa fa-plus-square" [disabled]="disableTab">
+
+            <form #turbineAnsEdit="ngForm" (ngSubmit)="saveAns(turbineAnsEdit.value,turbineAnsEdit)">
+                <div *ngIf="selectedDetails!=null">
+                    <div class="labelDiv">
+                        <label>
+                            <b> Frame Name - {{ frameName}} </b>
+                            <br>
+                            <br>
+                        </label>
+
+                        <label>
+                            <b>Question - {{selectedDetails.questionDesc}} </b>
+                            <br>
+                            <br>
+                        </label>
+
+                        <label>
+                            <b>Answer</b>
+                        </label>
+                        <div *ngFor="let Dropdown of Answers; let j=index">
+                            {{Dropdown.value}}
+                        </div>
+
+                    </div>
+                    <table id="addAns" style="border-collapse: collapse;">
+                        <tr>
+                            <div class="labelDiv">
+                                <label>
+                                    <b>Add Answers</b>
+                                </label>
+                            </div>
+                        </tr>
+                        <tr style="padding: 5px;">
+                            <th>Answer
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th>Answer Code
+                                <span class="asterisk_input">*</span>
+                            </th>
+                            <th>Select Frames
+                                <span class="asterisk_input">*</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input pInputText required class="ansDiv" placeholder="Enter New Answer..." required ngModel name="{{rowCount}}" #ansName{{rowCount}}="ngModel"
+                                />
+                            </td>
+                            <td>
+                                <input [maxLength]="2" pInputText required class="ansDiv" placeholder="Enter 2 letter Answer Code..." required ngModel name="{{rowCount+3}}"
+                                    #ansCode{{rowCount}}="ngModel" oninput="this.value = this.value.toUpperCase()" />
+                            </td>
+                            <td>
+                                <p-listbox required [options]="ansFrames" placeholder="Search Fames.." required ngModel name="{{rowCount+3*2}}" #selFrames{{rowCount}}="ngModel"
+                                    multiple="multiple" checkbox="checkbox" filter="filter" optionLabel="framePowerDesc" [listStyle]="{'max-height':'200px'}"
+                                    [style]="{'width':'250px','margin': '15px'}">
+                                </p-listbox>
+                            </td>
+                        </tr>
+
+                        <tr *ngFor="let field of rowArray; let i = index">
+                            <td>
+                                <input pInputText required class="ansDiv" style="margin: 15px;" required placeholder="Enter New Answer..." ngModel name="{{rowCount}}"
+                                    #ansName{{rowCount}}="ngModel" />
+                            </td>
+                            <td>
+                                <input [maxLength]="2" pInputText required class="ansDiv" style="margin: 15px;" required placeholder="Enter 2 letter Answer Code..."
+                                    ngModel name="{{rowCount+3}}" #ansCode{{rowCount}}="ngModel" oninput="this.value = this.value.toUpperCase()"
+                                />
+
+                            </td>
+                            <td style="height:100px;">
+                                <p-listbox required [options]="ansFrames" placeholder="Search Fames.." required ngModel name="{{rowCount+3*2}}" #selectedFrames{{count}}="ngModel"
+                                    multiple="multiple" checkbox="checkbox" filter="filter" optionLabel="framePowerDesc" [listStyle]="{'max-height':'200px'}"
+                                    [style]="{'width':'250px','margin': '15px'}">
+                                </p-listbox>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+                    <br>
+                    <div class="buttonDiv">
+                        <button type="button" style="float: left;" pButton icon="fa fa-plus" (click)="addNewAnswerRow()" label="Add"></button>
+                        <button type="submit" [disabled]="!turbineAnsEdit.form.valid" style="float: center;background-color:  rgba(213, 120, 23);"
+                            pButton icon="fa fa-check" label="Save"></button>
+                        <button type="button" *ngIf="rowArray.length>0;" style="background-color:  rgba(213, 120, 23);" pButton icon="fa fa-close"
+                            (click)="removeAnsItem()" label="Cancel"></button>
+                    </div>
+                </div>
+            </form>
+        </p-tabPanel>
+    </p-tabView>
+</div>

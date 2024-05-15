@@ -1,0 +1,894 @@
+<div>
+  <h2 style="margin-left:25px; font-size: 15px;">
+    DBO Mechanical
+  </h2>
+  <div *ngIf="typpanel=='Auxilaries Price' || typpanel=='Price'">
+  <button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans" *ngIf="tableDiv" (click)="bulkUpd()">Bulk Update</button>
+</div>
+  <!-- <p-tabView [activeIndex]="tabIndex" (onChange)="handleChange($event)">
+    <p-tabPanel header=" Update Cost" leftIcon="fa fa-pencil-square-o" [disabled]="exist"> -->
+      <div style="margin-left:100px;" *ngIf="dispDropdown">
+        <form #ItemDetailsForm="ngForm" (ngSubmit)="getTableData(ItemDetailsForm.value)">
+
+          <!-- <div class="reqStyl">
+            <label>Turbine Type
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="widthInc" required ngModel name="turbType" #turbType="ngModel" (change)="getItemDetails(turbType.value)">
+              <option value="" hidden selected>Please select</option>
+              <option [ngValue]="turbType.field" *ngFor="let turbType of turbTypeArray">{{turbType.header}}</option>
+            </select>
+          </div> -->
+          <div class="reqStyl">
+              <label><b>Type</b>
+                <span class="asterisk_input">*</span>
+              </label>
+              <select class="widthInc" required ngModel name="typpanel" #typpanel="ngModel" (change)="getItemDetails(typpanel.value)">
+                <option value="" hidden selected>Please select</option>
+                <option [ngValue]="typpanel" *ngFor="let typpanel of typeofpanel">{{typpanel}}</option>
+              </select>
+            </div>
+
+          <!-- <div class="reqStyl">
+            <label>Item Name
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="widthInc" required ngModel name="itemDetails" #itemDetails="ngModel" (change)="getItemDetailsVal(itemDetails.value)">
+              <option value="" hidden selected>Please select</option>
+              <option [ngValue]="dBOMechList.itemId" *ngFor="let dBOMechList of dBOMechanicalListArray">{{dBOMechList.itemName}}</option>
+            </select>
+          </div> -->
+          <!-- <div class="reqStyl">
+            <label>Cust Type
+              <span class="asterisk_input">*</span>
+            </label>
+            <select class="widthInc" required ngModel name="custType" #custType="ngModel">
+              <option value="" hidden selected>Please select</option>
+              <option [ngValue]="custType.field" *ngFor="let custType of custTypeArray">{{custType.header}}</option>
+            </select>
+          </div> -->
+          <button type="submit" *ngIf="DBOData?.length>0" [disabled]="!ItemDetailsForm.form.valid" class="btn2">Get Data</button>
+        </form>
+      </div>
+
+      <div *ngIf="!dispDropdown" style="margin-left:25px;">
+        <div class="reqStyl">
+          <div class="reqStyl">
+            <label style="margin-left: 35px;">
+              <b>Type :</b>
+            </label>
+            <label>
+              <b>{{typpanel}}</b>
+            </label>
+          </div>
+          <!-- <label>
+            Item Name:
+          </label>
+          <label>
+            {{itemName}}
+          </label> -->
+        </div>
+        <!-- <div class="reqStyl">
+          <label>
+            Item Name :
+          </label>
+          <label>
+            {{itemName}}
+          </label>
+        </div> -->
+
+      </div>
+
+
+      <div class="contentDiv" *ngIf="tableDiv">
+          <p *ngIf="typpanel=='Price'" style="text-align: center; font-size: 14px;"><b>Mechanical Price</b></p>
+          <p *ngIf="typpanel=='AddOn Cost'" style="text-align: center; font-size: 14px;"><b>Mechanical AddOn Cost</b></p>
+          <p *ngIf="typpanel=='Auxilaries Price'" style="text-align: center; font-size: 14px;"><b>Mechanical Auxilaries price</b></p>
+          <p *ngIf="typpanel=='Auxilaries AddOn'" style="text-align: center; font-size: 14px;"><b>Mechanical Auxilaries AddOn Cost</b></p>
+          <p *ngIf="typpanel=='Auxilaries Over Head'" style="text-align: center; font-size: 14px;"><b>Mechanical Auxilaries Over Head</b></p>
+          <p *ngIf="typpanel=='Auxilaries Initial Fill'" style="text-align: center; font-size: 14px;"><b>Mechanical Auxilaries Initial Fill</b></p>
+        <div class="priceDiv">
+          <p-table #dt [tableStyle]="{'width': '80%' , 'margin-left':'10%'}" [columns]="cols" [value]="DBOData" selectionMode="single"
+            [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+            <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+
+                <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                  Export to Excel</i> -->
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" style="width:100px;" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+              <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemName'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnCostCol'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnCostPer'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnCostPer'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnDirCost'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'addOnDirCost'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'power'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevAddOnCostCol'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'priceCode'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colValCd'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'colNm'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbCodeNm'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'subItemName'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevQuantity'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'quantity'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevApproxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevPrice'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                       <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'pervMinVal'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'minVal'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevMaxVal'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxVal'" pInputText type="number" (input)="dt.filter($event.target.value,  col.field, col.filterMatchMode)"
+                    (keyup)="searchSet(dt,$event.target.value)">
+                </th>
+              </tr>
+            </ng-template>           
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr #tr *ngIf="typpanel=='Price' || typpanel=='AddOn Cost' || typpanel=='Auxilaries Price'" id="{{rowData.priceId}}" class="datarow" [pSelectableRow]="rowData">
+                <td *ngFor="let col of columns" style="width:100px;">
+                  {{rowData[col.field]}}
+                </td>
+              </tr>
+              <tr #tr *ngIf="typpanel=='Auxilaries Over Head' || typpanel=='Auxilaries Initial Fill'" id="{{rowData.id}}" class="datarow" [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" style="width:100px;">
+                    {{rowData[col.field]}}
+                  </td>
+                </tr>
+                
+                <tr #tr *ngIf="typpanel=='Auxilaries AddOn'" id="{{rowData.id}}" class="datarow" [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns" style="width:100px;">
+                      {{rowData[col.field]}}
+                    </td>
+                  </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <div  *ngIf="typpanel=='Price'">
+      <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" *ngIf="selectedRange">
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Item Name</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.itemName}}</label>
+            </div>
+          </div>   
+          
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Sub Item Name</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.subItemName}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="vin">Price <Code></Code></label>
+              </div>
+              <div class="ui-g-8">
+                <label>{{selectedRange.priceCode}}</label>
+              </div>
+            </div>
+          
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Approximate Cost Flag </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevApproxCostFlag}}</label>
+            </div>
+          </div>
+
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Approximate Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <input pInputText id="color" [(ngModel)]="selectedRange.approxCostFlag" />
+              </div>
+            </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Price </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevPrice}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Price</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.price" />
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+
+    <!-- Auxilaries Over Head -->
+    <div  *ngIf="typpanel=='Auxilaries Over Head'">
+      <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" *ngIf="selectedRange">
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Item Name</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.itemName}}</label>
+            </div>
+          </div>   
+          
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">power</label>
+            </div>
+            <div class="ui-g-8">
+                <label>{{selectedRange.power}}</label>
+              </div>
+          </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Quantity </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevQuantity}}</label>
+            </div>
+          </div>
+
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Quantity</label>
+              </div>
+              <div class="ui-g-8">
+                <input pInputText id="color" [(ngModel)]="selectedRange.quantity" />
+              </div>
+            </div>
+          
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Approximate Cost Flag </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevApproxCostFlag}}</label>
+            </div>
+          </div>
+
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Approximate Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <input pInputText id="color" [(ngModel)]="selectedRange.approxCostFlag" />
+              </div>
+            </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Price </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevPrice}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Price</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.price" />
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+
+    <!-- Auxilaries Price -->
+    <div  *ngIf="typpanel=='Auxilaries Price'">
+      <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" *ngIf="selectedRange">
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Item Name</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.itemName}}</label>
+            </div>
+          </div>   
+          
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Price Code</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.priceCode}}</label>
+            </div>
+          </div>
+          
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Approximate Cost Flag </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevApproxCostFlag}}</label>
+            </div>
+          </div>
+
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                <label for="brand">Approximate Flag</label>
+              </div>
+              <div class="ui-g-8">
+                <input pInputText id="color" [(ngModel)]="selectedRange.approxCostFlag" />
+              </div>
+            </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Price </label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevPrice}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Price</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.price" />
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+
+
+  <!-- AddOn Cost -->
+
+  <div  *ngIf="typpanel=='AddOn Cost'">
+    <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+      <div class="ui-g ui-fluid" *ngIf="selectedRange">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Item Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.itemName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Sub Item Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.subItemName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">LHS</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.colNm}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">RHS Value</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.colValCd}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous AddOn Cost Col </label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.prevAddOnCostCol}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">AddOn Cost Col</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText id="color" [(ngModel)]="selectedRange.addOnCostCol" />
+          </div>
+        </div>
+
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous Approximate Cost Flag</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.prevApproxCostFlag}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Approximate Flag</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.approxCostFlag" />
+            </div>
+          </div>
+
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous AddOn Dir Cost</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.prevAddOnDirCost}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="brand">AddOn Dir Cost</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText id="color" [(ngModel)]="selectedRange.addOnDirCost" />
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+
+  <!-- Auxilaries AddOn -->
+  <div  *ngIf="typpanel=='Auxilaries AddOn'">
+    <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+      <div class="ui-g ui-fluid" *ngIf="selectedRange">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Item Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.itemName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Sub Item Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.subItemName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">LHS</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.colNm}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">RHS Value</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.colValCd}}</label>
+          </div>
+        </div>
+        
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous Approximate Cost Flag</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.prevApproxCostFlag}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Approximate Flag</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.approxCostFlag" />
+            </div>
+          </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous AddOn Cost Per</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevAddOnCostPer}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">AddOn Cost Per</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.addOnCostPer" />
+            </div>
+          </div>
+
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous AddOn Dir Cost</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.prevAddOnDirCost}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="brand">AddOn Dir Cost</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText id="color" [(ngModel)]="selectedRange.addOnDirCost" />
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+
+  <!-- MechanicalAux-InitialFill -->
+
+  <div  *ngIf="typpanel=='Auxilaries Initial Fill'">
+    <p-dialog header="Item Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+      <div class="ui-g ui-fluid" *ngIf="selectedRange">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Item Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.itemName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">Frame Name</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.frameName}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">LHS</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.colNm}}</label>
+          </div>
+        </div>
+
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Previous RHS Value</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevColValCd}}</label>
+            </div>
+          </div>
+        
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="vin">RHS Value</label>
+          </div>
+          <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.colValCd" />
+          </div>
+        </div>
+        
+        <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+          <div class="ui-g-4">
+            <label>Previous Min Val</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{selectedRange.pervMinVal}}</label>
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Min Val</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.minVal" />
+            </div>
+          </div>
+
+          <div *ngIf="(dboMechApp || dboMechRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Max Val</label>
+            </div>
+            <div class="ui-g-8">
+              <label>{{selectedRange.prevMaxVal}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Max Val</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.maxVal" />
+            </div>
+          </div>     
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+
+
+    <!-- </p-tabPanel> -->
+
+    <!-- Add Price code starts -->
+
+    <!-- <p-tabPanel header="Add Cost" leftIcon="fa fa-plus-square" [disabled]="addNew">
+      <div>
+        <div *ngIf="dispDropdown">
+          <form #newDataForm="ngForm" (ngSubmit)="getNewData(newDataForm.value)">
+            <div class="reqStyl">
+              <label>Turbine Type
+                <span class="asterisk_input">*</span>
+              </label>
+              <select class="widthInc" required ngModel name="turbineType" #turbineType="ngModel" (change)="getItemDetailsNew(turbineType.value)">
+                <option value="" hidden selected>Please select</option>
+                <option [ngValue]="turbType.field" *ngFor="let turbType of turbTypeArray">{{turbType.header}}</option>
+              </select>
+            </div>
+            <div class="reqStyl">
+              <label>Item Name
+                <span class="asterisk_input">*</span>
+              </label>
+              <select class="widthInc" required ngModel name="itemIdNew" #itemIdNew="ngModel">
+                <option value="" hidden selected>Please select</option>
+                <option [ngValue]="dBOMechList.catDetId" *ngFor="let dBOMechList of dBOMechanicalListArrayNew">{{dBOMechList.catDetDesc}}</option>
+              </select>
+            </div>
+            <button type="button" [disabled]="(!newDataForm.form.valid)" class="btn2" (click)="getNewData(newDataForm.value)">Get Data</button>
+          </form>
+        </div>
+
+        <div *ngIf="!dispDropdown" style="margin-left:25px;">
+          <div class="reqStyl">
+            <label>
+              Turbine Type:
+            </label>
+            <label>
+              {{panelCdNew}}
+            </label>
+          </div>
+          <div class="reqStyl">
+            <label>
+              Item Name :
+            </label>
+            <label>
+              {{itemNameNew}}
+            </label>
+          </div>
+        </div>
+
+        <div class="eleCompDiv" *ngIf="newlyAddedData.length>0">
+          <form #addCostForm="ngForm" (ngSubmit)="addCost(addCostForm.value)">
+            <div class="frameDet" *ngFor="let question of questionsBean ; let i=index">
+              <label> {{questionsBean[i].dropDownType.value}}
+                <span class="asterisk_input">*</span>
+              </label>
+              <select class="widthInc" required ngModel name="{{i}}" #{{questionsBean[i].dropDownType.value}}="ngModel">
+                <option value="" hidden selected>Please select</option>
+                <option [ngValue]="questionsBean[i].dropDownValueList[j].value" *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                  {{questionsBean[i].dropDownValueList[j].value}}
+                </option>
+              </select>
+            </div>
+
+            <div style="margin-top: 20px;">
+              <div style="display:inline-block">
+                <label>Cost for Domestic
+                  <span class="asterisk_input">*</span>
+                </label>
+                <input type="number" required class="widthInc" ngModel name="newCostDom" #newCostDom="ngModel" placeholder="Enter Cost" />
+              </div>
+              <div style="display:inline-block;margin-left: 18px;">
+                <label>Cost for Export
+                  <span class="asterisk_input">*</span>
+                </label>
+                <input type="number" required class="widthInc" ngModel name="newCostEx" #newCostEx="ngModel" placeholder="Enter Cost" />
+              </div>
+              <button type="submit" [disabled]="!addCostForm.form.valid" class="btn2">Add</button>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="tableDiv" [ngStyle]="{'margin-top':(newlyAddedData.length>0) ? '20%' : '5%' }">
+          <p-table #dt [tableStyle]="{'width': '80%' , 'margin-left':'10%'}" [columns]="columns" [value]="DBOData" [paginator]="true"
+            [rows]="10"> -->
+            <!-- <ng-template pTemplate="caption">
+                    <div class="ui-helper-clearfix">
+        
+                      <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                        Export to Excel</i>
+                    </div>
+                  </ng-template>  -->
+            <!-- <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" style="width:100px;" [pSortableColumn]="col.field">
+                  {{col.header}}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+              </tr>
+              <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'itemName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'custType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'priceCode'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                  <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr #tr id="{{rowData.priceId}}" class="datarow" [pSelectableRow]="rowData">
+                <td style="width:100px;">{{rowData.itemName}}</td>
+                <td style="width:100px;">{{rowData.custType}}</td>
+                <td style="width:100px;">{{rowData.priceCode}}</td>
+                <td pEditableColumn style="width:100px;">
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="number" (keyup)="onInputChange($event)" [(ngModel)]="rowData.price">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{rowData.price}}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </p-tabPanel> -->
+    <!-- Add Price code Ends -->
+  <!-- </p-tabView> -->
+  <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+    <div class="ui-g ui-fluid" >
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="vin">Percentage</label>
+        </div>
+        <div class="ui-g-8">
+          <input pInputText style="padding:5px;" [(ngModel)]="percentage" />
+        </div>
+      </div>
+      </div>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+      </div>
+      </p-dialog>
+  <div *ngIf="tableDiv">
+    <form #updatePriceDboMechForm="ngForm" (ngSubmit)="updatePriceDboMech(updatePriceDboMechForm.value)">
+      <div style="margin-left: 10%;" *ngFor="let c of prevRemarks;let i=index;">
+        <label class="pcomentslbl">{{c.assingedToname}} </label>
+        <textarea class="pcomments" disabled placeholder="Enter your comments" cols="50" rows="2">{{c.comment}}</textarea>
+      </div>
+
+      <div style="margin-left: 10%;">
+        <label class="comentslbl">Comments
+          <span class="asterisk_input">*</span>
+        </label>
+        <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter yor comments"
+          cols="50" rows="4"></textarea>
+      </div>
+
+
+      <div style="margin-left: 10%;" *ngIf="(dboMechApp || dboMechRev)">
+        <label class="reviewrlbl"> Accept / Reject the update request here
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="reviewr" #state="ngModel" required name="status" ngModel>
+          <option selected hidden>Please select </option>
+          <option>Accept</option>
+          <option>Reject</option>
+        </select>
+      </div>
+
+      <div style="margin-left: 10%;" *ngIf="(dboMechEdit || dboMechRev)">
+        <label class="reviewrlbl">{{labelName}}
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+          <option value="" selected hidden>Please select </option>
+          <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+        </select>
+      </div>
+      <button style="margin-left: 10%;" class="updateTrans" [disabled]="finalRangeList.length==0" (click)="SaveAsDraft()" type="button">Save As Draft</button>
+      <button style="margin-left: 25px;" class="updateTrans" [disabled]="(!updatePriceDboMechForm.form.valid) || (finalRangeList.length==0)"
+        type="submit">Update</button>
+    </form>
+  </div>
+
+  <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+    <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</div>

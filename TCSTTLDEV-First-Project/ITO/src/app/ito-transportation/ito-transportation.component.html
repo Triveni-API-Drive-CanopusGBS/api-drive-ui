@@ -1,0 +1,253 @@
+<div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<div class="transportDiv" [appDisable]="appDisable" *ngIf ="!hideprogress">
+  <h4 style="text-decoration: underline;">Transportation</h4>
+  <div class="outerDiv">
+    <form class="basicForm" #basicTransportForm="ngForm" (ngSubmit)="basicTransport(basicTransportForm.value)">
+      <div class="quesStyle" *ngIf="isStndLone">
+        <label class="bLabel" for="custType">Type of Customer </label>
+        <input type="text" class="selRadioClass" [(ngModel)]="custType" name="typeOfCust" disabled />
+      </div>
+      <div class="quesStyle" *ngIf="!isStndLone">
+        <label class="bLabel">Type Of Customer</label>
+        <select [disabled]="isStndLone" style="margin:15px; font-size:13px;" name="typeOfCust" ngModel required #typeOfCus="ngModel"
+          (change)="TOCsel(typeOfCus.value)">
+          <option hidden>Please select</option>
+          <option [selected]="c.defaultVal" *ngFor="let c of customerType">{{c.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="quesStyle">
+        <label class="bLabel">Type Of Transportation</label>
+        <select style="margin:15px; font-size:13px;" name="typeOfTransport" [(ngModel)]="typeOfTr" #typeOfTrans="ngModel" required
+          ngModel (change)="TOTranssel(typeOfTrans.value)">
+          <option hidden>Please select</option>
+          <option [selected]="tr.defaultVal" *ngFor="let tr of newTransportationType">{{tr.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="quesStyle" *ngIf="!isStndLone">
+        <label class="bLabel">Type Of Blade</label>
+        <select [disabled]="isStndLone" style="margin:15px; font-size:13px;margin-left:40px;" name="typeOfTurbine" #typeOfTur="ngModel"
+          required ngModel (change)="TOBSel(typeOfTur.value)">
+          <option hidden>Please select</option>
+          <option [selected]="n.defaultVal" *ngFor="let n of newTurbineType">{{n.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="quesStyle" *ngIf="!isStndLone">
+        <label class="bLabel">Type of Turbine</label>
+        <select [disabled]="isStndLone" style="margin:15px;font-size:13px;margin-left:60px;" name="typeOfTrbine" required ngModel
+          #typeOfTrbines="ngModel" (change)="TOTsel(typeOfTrbines.value)">
+          <option hidden>Please select</option>
+          <option [selected]="t.defaultVal" *ngFor="let t of typeOfTurbine">{{t.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div *ngIf="enableCT" class="quesStyle">
+        <label class="bLabel" *ngIf="isStndLone">Condenser Type</label>
+        <input style="margin-left: 15px;" type="text" *ngIf="isStndLone" class="selRadioClass" [(ngModel)]="typOfCond" [ngModelOptions]="{standalone: true}"
+          disabled />
+        <label *ngIf="!isStndLone" class="bLabel">Condenser Type</label>
+        <select *ngIf="!isStndLone" [disabled]="isStndLone" style="margin:15px;" (change)="condenserSel(typeOfCon.value)" #typeOfCon="ngModel"
+          required ngModel name="condenserType">
+          <option hidden>Please select</option>
+          <option *ngFor="let c of condenserTypes" [selected]="c.defaultVal">{{c.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="quesStyle" *ngIf="!isStndLone">
+        <label class="bLabel">Frame</label>
+        <select [disabled]="isStndLone" style="margin:15px;font-size:13px;margin-left:85px;" #frme="ngModel" required name="frames"
+          ngModel (change)="FrameSel(frme.value)">
+          <option hidden>Please select</option>
+          <option [selected]="f.defaultVal" *ngFor="let f of newFrames">{{f.frameDesc}}</option>
+        </select>
+      </div>
+      <!-- <div *ngIf="!isStndLone" class="quesStyle">
+        <label class="bLabel">Power</label>
+        <select [disabled]="isStndLone" style="margin:15px;font-size:13px;margin-left:118px;" #powr="ngModel" required name="power"
+          ngModel (change)="PowSel(powr.value)">
+          <option hidden>Please select</option>
+          <option *ngFor="let p of powerList">{{p}}</option>
+        </select>
+      </div> -->
+      <div>
+        <div class="quesStyle" *ngIf="PPenable">
+          <label class="bLabel">Select Country</label>
+          <select #cntry="ngModel" required name="cntry" [(ngModel)]="countryName" ngModel (change)="countrySel(cntry.value)">
+            <option hidden>Please select</option>
+            <option *ngFor="let c of countryList">{{c}}</option>
+          </select>
+        </div>
+        <div class="quesStyle" *ngIf="PPenable">
+          <label class="bLabel">Select Port</label>
+          <select style="margin-left: 90px;font-size:13px;" #prt="ngModel" [(ngModel)]="port" required name="prt" ngModel (change)="portSel(prt.value)">
+            <option hidden>Please select</option>
+            <option *ngFor="let p of portArray">{{p.portName}}</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-left:600px;">
+          <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-left:15px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+          *ngIf="backBtn && isStndLone" type="button" (click)="backButton()">Back</button>
+        <button class="BasicbtnStyle" [disabled]="!basicTransportForm.form.valid" type="submit">
+          Get Transportation Details
+        </button>
+        <p-progressSpinner *ngIf="hideprogressCost" [style]="{width: '25px', height: '50px'}" strokeWidth="5"
+        fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+      </div>
+
+    </form>
+    <!-- <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-left:15px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+*ngIf="backBtn" type="button" (click)="backButton()">Back</button> -->
+    <div style="display:block;margin-bottom:25px;margin-top:15px;">
+      <hr>
+    </div>
+    <div>
+      <div *ngIf="showMsgd" class="errorMsg">
+        {{errorMsg}}
+      </div>
+      
+    </div>
+
+    <div *ngIf="isExWork" style="display:block; margin-left:15px; color:blue;">
+      No cost for EX-Works
+
+      <div class="btnGrp"  *ngIf="isStndLone">
+        <button class="btnStyle" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" type="button" (click)="transPortExWorks()">Save</button>
+      </div>
+    </div>
+
+    <div *ngIf="!isExWork">
+      <div *ngIf="isExp" style="margin-left:10px;">
+        <form #transportFormExp="ngForm">
+          <div style="display:block;position: relative;width: 120%;">
+            <div style="display:block;position: relative;">
+              <div class="costDiv">
+                <label class="samllLbl" for="priceField">Bangalore to Port Cost</label>
+                <input type="number" name="expPriceBP" [(ngModel)]="FOBcost" ngModel class="ipStyle" id="priceCostEx" disabled>
+              </div>
+              <div class="costDiv" *ngIf="IPenable">
+                <label class="samllLbl" for="priceField">Port to Chennai Cost</label>
+                <input type="number" name="expPriceCP" [(ngModel)]="FOBChennaicost" ngModel class="ipStyle"  id="chennaiCostEx" disabled>
+              </div>
+              <div class="costDiv" *ngIf="PPenable">
+                <label class="samllLbl" for="priceField">Port to Port Cost</label>
+                <input type="number" name="expPricePP" [(ngModel)]="CIFcost" ngModel class="ipStyle" disabled>
+              </div>
+            </div>
+            <div class="costDiv" *ngIf="totalCcost >0">
+              <label class="samllLbl" for="priceField">Total Cost</label>
+              <input type="number" name="totalTrans" [(ngModel)]="totalCcost" ngModel class="ipStyle" disabled>
+            </div>
+
+            <div class="btnClass" *ngIf="isStndLone">
+              <button class="savebtn" style="margin-left:0px" *ngIf="rewApp" (click)="enableOverWriteBP();ind.reset();" type="button">Overwrite</button>
+              <button class="savebtn" *ngIf="enableOverwriteDivBP" (click)="disableOverWriteBP()" type="button">Cancel</button>
+              <button class="savebtn" *ngIf="enableOverwriteDivBP && rewApp" (click)="getPrevComments()" type="button">Previous comments</button>
+
+            </div>
+            <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+              Previous comments
+            </i> -->
+            <div class="overwriteDiv" *ngIf="isStndLone">
+              <form #ind="ngForm">
+                <div class="costDiv" *ngIf="enableOverwriteDivBP">
+                  <label class="samllLbl" for="priceField">OverWritten Cost</label>
+                  <input type="number" name="oTotalTrans" [(ngModel)]="overWrittenTotalCost" ngModel class="ipStyle" [disabled]="!enableOverwriteDivBP">
+                </div>
+                <label class="costLbl" *ngIf="enableOverwriteDivBP">Remarks-Export
+                  <span class="asterisk_input">*</span>
+                </label>
+                <textarea *ngIf="enableOverwriteDivBP" class="remarksField" name="overWrite" [(ngModel)]="remarkEx" #overWrit="ngModel" required
+                  ngModel style="margin-top:12px;" (keyup)="checkremrkEx(overWrit.value)" placeholder="Enter remarks.."></textarea>
+                <div class="btnGrp1" *ngIf="totalCcost >=0">
+                  <!-- <button class="btnStyle1" style="margin-left:0px" (click)="reset()" type="reset"  >reset</button> -->
+                  <button class="btnStyle1" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" [disabled]="(!ind.form.valid)||(!submtBtnEx)" type="button" (click)="transportExp()">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div *ngIf="!isExp">
+        <form #transportForm="ngForm" (ngSubmit)="transport(transportForm.value,i)" class="formClass">
+          <div *ngIf="selectedComps.length>0">
+            <label class="samllLbl">Address</label>
+            <textarea class="testAre" name="toAddress" placeholder="Address" ngModel [(ngModel)]="addressVal">
+              </textarea>
+          </div>
+          <li style="list-style:none;display:block;" *ngFor="let comp of newComponents;let i=index;let ind=index;">
+            <input name="component" type="checkbox" [checked]="comp.defaultVal" (click)="transportSel($event,comp,i)">{{comp.compoName}}
+            <div *ngIf="EnabletransportDiv[i]" class="itemSet">
+              <td>
+                <label class="samllLbl">From</label>
+                <input class="ipStyle" class="ipStyle" name="{{i}}" ngModel type="text" [(ngModel)]="comp.fobplace">
+              </td>
+              <td>
+                <label class="samllLbl">Distance in KMs
+                  <span class="asterisk_input">*</span>
+                </label>
+                <input type="number" required [(ngModel)]="distance[i]" class="ipStyle" (blur)="calPrice($event,i,comp)" name="{{i+newComponents.length*2}}"
+                  placeholder="Enter distance.." ngModel/>
+              </td>
+
+              <!-- <div style="margin-left:10px;">
+                <div class="costDiv"> -->
+              <td>
+                <label class="samllLbl" for="priceField">Cost</label>
+                <input type="number" name="{{i+newComponents.length*3}}" (keyup)="enterPrice($event,i)" [(ngModel)]="calCulatePrice[i]" class="ipStyle"
+                  id="priceCost" name="priceField" [disabled]="!disableStatus[i]">
+              </td>
+              <!-- </div>
+              </div> -->
+            </div>
+          </li>
+          <div *ngIf="(newComponents.length!=0)" class="btnGrp">
+            <button class="btnStyle1" (click)="reset()" type="reset">Reset</button>
+            <button class="btnStyle1" [disabled]="!(selectedComps.length>0 && sampleCost.length>0)" type="submit">Get Total</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="showCost">
+      <div *ngIf="((total>0 && !isExp) && (selectedComps.length>0 && sampleCost.length>0))" class="totalDiv">
+        <div style="display:inline-block">
+          <label class="costLbl">Total cost for Transportation :</label>
+          <input type="number" [(ngModel)]="total" disabled />
+        </div>
+
+        <div class="btnClass" *ngIf="isStndLone">
+          <button class="savebtn" (click)="enableOverWrite(i)" *ngIf="rewApp" type="button">Overwrite</button>
+          <button class="savebtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite(i)" type="button">Cancel</button>
+          <button class="savebtn" (click)="getPrevComments(i)" *ngIf="rewApp" type="button"> Previous comments</button>
+
+        </div>
+        <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+          Previous comments
+        </i> -->
+        <div class="overwriteDiv" *ngIf="isStndLone">
+          <form #ind="ngForm" (ngSubmit)="remarksForm(ind.value,i)">
+            <div style="display:inline-block" *ngIf="enableOverwriteDiv">
+              <label class="costLbl">Overwritten Cost :</label>
+              <input type="number" required name="overWrittenTotal" #overWrittenTotalTxt="ngModel" [(ngModel)]="overWrittenTotal" />
+            </div>
+            <label *ngIf="enableOverwriteDiv || (remarksArray!=null)" class="costLbl">Remarks
+              <span class="asterisk_input">*</span>
+            </label>
+            <textarea *ngIf="enableOverwriteDiv || (remarksArray!=null)" name="overWrite" #overWrit="ngModel" [(ngModel)]="remarksArray" (keyup)="checkremrk(overWrit.value)"
+              cols="20" required ngModel class="remarksField" placeholder="Enter remarks.."></textarea>
+              <div *ngIf="message" style="margin-bottom: 20px;" class="msgDiv">
+                  {{successMsg}}
+                </div>
+            <div class="msgDiv" *ngIf="((total>0) && (!isExp))">
+              <!-- <button (click)="saveTransport()" [disabled]="!submtBtn" class="btnStyle1" style="margin-bottom:50px;">Save</button> -->
+              <button (click)="saveTransport()" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" style="margin-bottom: 15px;" [disabled]="(!ind.form.valid) || (!submtBtn)" class="btnStyle1" >Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+ 

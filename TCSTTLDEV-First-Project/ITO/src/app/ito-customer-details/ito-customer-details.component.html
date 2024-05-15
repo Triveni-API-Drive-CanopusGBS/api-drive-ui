@@ -1,0 +1,163 @@
+<div class="customerContainer">
+  <form #custDetails="ngForm" (ngSubmit)="Customerdetails(custDetails.value)">
+    <div class="createCustomer">
+        <label style="font-family: helvetica;font-weight: bold; text-align: justify;">Type of Offer
+			<span class="asterisk_input">*</span>
+        </label>
+        <select class="inputStyl" ngModel [(ngModel)]="typOfOfff" name="typeOfffere" required #typeOfffere="ngModel"
+               (change)="typOfOffer(typeOfffere.value)">
+               <option hidden>Please select</option>
+               <option *ngFor="let typOfOfff of typeOfOfferArray">{{typOfOfff.categoryDetDesc}}</option>
+        </select>
+
+      <label style="font-family: helvetica;font-weight: bold; text-align: justify;">Opportunity Sequence Number
+              <span class="asterisk_input">*</span>
+      </label>
+      <input type="text" class="inputStyl" required [(ngModel)]="oppSeqNo" [disabled]="quotCreated" ngModel name="oppSeqNumb" #oppSeqNumb="ngModel"
+      placeholder="Enter opportunity Seq No..." />
+      <button type="button" class="btn2"  [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }"  style="float: left;margin-left: 8px;" *ngIf="!quotCreated" [disabled]="!(custDetails.form.valid || enableNext)" (click)="getData(oppSeqNumb.value, typeOfffere.value)"
+        label="Submit">Submit</button>
+      <!-- <div style="margin-left: 15px;"> -->
+        <p-progressSpinner *ngIf="!hidespinner" [style]="{width: '25px', height: '50px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+     <!-- </div> -->
+
+ </div>
+
+ <div class="qotbody">
+    <div class="sectionDiv">
+     <section>
+            <div *ngIf="msgDiv">
+                <label class="successMsg">{{message}}</label>
+            </div>
+            <div  *ngIf="!msgDiv">
+            <table class="sectionTable" *ngIf="sfdcCustData!=null">
+                <td>
+                    <div class="sectionContent" style="width: 200px;">
+                      <h1 style="
+                      color: black;
+                      font-size: 13px;
+                      font-family: helvetica;">Account Details</h1>
+                      <p class="contentlabel"  >Account Name: {{sfdcCustData.custName}}</p>
+                      <!-- <p class="contentlabel" *ngIf="sfdcCustData.consultantName!=null">Consultant Name: {{sfdcCustData.consultantName}}</p> -->
+          
+                      <!-- <p class="contentlabel" *ngIf="sfdcCustData.consultantAddress!=null">Consultant Address: {{sfdcCustData.consultantAddress}}</p> -->
+                    </div>
+                    </td>
+            <td>
+            <div class="sectionContent" style="width: 400px">
+                  <h1 style="
+                  color: black;
+                  font-size: 13px;
+                  font-family: helvetica;">Opportunity Details</h1>
+                  <!-- <p class="contentlabel"  >Account Name: {{sfdcCustData.custName}}</p> -->
+
+                  <p class="contentlabel"  >Opportunity Name: {{sfdcCustData.oppName}}</p>
+
+                  <p class="contentlabel">Customer Type: {{sfdcCustData.custType}}</p>
+
+                  <!-- <p class="contentlabel">Customer Status: {{sfdcCustData.customerStatus}}</p> -->
+
+                  <p class="contentlabel" *ngIf="sfdcCustData.oppContactName!=null">Contact Person Name: {{sfdcCustData.oppContactName}}</p>
+
+                  <p class="contentlabel" *ngIf="sfdcCustData.oppContactPhone!=null">Contact Number: {{sfdcCustData.oppContactPhone}}</p>
+
+                  <p class="contentlabel" *ngIf="sfdcCustData.oppContactEmail!=null">Email: {{sfdcCustData.oppContactEmail}}</p>
+
+                  <p class="contentlabel" *ngIf="sfdcCustData.address!=null">Address: {{sfdcCustData.address}}</p>
+                  <p class="contentlabel" *ngIf="sfdcCustData.oppContactStateName!=null">State: {{sfdcCustData.oppContactStateName}}</p>
+                  <p class="contentlabel" *ngIf="sfdcCustData.custType!=null">Type: {{sfdcCustData.custType}}</p>
+
+                  <p class="contentlabel" *ngIf="sfdcCustData.address!=null">SalesForce Link:  <a style="color:dodgerblue" (click)="openSFDC(sfdcCustData.sfdcLink)">{{sfdcCustData.sfdcLink}}</a></p>
+             
+                    <!-- <label class="contentlabel"> Whether Customer Details is same as EndUserDetails: 
+                      <span class="asterisk_input">*</span>
+                      <div class="radioStylediv">                                         
+                        <input class="radioStyl" type="radio" ngModel [(ngModel)]="endUser" name="endUserDetail" value="YES" (click)="enableyes()">Yes
+                        <input class="radioStyl" type="radio" ngModel [(ngModel)]="endUser" name="endUserDetail" value="NO" (click)="enableNo()">No                
+                        </div>
+                    </label> -->
+                   
+            </div>
+             </td>
+				  
+              <td>
+
+             
+                    <div class="sectionContent" style="width: 400px;" *ngIf="sfdcCustData.isEndUserAvailable=='No'">
+                    <h1 style="color: black; font-size: 13px; font-family: helvetica;">End User Details</h1>
+                    
+                    <!-- <div class="ui-g-4" style="padding-left: 0px; color: black;">                                 
+                      <label>Customer Type: </label>
+                      <span class="asterisk_input">*</span>
+                    </div> -->
+					
+                    <!-- <div class="ui-g-6" style="padding-left: 0px;">
+                      <select class="inputStyl" ngModel [(ngModel)]="typOfCust" name="typeOfCustomer" required #typeOfCustomer="ngModel"
+                      (change)="typOfCustomer(typeOfCustomer.value)">
+                      <option hidden selected>Please select</option>
+                      <option *ngFor="let typOfCust of typeOfCustomerArray">{{typOfCust.categoryDetDesc}}</option>
+                      <!-- <option [disabled]="typOfCust.disabled" *ngFor="let typOfCust of typeOfCustomerArray" [ngValue]="typOfCust.categoryDetDesc">{{typOfCust.Export}}</option> -->
+
+                      <!-- </select>                  
+                    </div> -->
+
+       
+                      
+                    <!-- <div class="sectionContent" *ngIf="domcust">
+                    <div class="ui-g-4" style="padding-left: 0px; color: black;">
+                      <label>State
+                          <span class="asterisk_input">*</span>
+                      </label>
+                    </div>
+					
+                    <div class="ui-g-6" style="padding-left: 0px;">
+
+                      <select class="inputStyl"   [(ngModel)]="state"  required [(ngModel)]="state" ngModel name="stateId" #stateId="ngModel"
+                         (change)="onStateChange(stateId.value)">
+
+                        <option [ngValue]="undefined" hidden selected> Please select  </option>
+                        <option [ngValue]="states.locationId" [selected]="states.locationId == stateId" *ngFor="let states of statesList">{{states.locationName}}</option>
+                      </select>
+                    </div>
+                  </div> -->
+            
+                    <!-- <div class="ui-g-4" style="padding-left: 0px; color: black;">                                 
+                        <label>End User Name: </label>
+                        <span class="asterisk_input">*</span>
+                    </div>
+					
+                    <div class="ui-g-6" style="padding-left: 0px;">
+                        <input class="inpstyles" type="text" required name="endUserName" [(ngModel)]="sfdcCustData.endUserStateName" ngModel #endUserNamee="ngModel">
+                    </div> -->
+                                
+                    <!-- <div class="ui-g-4" style="padding-left: 0px; color: black;">
+                    <label>End User State: </label>
+                    </div>
+                    <div class="ui-g-6" style="padding-left: 0px;">
+                          <input class="inpstyles" type="text" required name="endUseAdd" [(ngModel)]="sfdcCustData.endUserStateName" ngModel #endUseAdde="ngModel">
+                    </div> -->
+                    <p class="contentlabel" *ngIf="sfdcCustData.endUserName!=null">Name: {{sfdcCustData.endUserName}}</p>
+                    <p class="contentlabel" *ngIf="sfdcCustData.endUserCustType!=null">Type: {{sfdcCustData.endUserCustType}}</p>
+                    <p class="contentlabel" *ngIf="sfdcCustData.endUserStateName!=null">State: {{sfdcCustData.endUserStateName}}</p>
+                                  
+                </div>
+              </td>
+            </table>
+            <table *ngIf="sfdcCustData!=null">
+              <tr>
+                <td style="color: black; font-size: 13px"><b>Enquiry Reference</b></td>
+            <td><textarea class="enqStyl" name="enqRerff" #enqRerff="ngModel" ngModel [(ngModel)]="enqRer" type="text"></textarea></td>
+          </tr>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+    
+    <div class="previouFun" *ngIf="sfdcCustData!=null">
+      <!--<button type="button" (click)="close()"></button> -->      
+         <button class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+      <button class="btn2" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }"  *ngIf="!disableNext" type="submit">Next</button>
+    </div>
+  </form>
+</div>

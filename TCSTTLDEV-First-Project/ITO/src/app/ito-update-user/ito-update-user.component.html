@@ -1,0 +1,166 @@
+<!-- <div class="example-container">
+    <form class="example-form" #updateNewUserForm="ngForm" (ngSubmit)="updateUser(updateNewUserForm.value)">
+      <h3>Update User</h3> <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" (click)="enablefields(displayMode)"></i>
+        <div class="userCreation">
+            <div class="custStyl">
+                <label>User Id</label> 
+                <input type="text" [(ngModel)]="selectedUser.userId"  ngModel name="userId" class="inpStyl" [disabled]="displayMode"  placeholder="Type Employee Id"/>
+              </div>
+            <div class="custStyl">
+                <label>Employee Id</label> 
+                <input type="text" [(ngModel)]="selectedUser.empId"  ngModel name="empId" class="inpStyl" [disabled]="displayMode"  placeholder="Type Employee Id"/>
+              </div>
+              <div class="custStyl">
+                  <label>Employee Name</label> 
+                  <input type="text" [(ngModel)]="selectedUser.empName"  ngModel name="empName" class="inpStyl" [disabled]="displayMode"  placeholder="Type Employee Name"/>
+                </div>
+                <div class="custStyl">
+                    <label>Email Id</label> 
+                    <input type="email" [(ngModel)]="selectedUser.emailId"  ngModel name="emailId" class="inpStyl" [disabled]="displayMode"  placeholder="Type Email Id"/>
+                </div>
+              <div class="custStyl">
+                  <label>Contact Number</label> 
+                  <input type="number" [(ngModel)]="selectedUser.contactNumber"  ngModel name="contactNumber" class="inpStyl" [disabled]="displayMode"  placeholder="Type Contact Number"/>
+                </div>
+                <div class="custStyl">
+                  <label>Department</label> 
+                  <select class="widthInc" #Dept [(ngModel)]="selectedUser.group" [disabled]="displayMode" ngModel name="group">
+                    <option *ngFor="let department of Departments" [selected]="department.defaultVal">{{department.value}}</option>
+                  </select>
+                </div>
+                 <div class="checkStyl">
+                  <label>Region Coverage</label>
+                    <li class="checkbox" *ngFor="let region of Regions">
+                    <input type="checkbox" [disabled]="displayMode" (click)="checkedRegions($event,region,ind)" value="region.defaultVal" name="region" [checked]="region.defaultVal" class="checkBoxStyl">{{region.value}}
+                    </li>    
+                  </div>
+                  <div class="checkStyl">
+                    <label>Role</label>
+                    <li class="checkbox" *ngFor="let role of Roles;let ind=index">
+                      <input type="checkbox" [disabled]="displayMode" [checked]="role.defaultVal" (click)="checkedRoles($event,role,ind)" class="checkBoxStyl">{{role.value}}
+                    </li>
+                  </div>
+               <label class="uploadStyl" >Upload Photo</label>
+               <input type="file" accept="/image*" (change)="fileChangeEvent($event)" ngModel name="image"><br/>
+
+               <div class="checkStyl">
+                <label>Is Active</label> 
+                  <input type="checkbox" ngModel name="active" [disabled]="displayMode" [checked]="selectedUser.active" class="checkBoxStyl">
+     
+              </div>
+
+                <div class="btn1">
+                    <button class="btn2Style" type="reset">Reset</button> 
+                    <button class="btn2" type="submit">Sumbit</button>                   
+                </div>
+        </div>
+    </form>
+  </div>       -->
+
+<div class="example-container">
+  <h4>Update User</h4>
+
+  <form class="example-form" *ngIf="hideprogress" #updateNewUserForm="ngForm" (ngSubmit)="updateUser(updateNewUserForm.value)">
+    <i style="color:rgb(213,120,23);" class="fa fa-pencil-square-o fa-2x"  aria-hidden="true" (click)="enablefields(displayMode)"></i>
+
+    <div class="userCreation">
+      <div style="position: absolute;margin-left:50%;margin-top:30px;">
+                <img class="loggedUserstyle" [src]="image"> 
+                <label class="uploadStyl" >Upload Photo</label>
+        <input type="file" accept="/image*" (change)="fileChangeEvent($event)" ngModel name="image" [disabled]="displayMode">
+        <br/>
+            </div>
+      <div hidden class="custStyl">
+        <label hidden>User Id</label>
+        <input hidden type="number" [(ngModel)]="selectedUser.userId" ngModel name="userId" class="inpStyl" [disabled]="displayMode"
+          placeholder="Type Employee Id" />
+      </div>
+      <div class="custStyl">
+        <label>Employee Id
+          <span class="asterisk_input">*</span>
+        </label>
+        <input type="number" [pattern]="emptyTextPattern" [(ngModel)]="selectedUser.empId" ngModel name="empId" class="inpStyl" [disabled]="displayMode"
+          placeholder="Type Employee Id" />
+      </div>
+      <div class="custStyl">
+        <label>Employee Name
+          <span class="asterisk_input">*</span>
+        </label>
+        <input type="text" required [pattern]="emptyTextPattern" [(ngModel)]="selectedUser.empName" ngModel name="empName" #empName="ngModel"
+          [ngClass]="{'bordercolor': empName.errors && empName.dirty}" class="inpStyl" [disabled]="displayMode" placeholder="Type Employee Name"
+        />
+      </div>
+      <div class="custStyl">
+        <label>Email Id
+          <span class="asterisk_input">*</span>
+        </label>
+        <input type="email" [(ngModel)]="selectedUser.emailId" required [pattern]="emailPattern" ngModel name="emailId" #emailId="ngModel"
+          [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }" class="inpStyl" [disabled]="displayMode"
+          placeholder="Type Email Id" />
+      </div>
+      <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+        Please enter valid Email Id
+      </div>
+      <div class="custStyl">
+        <label>Contact Number</label>
+        <input type="number" [(ngModel)]="selectedUser.contactNumber" class="inpStyl"  ngModel name="contactNumber"
+          #contactNumber="ngModel" [disabled]="displayMode"
+          placeholder="Type Contact Number" />
+      </div>
+      
+      <div class="custStyl">
+        <label>Department</label>
+        <select class="widthInc" #Dept [(ngModel)]="selectedUser.group" [disabled]="displayMode" ngModel name="group">
+          <option value="" hidden selected>Please select</option>
+          <option *ngFor="let department of Departments" [selected]="department.defaultVal">{{department.value}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Designation</label>
+        <input type="text" [(ngModel)]="selectedUser.designation" class="inpStyl"  ngModel name="designation"
+          #contactNumber="ngModel" [disabled]="displayMode"
+          placeholder="Enter Designation" />
+      </div>  
+      <div class="custStyl">          
+        <label style="margin-top:45px;">Role
+          <span class="asterisk_input">*</span>
+        </label>
+        <div><input class="checkBoxStyl" [disabled]="displayMode" style="height:17px;width:17px;" type="checkBox" [checked]="selectAllVal" (click)="selectAll($event)"><b>Select All</b></div>
+          <li class="checkbox" *ngFor="let role of Roles;let ind=index">
+          <input type="checkbox" [disabled]="displayMode" required [checked]="role.defaultVal" (click)="checkedRoles($event,role,ind)"
+            class="checkBoxStyl">{{role.value}}
+          </li>
+        </div>
+      <div class="custStyl">
+        <label>Region Coverage
+          <span class="asterisk_input">*</span>
+        </label>
+        <div><input class="checkBoxStyl" [disabled]="displayMode" style="height:17px;width:17px;" type="checkBox" [checked]="selectAllRe" (click)="selectAllReg($event)"><b>Select All</b></div>
+        <li class="checkbox" *ngFor="let region of Regions">
+          <input type="checkbox" [disabled]="displayMode" required (click)="checkedRegions($event,region,ind)" value="region.defaultVal"
+            name="region" [checked]="region.defaultVal" [ngClass]="{'bordercolor': region.errors && region.dirty}" class="checkBoxStyl">{{region.value}} ({{region.dependKey}})
+        </li>
+      </div>
+      
+
+      <div class="checkStyl">
+        <label>Is Active</label>
+        <input type="checkbox" ngModel name="active" [(ngModel)]="selectedUser.active" [disabled]="displayMode" class="checkBoxStyl">
+      </div>
+
+      <div class="btn1">
+        <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+        <button [disabled]="!updateNewUserForm.form.valid" id="myBtn" class="btn2" type="submit">Submit</button>
+        <div style="margin-left:47%;padding-bottom:30px; ">
+          <p-progressSpinner *ngIf="!hidespinner"></p-progressSpinner>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div *ngIf="!hideprogress" style="margin-left:40%;">
+    <p-progressSpinner  ></p-progressSpinner>
+  </div>
+</div>

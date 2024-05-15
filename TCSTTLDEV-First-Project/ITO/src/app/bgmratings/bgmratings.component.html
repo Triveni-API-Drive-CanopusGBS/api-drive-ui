@@ -1,0 +1,106 @@
+<div class="flexCollll">
+    <p-progressSpinner [hidden]="spinner" class="spinnerWidth" [style]="{width: '50px', height: '50px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+    <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+    [value]="tableList" selectionMode="single"  [paginator]="true" [rows]="10">
+    <ng-template pTemplate="caption">
+      <div  class="ui-helper-clearfix">
+
+        <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+          Export to Excel</i> -->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+
+         
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">               
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="'bgmType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">               
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="'bgmRating'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">               
+          <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+            (keyup)="searchSet(dt,$event.target.value)"> -->
+        
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr #tr  id="{{rowData.pkgId}}"  class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+        <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+  <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+
+
+
+      <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="vin">Frame Name</label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.frameName}}</label>
+                          </div>
+                        </div>
+                                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="vin">Power</label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.maxPower}}</label>
+                          </div>
+                        </div>
+                                        <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="vin">BGM Type</label>
+                          </div>
+                          <div class="ui-g-6">
+                            <label>: {{selectedFrame.bgmType}}</label>
+                          </div>
+                        </div>
+
+                                                  
+              
+                                                       <div class="ui-g-12">
+                          <div class="ui-g-5">
+                            <label for="color">BGM Rating</label>
+                          </div>
+                          <div class="ui-g-4">
+                            <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.bgmRating" />
+                          </div>
+                        </div>
+                      
+                      </div>
+                      <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                          <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+                        </div>
+                      </p-footer>
+                    </p-dialog>
+                    <p-dialog header="Saved" [(visible)]="sucessboolean" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                        <div class="ui-g-6">
+                            <label>{{successMsg}}</label>
+                          </div> 
+                      <p-footer>
+                            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                              <button type="button" pButton icon="fa fa-check" (click)="closeDialog()" label="Ok"></button>
+                            </div>
+                          </p-footer>
+                    </p-dialog>
+                    <button style="margin-left: 125px;width:70px;"   (click)="update()" class="updateTrans"  *ngIf="finalFrameList.length!=0"
+                    type="button" >Update</button>
+</div>

@@ -1,0 +1,141 @@
+<div [appDisable]="disableData">
+    <p style="font-weight: bold; margin-bottom:20px;text-decoration: underline;font-size:14px;font-family:helvetica;margin-left:100px;">
+Quality Assurance
+     </p>
+  <table id="addOnTable"   class="addOnTable" style="margin-left:100px;">
+                   
+  
+
+        <tr>
+            <div class="flexCollll">           
+                      <label class="othersip" style="width:20px; text-align: center;font-weight: bold;"></label>
+                       <label class="othersip" style="width:200px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;">Equipment</label>
+                       <label class="othersip" style="width:200px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;">Test</label>
+                   </div>
+               </tr>
+    
+  
+            
+    <tr *ngFor="let Dropdown of othetList ; let i=index">
+    
+            
+                   
+
+        <div class="flexCollll" >
+            <input type="checkbox" [disabled]="disableData"  style="width:20px;" [checked]="this.arraycheck[othetList[i].seqNo]" [(ngModel)]="this.arraycheck[othetList[i].seqNo]" name="itemRemark" (click)="itemRmrkCheck($event,othetList[i].seqNo)" class="checkBoxStyl">
+          
+         
+      
+        <textarea name="othetList[i].equipment"  
+        [(ngModel)]="othetList[i].equipment" [ngStyle]="{ 'background-color':arraycheck[othetList[i].seqNo] && disableData==false ? 'white' : '#efeff5' }" [disabled]="!arraycheck[othetList[i].seqNo] || disableData " class="othersip" style="height:100px;resize: none;width:200px;font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                           
+                                              <textarea name="othetList[i].test" [ngStyle]="{ 'background-color':arraycheck[othetList[i].seqNo] && disableData==false ? 'white' : '#efeff5' }" [disabled]="!arraycheck[othetList[i].seqNo] || disableData" 
+                                              [(ngModel)]="othetList[i].test" class="othersip"  style="height:100px;resize:none;width:200px;font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                            </div>
+                                            </tr>  
+                                        </table>
+                                        <button type="button" [disabled]="disableData" class="othersbtn3" (click)="addRowsOth1()">Add</button>
+
+                
+                                                                 
+                                        <form #others212="ngForm" (ngSubmit)="compOthersForm1(others212.value ,others212,'rhs')" style="margin-bottom:15px;">
+
+                                          <table  id="addOnTable1 "class="addOnTable1" style="margin-left:100px;">
+                                              
+
+
+                                               
+                                              <div *ngFor="let o of itemOthersList1;let i=index">
+                                                      <div class="flexCollll" >
+                                                <tr>
+                                                      <div class="flexCollll" >
+                                                      <!-- <input [ngStyle]="{ 'background-color':othetList[i].editFlag? 'white' : '#efeff5' }" *ngIf="o.itemId ==Dropdown1.itemId "
+                                                      value="{{o.seqNo}}" class="othersip" readonly="readonly" style="resize:none;width:50px;height:50px; font-size:13px;font-family:helvetica;border:1px solid black" type="number">  
+                                                     -->
+                                                      <textarea
+                                                      value="{{o.equipment}}" class="othersip" [disabled]="!disablequaility[i]"   [(ngModel)]="o.equipment" [ngModelOptions]="{standalone: true}" ngModel
+                                                      style="margin-left:35px;resize:none;width:200px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea>    
+                                                     
+                                                      <textarea
+                                                      value="{{o.test}}" class="othersip" [disabled]="!disablequaility[i]"   [(ngModel)]="o.test" [ngModelOptions]="{standalone: true}" ngModel
+                                                      style="width:200px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea>    
+                                                     
+                                                     
+                                                      <div class="flexCollll" >
+                                                
+                                                          <i style="margin-top:10px;color:rgb(213,120,23);"   class="fa fa-times fa-2x" (click)="cancelLinesOth1(i)" aria-hidden="true"></i>
+                                                          <button (click)="editlhs(i)" *ngIf=" !disablequaility[i]" style="color:white; border-radius: 5px;margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;"
+                                                          type="button">Edit</button>
+                                                          <button (click)="savelhs(i)" *ngIf=" disablequaility[i]" style="color:white; border-radius: 5px;margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;"
+                                                          type="button">Save</button>
+                                                      </div>
+                                                      </div>
+                                                </tr>
+                                              </div>
+                                        </div>
+                                     
+                                       
+
+
+                                                <div  *ngIf="displayOthnewLine1"  >
+                                                      <div  class="flexCollll"  >
+                                                <tr>
+                                                    
+                                                      <div class="flexCollll" >
+
+                                                              <!-- <input name="othdes0"style="resize:none;width:50px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black"  placeholder="Enter Sl.NO" required #othdes0="ngModel"
+                                                                  ngModel class="othersip" type="number"> -->
+                                                                  
+                                                              <textarea name="othdes1"  style="margin-left:35px;resize:none;width:200px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black"  placeholder="Enter Equipment" required #othdes1="ngModel"
+                                                                  ngModel class="othersip" type="text">
+                                                                  </textarea>
+                                                                  <textarea name="othdes2"  style="resize:none;width:200px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black"  placeholder="Enter Equivalent" required #othdes2="ngModel"
+                                                                  ngModel class="othersip" type="text"></textarea>
+                                                                  
+                                                               
+                                                        
+                                                                  <div class="flexCollll" >
+                                                         
+                                                              <button style="color:white; margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;" [disabled]="!others212.form.valid"
+                                                                  type="submit">Save</button>
+                                                              <button (click)="cancelnewLineOth1()" style="color:white;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);;height:30px;;margin-top:8px;"
+                                                                  type="button">Cancel</button>
+                                                           </div>
+                                                           </div>
+                                                </tr>
+                                              </div> 
+                                              </div>
+
+                                            </table>
+
+
+                                        </form>
+                                        <div >
+                                            <p style="font-weight: bold;font-size:15px;margin-top:30px; margin-bottom:20px; margin-right:10px; margin-left:135px;">
+                                                Technical Remarks :
+                                             </p>
+                                            <textarea name="data" 
+                                            [(ngModel)]="data" class="othersip"  (keyup)="mainSaveColor()" style="height:50px;width:420px;margin-left:135px;border:1px solid black" type="text"></textarea> 
+                                             
+                                        </div>
+                                        <div *ngIf="othetList.length > 1"> 
+                                        <p   *ngIf="othetList[1].note!=null && othetList[1].note!='NULL' && othetList[1].note!=''  "  style="font-weight: bold; margin-bottom:20px; margin-left:135px;white-space: pre-line;">
+                                            {{othetList[0].note}}
+                                         </p>
+                                         </div>
+                                         <div *ngIf="!getPrice" style="color : red;margin-left: 135px;">
+                                                PLease save all the Add-On's  !! For saving Quality-Assurance List.
+                                        
+                                            </div> 
+                                                                    
+</div>
+<div style="margin-left: 135px;">
+        <div *ngIf="dialogMsgApp" class="msgDiv">
+                {{dialogMsgVal}}
+            </div>
+        <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-right:10px;margin-bottom:50px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+         *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+  <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-bottom:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+  type="button" [disabled]="disableData" (click)="saveOthers()">Save</button>
+  
+  </div>  

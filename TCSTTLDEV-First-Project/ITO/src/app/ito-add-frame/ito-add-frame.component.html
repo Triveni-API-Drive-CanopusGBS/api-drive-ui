@@ -1,0 +1,91 @@
+<div class="example-container">
+  <form class="example-form" #newVariantUpdateForm="ngForm" (ngSubmit)="newVariantUpdate(newVariantUpdateForm.value)">
+    <h2>Frame Creation</h2>
+    <div class="radioStylediv">
+      <input class="radioStyl" type="radio" name=add (click)="enableAdd()">Add New Frame
+      <input class="radioStyl" type="radio" name=add (click)="enableUpdate()">Update Frame Power
+    </div>
+    <div class="userCreation" *ngIf='addDiv'>
+      <h2>Add Frame</h2>
+      <div class="custStyl">
+        <label>Turbine Design
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="widthInc" required>
+          <option hidden>Please select</option>
+          <option *ngFor="let turbine of TurbineDesignArray">{{turbine.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Turbine Type
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="widthInc" required>
+          <option hidden>Please select</option>
+          <option *ngFor="let model of TurbineTypeArray">{{model.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Frames
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="inpStyl" type="text" name="frame" />
+      </div>
+      <div class="custStyl">
+        <label>Capacity
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="inpStyl" type="text" name="capacity" />
+      </div>
+
+      <div class="btn1">
+        <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+        <button class="btn2Style" type="reset">Reset</button>
+        <button [disabled]="!newVariantUpdateForm.form.valid" class="btn2" type="submit">Save</button>
+      </div>
+    </div>
+    <div class="userCreation" *ngIf='updateDiv'>
+      <h2>Update Frame Power</h2>
+      <div class="custStyl">
+        <label>Turbine Design
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="widthInc" ngModel name="turbineDesign" required #turbineDesign="ngModel" (change)="TDSel(turbineDesign.value)">
+          <option hidden>Please select</option>
+          <option *ngFor="let turbine of TurbineDesignArray">{{turbine.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Turbine Type
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="widthInc" ngModel [(ngModel)]="turbineTyp" name="turbineType" required value="model.categoryDetDesc" #turbineType="ngModel"
+          (change)="TOTSel(turbineType.value)">
+          <option hidden>Please select</option>
+          <option *ngFor="let model of TurbineTypeArray">{{model.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Frames
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="widthInc" required>
+          <option hidden>Please select</option>
+          <option *ngFor="let frames of tempFrameArray">{{frames.frameDesc}}</option>
+        </select>
+      </div>
+      <div class="custStyl">
+        <label>Capacity
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="inpStyl" type="text" name="capacity" />
+      </div>
+
+      <div class="btn1">
+        <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+        <button class="btn2Style" type="reset">Reset</button>
+        <button [disabled]="!newVariantUpdateForm.form.valid" class="btn2" type="submit">Update</button>
+      </div>
+    </div>
+  </form>
+</div>

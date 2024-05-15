@@ -1,0 +1,346 @@
+<div class="example-container">
+<!-- <p-dialog class="dialog" header="Confirm Message" [(visible)]="dialogMsg" showEffect="fade" appendTo="body" [modal]="true"
+    [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'rgb(213,120,23)'}">
+    {{dialogMsgVal}}
+</p-dialog>
+<p-dialog class="dialog" header="Confirm Message" [(visible)]="dialogErrorMsg" showEffect="fade" appendTo="body" [modal]="true"
+[responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'Red'}">
+{{dialogErrorMsgVal}}
+</p-dialog> -->
+    <h4 Style="color:grey; font-size:20px;">Frame & Orientation Updates</h4>
+    <button class="collapsible" (click)="displayFrame()">Frame</button>
+
+    <div class="custStyl" *ngIf='display'>
+        <div>
+            <button class="addStyle" (click)="saveNew()" style="float:right;width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);">Add</button>
+        </div>
+        <div class="tableStyle" style="margin-bottom:10px;">
+            <p-table [columns]="cols" #dt [value]="FrameArray" selectionMode="single" [(selection)]="selectedCar" [paginator]="true"
+                [rows]="10">
+                
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                    <tr>
+                        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameDesc'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'framePowerActive'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineCode'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns" style="border:1px solid black">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td style="text-align:left;">
+                            <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editFrame(rowData)"></i>
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-rowData>
+
+                </ng-template>
+            </p-table>
+            <!-- <div class='btnStylediv'>
+                        <button   style="float:right; width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:3px; border:1px solid rgb(213,120,23);">Save</button> 
+                
+                    </div> -->
+            <p-dialog header="Frame Details" [(visible)]="displayDialogadd" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+                <div class="radioStylediv">
+                    <input class="radioStyl" type="radio" name=add (click)="enableAdd()">Add New Frame
+                    <input class="radioStyl" type="radio" name=add (click)="enableUpdate()">Update Frame Power
+                </div>
+                <form #addFrameForm="ngForm" (ngSubmit)="createFrame(addFrameForm.value)">
+                    <div class="userCreation" *ngIf='addDiv'>
+                        <h2>Add Frame</h2>
+                        <div class="custStyl">
+                            <label>Type Of Blade
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" ngModel name="turbineDesc" value="turbine.categoryDetDesc" #turbineDesc="ngModel" required>
+                                <option hidden>Please select</option>
+                                <option [ngValue]="turbine.categoryDetCode" *ngFor="let turbine of TurbineDesignArray">{{turbine.categoryDetDesc}}</option>
+                            </select>
+                        </div>
+                        <div class="custStyl">
+                            <label>Turbine Type
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" required ngModel [(ngModel)]="turbineTyp" name="turbineType" required value="model.categoryDetDesc"
+                                #turbineType="ngModel" (change)="TOTSel(turbineType.value)">
+                                <option hidden>Please select</option>
+                                <option [ngValue]="model.categoryDetCode" *ngFor="let model of TurbineTypeArray">{{model.categoryDetDesc}}</option>
+                            </select>
+                        </div>
+                        <!-- <div class="custStyl">
+                                            <label [hidden]="!enableCT">Condenser Type</label>
+                                            <select [hidden]="!enableCT" class="widthInc" [(ngModel)]="CondenserTyp" ngModel name="condenserType" (change)="TOCSel(condenserType.value)">
+                                              <option hidden>Please select</option>
+                                              <option *ngFor="let condenser of condenserType">{{condenser.categoryDetDesc}}</option>
+                                            </select>
+                                            </div> -->
+                        <div class="custStyl">
+                            <label>Frames
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <div class="subCustStyle">
+                                <label>TST-</label>
+                                <input class="subInpStyl" type="text" required ngModel name="frame" #frame="ngModel" (keyup)="FrameValid($event.target.value)"/>
+                            </div>
+                        </div>
+                        <div *ngIf="showMsg" style="margin:10px; color:red;font-size:13px;">
+                            {{msgVal}}
+                        </div>
+                        <div class="custStyl">
+                            <label>maxPow
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <input class="inpStyl" required type="number" ngModel name="maxPow" #maxPow="ngModel"/>
+                        </div>
+
+                        <div class="btn1">
+                            <button class="btn2Style" type="reset" (click)="goback(addFrameForm.value)">Cancel</button>
+                            <button [disabled]="!addFrameForm.form.valid" class="btn2" type="submit">Save</button>
+                        </div>
+
+                    </div>
+                </form>
+                <form #updateFrameForm="ngForm" (ngSubmit)="createUpdateFrame(updateFrameForm.value)">
+                    <div class="userCreation" *ngIf='updateDiv'>
+                        <h2>Update Frame Power</h2>
+                        <div class="custStyl">
+                            <label>Type Of Blade
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" required ngModel name="turbineDesign" required #turbineDesign="ngModel" (change)="TDSel(turbineDesign.value)">
+                                <option hidden>Please select</option>
+                                <option [ngValue]="turbine.categoryDetCode" *ngFor="let turbine of TurbineDesignArray">{{turbine.categoryDetDesc}}</option>
+                            </select>
+                        </div>
+                        <div class="custStyl">
+                            <label>Turbine Type
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" required ngModel [(ngModel)]="turbineTyp" name="turbineType" required value="model.categoryDetDesc"
+                                #turbineType="ngModel" (change)="TOTSel(turbineType.value)">
+                                <option hidden>Please select</option>
+                                <option [ngValue]="model.categoryDetCode" *ngFor="let model of TurbineTypeArray">{{model.categoryDetDesc}}</option>
+                            </select>
+                        </div>
+                        <!-- <div class="custStyl">
+                                                    <label [hidden]="!enableCT">Condenser Type</label>
+                                                    <select [hidden]="!enableCT" class="widthInc" [(ngModel)]="CondenserTyp" ngModel name="condenserType" (change)="TOCSel(condenserType.value)">
+                                                      <option hidden>Please select</option>
+                                                      <option *ngFor="let condenser of condenserType">{{condenser.categoryDetDesc}}</option>
+                                                    </select>
+                                                    </div> -->
+                        <div class="custStyl">
+                            <label>Frames
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" required ngModel name="frame" #frame="ngModel" value="frames.frameDesc" (change)="FrameSelChange(frame.value)">
+                                <option hidden>Please select</option>
+                                <option [ngValue]="frames.frameId" *ngFor="let frames of tempFrameArray">{{frames.frameDesc}}</option>
+                            </select>
+                        </div>
+                        <div class="custStyl">
+                            <label>Min Power
+                                <span class="asterisk_input">*</span>
+                            </label>
+
+                            <input [disabled]="true" class="inpStyl" [(ngModel)]="minimPow" name="minPow" #minPow="ngModel" />
+                        </div>
+
+                        <div class="custStyl">
+                            <label>Max Power
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <input class="inpStyl" required ngModel name="maxPow" #maxPow="ngModel" (keyup)="MaxPowValid($event.target.value)" />
+                        </div>
+                        <div *ngIf="showMsgMax" style="margin:10px; color:red;font-size:13px;">
+                            Value should be greater than {{maxPowVal}}
+                        </div>
+                        
+                        <div class="btn1">
+                            <button class="btn2Style" type="reset" (click)="goback()">Cancel</button>
+                            <button [disabled]="!updateFrameForm.form.valid" class="btn2" type="submit">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </p-dialog>
+
+            <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                <form #editFrameForm="ngForm" (ngSubmit)="UpdateExistingFrame(editFrameForm.value)">
+                    <div class="ui-g ui-fluid" *ngIf="newFrameArray">
+                        <div class="ui-g-12">
+                            <div class="ui-g-4">
+                                <label for="name">Name</label>
+                            </div>
+                            <div class="ui-g-8">
+                                <label>{{newFrameArray.frameDesc}}</label>
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-4">
+                                <label for="status">Status</label>
+                            </div>
+                            <div class="ui-g-8">
+                                <select name="status" #status="ngModel" [(ngModel)]="newFrameArray.framePowerActive" style="border-radius:3px; width:150px;">
+                                    <option value="Active">Active</option>
+                                    <option value="InActive">InActive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-4">
+                                <label for="capacity">Capacity</label>
+                            </div>
+                            <div class="ui-g-8">
+                                <label>{{newFrameArray.maxPower}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                            <button type="submit " class="btn2">Save</button>
+                            <button class="btn2" type="reset" (click)="goback()">Cancel</button>
+
+                        </div>
+                    </p-footer>
+                </form>
+            </p-dialog>
+
+        </div>
+    </div>
+    <button class="collapsible" (click)="displayOrientation()">Orientation Types</button>
+    <div class="custStyl" *ngIf='dispOrien'>
+        <div>
+            <button class="addStyle" (click)="addOrien()" style="float:right;width:100px; background-color:rgb(213,120,23); color:white ; border:1px solid rgb(213,120,23);">Add</button>
+        </div>
+        <div class="tableStyle">
+            <p-table [columns]="colsOrien" #dt [value]="OrienArray" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)"
+                [paginator]="true" [rows]="10">
+               
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let colsOrien of columns" [pSortableColumn]="colsOrien.field">
+                            {{colsOrien.header}}
+                            <p-sortIcon [field]="colsOrien.field"></p-sortIcon>
+                        </th>
+                        <th>
+                            Edit
+                        </th>
+                    </tr>
+                    <tr>
+
+                        <th class="secondHeader" *ngFor="let colsOrien of columns" [ngSwitch]="colsOrien.field">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'name'" pInputText type="text" (input)="dt.filter($event.target.value, colsOrien.field, colsOrien.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'status'" pInputText type="text" (input)="dt.filter($event.target.value, colsOrien.field, colsOrien.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineType'" pInputText type="text" (input)="dt.filter($event.target.value, colsOrien.field, colsOrien.filterMatchMode)">
+                        </th>
+                        <th style="border:1px solid black; background-color:white">
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let colsOrien of columns" style="border:1px solid black">
+                            {{rowData[colsOrien.field]}}
+                        </td>
+                        <td style="border:1px solid black">
+                            <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editOrien(rowData)"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-rowData>
+
+                </ng-template>
+            </p-table>
+            <p-dialog header="Orientation Details" [(visible)]="oriendialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="300">
+                <div class="ui-g ui-fluid" *ngIf="newOrienArray">
+                    <div *ngIf="errorDiv" style="color:red;">
+                        Orinetation exist..
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="name" [(ngModel)]="newOrienArray.name" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="status">Status</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <select id="status" [(ngModel)]="newOrienArray.status" style="border-radius:3px; width:150px;">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button class="btn2" (click)="saveUpdatedOrien()">Save</button>
+                    </div>
+                </p-footer>
+            </p-dialog>
+            <p-dialog header="Orientation Details" [(visible)]="addoriendialog" [responsive]="true" showEffect="fade" [modal]="true"
+                [width]="300">
+                <form #addOrienForm="ngForm" (ngSubmit)="createOrien(addOrienForm.value)">
+                    <div class="userCreation">
+                        <div *ngIf="errorDiv" style="color:red;">
+                            Orinetation exist..
+                        </div>
+                        <div class="custStyl">
+                            <label>Turbine Type
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <select class="widthInc" required ngModel name="turbinetype" value="model.categoryDetDesc" #turbinetype="ngModel">
+                                <option hidden>Please select</option>
+                                <option *ngFor="let model of TurbineTypeArray">{{model.categoryDetDesc}}</option>
+                            </select>
+                        </div>
+                        <div class="custStyl">
+                            <label>Orientation Name
+                                <span class="asterisk_input">*</span>
+                            </label>
+                            <input class="widthInc" type="text" ngModel name="orien" #orien="ngModel" />
+                        </div>
+                        <!-- <div class="custStyl">
+                                  <label>Status<span class="asterisk_input">*</span></label> 
+                                  <select class="widthInc" required  ngModel name="status" #status="ngModel" >
+                                        <option value="active">Active</option> 
+                                        <option value="inactive">Inactive</option> 
+                                        </select>
+                                </div> -->
+                    </div>
+
+                    <p-footer>
+                        <div class="custStyl" style="float:right;">
+                            <button class="btn2" type="submit">Save</button>
+                        </div>
+                    </p-footer>
+                </form>
+            </p-dialog>
+            <div class='btnStylediv'>
+                <button style="float:right; width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:3px; border:1px solid rgb(213,120,23);">Save</button>
+
+            </div>
+        </div>
+    </div>
+</div>

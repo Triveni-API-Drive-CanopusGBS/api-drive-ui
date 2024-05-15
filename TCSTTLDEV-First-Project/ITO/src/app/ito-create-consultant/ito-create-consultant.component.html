@@ -1,0 +1,197 @@
+<!-- <div class="example-container">
+  <form class="example-form" #createConsultForm="ngForm" (ngSubmit)="createConslt(createConsultForm.value)">
+    <h3>Consultant Creation</h3>
+      <div class="userCreation">
+            <input class="fieldipStyle" ngModel name="custId" list="customers" [(ngModel)]="customer" (blur)="show()" type="text">
+            <datalist id="customers" (onchange)="selecteditem(name)">
+                <option *ngFor="let name of custList" >{{name.value}} 
+                </option>
+              </datalist>
+         <div class="custStyl">
+                <label>Consultant Name</label> 
+                    <input type="text" class="inpStyl" list="firms" ngModel name="firmName"  placeholder="Type Firm Name"/>
+                    <datalist id="firms">
+                        <option *ngFor="let firm of firmList" >{{firm.firmName}} </option>
+                    </datalist>
+                  </div>
+          <div class="custStyl">
+              <label>Contact Person Name</label> 
+              <input type="text" class="inpStyl" ngModel name="spocName"  placeholder="Type Consultant Name"/>
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label> 
+                <input type="number" class="inpStyl" ngModel name="contactNumber"  placeholder="Type Contact Number"/>
+              </div>
+              <div class="custStyl">
+                  <label>Email Id</label> 
+                  <input type="email" class="inpStyl" ngModel name="emailId"  placeholder="Type Email Id"/>
+              </div>
+              <div class="custStyl">
+                  <label>Address</label> 
+                  <textarea  class="textAreaStyl" ngModel name="address"  placeholder="Type Address"></textarea>
+              </div>
+              <div class="custStyl">
+                  <label>City</label> 
+                  <input type="text" class="inpStyl" ngModel name="city"  placeholder="Type City "/>
+              </div>
+              <div class="custStyl">
+                  <label>State</label> 
+                  <input type="text" class="inpStyl" ngModel name="state"  placeholder="Type State"/>
+              </div>
+              <div class="custStyl">
+                  <label>Country</label> 
+                  <input type="text"  class="inpStyl" ngModel name="country"  placeholder="Type Country"/>
+              </div>
+              <div class="custStyl">
+                  <label>Pincode</label> 
+                  <input type="number"  class="inpStyl" ngModel name="pincode"  placeholder="Type Pincode"/>
+              </div>
+              <div class="checkStyl">
+                  <input type="checkbox"  class="checkBoxStyl" ngModel name="spocActive"  value="Active">
+                  <label class="valStyl">Is Contact Person Active?</label>
+              </div>
+              <div class="checkStyl">
+                <input type="checkbox"  class="checkBoxStyl" ngModel name="firmActive"  value="Active">
+                <label class="valStyl">Is Firm Active?</label>
+            </div>
+              <div class="btn1">
+                  <button class="btn2Style" type="reset">Reset</button> 
+                  <button class="btn2" type="submit">Sumbit</button>                  
+              </div>
+
+              <div>
+
+              </div>
+
+      </div>
+  </form>
+</div>       -->
+<div class="example-container">
+    <h2>Consultant Creation</h2>
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <form class="example-form" *ngIf="hideprogress" #createConsultForm="ngForm" (ngSubmit)="createConslt(createConsultForm.value)">
+        <div class="userCreation">
+            <!-- <input class="fieldipStyle" ngModel name="custId" list="customers" [(ngModel)]="customer" (blur)="show()" type="text">
+              <datalist id="customers" (onchange)="selecteditem(name)">
+                  <option *ngFor="let name of custList" >{{name.value}} 
+                  </option>
+                </datalist> -->
+            <div class="custStyl">
+                <label>Consultant Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" list="firms" ngModel name="firmName" #firmName="ngModel" [ngClass]="{'bordercolor': firmName.errors && firmName.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type Firm Name" />
+                <datalist id="firms">
+                    <option *ngFor="let firm of firmList">{{firm.firmName}} </option>
+                </datalist>
+            </div>
+            <div class="custStyl">
+                <label>Contact Person Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="spocName" #spocName="ngModel" [ngClass]="{'bordercolor': spocName.errors && spocName.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type Consultant Name" />
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label>
+                <input type="number" class="inpStyl" [pattern]="mobnumPattern" ngModel name="contactNumber" #contactNumber="ngModel" [ngClass]="{'bordercolor': contactNumber.errors && contactNumber.dirty}"
+                    placeholder="Type Contact Number" />
+            </div>
+            <div *ngIf="contactNumber.errors?.pattern" style="margin:10px; color:red;">
+                Contact number should be of 10 digits
+            </div>
+            <div class="custStyl">
+                <label>Email Id
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="email" class="inpStyl" required [pattern]="emailPattern" ngModel name="emailId" #emailId="ngModel" [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }"
+                    placeholder="Type Email Id" />
+            </div>
+            <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+                Please enter valid Email Id
+            </div>
+            <div class="custStyl">
+                <label>Address</label>
+                <textarea class="textAreaStyl" minlength="15" ngModel name="address" #address="ngModel" [ngClass]="{'bordercolor': address.errors && address.dirty}"
+                    placeholder="Type Address"></textarea>
+            </div>
+            <div *ngIf="address.errors?.minlength" style="margin:10px; color:red;">
+                Minimum length must be 15 characters
+            </div>
+            <div class="custStyl">
+                <label>Country
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="country" value="country.locationName" #country="ngModel" [ngClass]="{'bordercolor': country.errors && country.dirty}"
+                    required (blur)="selectedCountry(country.value)">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let country of Countries">{{country.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>States
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="state" value="state.locationName" #state="ngModel" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                    required (blur)="selectedStates(state.value)">
+                    <option hidden> Please select</option>
+                    <option *ngFor="let state of StatesList">{{state.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>Districts
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="district" value="district.locationName" #district="ngModel" [ngClass]="{'bordercolor': district.errors && district.dirty}"
+                    required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let district of DistrictsList">{{district.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdown" class="custStyl">
+                <label>State
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="state" #state="ngModel" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type State" />
+            </div>
+            <div class="custStyl">
+                <label>City
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="city" #city="ngModel" [ngClass]="{'bordercolor': city.errors && city.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type City " />
+            </div>
+            <div class="custStyl">
+                <label>Pincode</label>
+                <input type="number" class="inpStyl" ngModel name="pincode" #pincode="ngModel" [ngClass]="{'bordercolor': pincode.errors && pincode.dirty}"
+                [pattern]="emptyTextPattern"  min="0" placeholder="Type Pincode" />
+            </div>
+
+            <div *ngIf=false>
+                <label hidden>Modified By</label>
+                <input hidden type="text" [(ngModel)]="modifiedById" ngModel name="modifiedById" class="inpStyl" />
+            </div>
+            <!-- <div class="checkStyl">
+                    <input type="checkbox"  class="checkBoxStyl" ngModel name="spocActive"  value="Active">
+                    <label class="valStyl">Is Contact Person Active?</label>
+                </div>
+                <div class="checkStyl">
+                  <input type="checkbox"  class="checkBoxStyl" ngModel name="firmActive"  value="Active">
+                  <label class="valStyl">Is Firm Active?</label>
+              </div> -->
+            <div class="btn1">
+                <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+                <button class="btn2Style" type="reset">Reset</button>
+                <button [disabled]="!createConsultForm.form.valid" class="btn2" type="submit">Sumbit</button>
+            </div>
+        </div>
+
+    </form>
+    <div style="margin-left:50%; margin-top: 20%">
+        <p-progressSpinner [hidden]="hidespinner"></p-progressSpinner>
+    </div>
+</div>

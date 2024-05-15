@@ -1,0 +1,685 @@
+<h2>Working on AC/DC</h2>
+<div *ngIf="hideprogress" style="margin-left:40%;margin-top:10%;">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+<div style="font-family: Helvetica;" *ngIf = "!hideprogress">
+        <p style="font-weight: bold; margin-bottom:20px;text-decoration: underline;font-size:14px;font-family:helvetica;margin-left:20px">
+    Performance & Utilities list</p>
+    <button style=" border-radius: 5px;color:white;margin-left:20px;height:30px;margin-bottom:10px;width:auto;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+    type="submit" (click)="Refresh2()">HMDB Table Refresh</button>
+    <button style=" border-radius: 5px;color:white;margin-left:20px;height:30px;margin-bottom:10px;width:auto;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+    type="submit" (click)="Refresh()">Utilities Refresh</button>
+    
+    <div class="flexCollll">
+        <label class="quesLabel">Turbine Performance</label>
+            <select  class="widthInc" id="{i}}" #opts21  (change)="optionSel1(opts21.value)" [(ngModel)]="defaultvalue1" ngModel>
+                <option *ngFor="let Dropdown of definedColumnsNew3; let j=index">{{Dropdown}}</option>
+            </select>
+        </div>
+    <div class="flexCollll">
+            <label class="quesLabel">HMDB Enclosure</label>
+            <select  class="widthInc" #opts22 (change)="optionSel2(opts22.value)" [(ngModel)]="defaultvalue2" ngModel>
+                    <option *ngFor="let Drop of definedColumnsNew4; let j=index">{{Drop}}</option>
+                    </select>
+    </div>
+
+    <!-- <div *ngIf="hmbd" > -->
+        <!-- <img class="loggedUserstyle" [src]="image">  -->
+        <!-- <label class="quesLabel" style="margin-bottom:30px;">Upload Photo</label> -->
+        <!-- <input type="file" accept="/image*" (change)="fileChangeEvent($event)" ngModel name="image" [disabled]="displayMode"><br/> -->
+        <!-- <input type="file" accept="/image*" (change)="fileChangeEvent($event)" ngModel name="image" #fileInput>
+    </div> -->
+
+     <div class="flexCollll" *ngIf="hmbd" >
+            <label class="quesLabel">Number Of Conditions</label>
+    <select  class="widthInc" id="{{i}}" #opts  (change)="optionSel(opts.value)"  [(ngModel)]="defaultvalue" ngModel>
+        <option *ngFor="let Dropdown of definedColumnsNew2; let j=index">{{Dropdown}}</option>
+        </select>
+      </div>
+      <div *ngIf="hmbd" >
+        <button style=" border-radius: 5px;color:white;margin-left:20px;height:30px;margin-bottom:10px;width:70px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+            type="submit" (click)="getPerf()">Next</button>
+          </div>      
+
+    
+    <div  *ngIf="hmbd && display==true" class="othersTable">
+        <div class="header"><label style="font-size: 15px;"><b>A.{{arry1[0].value}})Performance Table / HMBD</b></label></div>
+            <table id="addOnTabl" style="margin-left: 50px;" class="addOnTable">
+                <ng-container  *ngFor="let column of defaultvaluesdropdownNew">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                  {{definedColumns[column]}}
+             
+                </th>
+                </ng-container>
+                <ng-container  *ngFor="let column1 of definedColumnsNew;let i=index">
+                <tr >
+                    <th class="tabBackColor" style="font-weight: normal;">
+                        {{column1.paramNm}}
+                       
+                      </th>
+                    <ng-container  *ngFor="let column12 of defaultvaluesdropdown ;let is=index ">
+                            <ng-container  *ngIf="is ==0">
+                            <th class="tabBackColor">
+                        
+                                    <select  class="widthInc" style="margin-left: 0px; margin-bottom: 0px;" id="{{i}}" #opts1  (change)="optionSelNew(opts1.value,i,column12)"  [(ngModel)]="defaulValue[i]" [ngModelOptions]="{standalone: true}" ngModel >
+                                            <ng-container *ngFor="let Dropdown of unitList; let j=index">
+                                        <option *ngIf="definedColumnsNew[i].paramId == unitList[j].paramId" [value]="unitList[j].unitItemNm"> {{unitList[j].unitItemNm}} </option>
+                                           
+                                        </ng-container>
+                                     </select>
+                                           
+                                </th>
+                                </ng-container>
+                                <ng-container  *ngIf="is !=0">
+                    <th class="tabBackColor">
+                        
+                            <textarea [(ngModel)]="dboPerfNew[i][column12]"  required #othComrRem  (keyup)="checkForQuantity(othComrRem.value,definedColumns[column12],column12,i) "  style="background-color: rgb(239, 239, 245);"  
+                               class="othersip" type="number"></textarea>
+                        </th>
+                    </ng-container>
+                      </ng-container>
+                  
+                </tr>
+              </ng-container>
+                </table>
+                <!-- <tr *ngFor="let o of itemOthersList;let i=index">
+                      
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                        <label class="othersip">{{o.colNm}}</label>
+                    </td>
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                            <label class="othersip">{{o.colValCd}}</label>
+                    </td>
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                        <label class="othersip">{{o.quantity}}</label>
+                    </td>
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                        <label class="othersip">{{o.cost}}</label>
+                    </td>
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                        <textarea class="othersip"> {{o.techRemarks}}</textarea>
+                    </td>
+                    <td class="tabBackColor" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                            <textarea class="othersip"> {{o.comrRemarks}}</textarea>
+                    </td>                   
+                    <td style="border:none;" *ngIf="o.desSubItemId==groupNameNew[l].desSubItemId">
+                        <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesOth(i,groupNameNew[l].desSubItemId)" aria-hidden="true"></i>
+                    </td>
+                </tr>
+        
+                
+                <tr [hidden]="!displayOthnewLine[groupNameNew[l].desSubItemId]">
+                    <td class="tabBackColor">
+                        <input name="othItemName" style="background-color: rgb(239, 239, 245);" required #othItemName="ngModel"
+                            ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                            <input name="othItemVal" style="background-color: rgb(239, 239, 245);"  required #othItemVal="ngModel"
+                                ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            name="othQuantity" style="background-color: rgb(239, 239, 245);" 
+                            required #othQuantity="ngModel" ngModel class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                        <input name="othCost" style="background-color: rgb(239, 239, 245);" required #othCost="ngModel" ngModel
+                            class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                        <textarea name="othTechRem" style="background-color: rgb(239, 239, 245);"  required #othTechRem="ngModel"
+                            ngModel class="othersip" type="text"></textarea>
+                    </td>
+                    <td class="tabBackColor">
+                            <textarea name="othComrRem" style="background-color: rgb(239, 239, 245);" required #othComrRem="ngModel"
+                                ngModel class="othersip" type="text"></textarea>
+                        </td>
+                    <td style="border:none;">
+                        <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!others.form.valid"
+                            type="submit">Save</button>
+                        <button (click)="cancelnewLineOth(groupNameNew[l].desSubItemId)" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                            type="button">Cancel</button>
+                    </td>
+                </tr>
+            </table> -->
+            <!-- <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+            type="submit">Save</button> -->
+       
+        <!-- <button type="button" class="othersbtn" (click)="addRowsOth(groupNameNew[l].desSubItemId)">Add</button> -->
+        <div *ngIf="definedColumnsNew?.length > 0"><textarea style="border:none; width: 1200px; height: 140px; margin-left:20px;" readonly="readonly">{{definedColumnsNew[0].note}}</textarea></div> 
+  </div>
+  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<div class="header" style="margin-top: 10px;"><label style="font-size: 15px;"><b>A.{{arry1[1].value}})Utilities list</b></label></div>               
+<div class="headerSub" *ngIf="auxSteamList?.length > 0">
+    <table>
+        <tr>
+        <td style="min-width: 0px; font-weight: bolder;">
+    A.{{arry1[1].value}}.{{arry[0].value}}){{auxSteamList[0].subItemNm}} - 
+</td>
+<td style="min-width: 0px;">
+<textarea required #auxSteamValue style="border: 1px solid rgb(213,120,23)" [(ngModel)]="auxSteamList[0].colValCd"
+ [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+</td>
+</tr>
+</table>
+ </div>
+  <div class="altAddOns" *ngIf="auxSteamList?.length > 0" style="margin-left:30px;margin-top:10px">
+        <div class="othersTable">
+            <table id="addOnTabl" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Consumer1
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Start up, Kg/hr
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Continuous, Kg/hr
+                </th>
+                
+                <tr *ngFor="let o of auxSteamList;let i=index">
+                    <td class="tabBackColor">
+                        <input style="background-color: rgb(239, 239, 245);" required #consumerId1 
+                         [(ngModel)]="o.consumerId1"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #startUp
+                        [(ngModel)]="o.startUp"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #continuous
+                        [(ngModel)]="o.continuous"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+            </table>
+    </div>
+</div>
+
+<div *ngIf="freshList?.length > 0" class="altAddOns" style="margin-left:30px;margin-top:10px; margin-bottom: 12px;">
+    <label style="margin-left: 10px;"><b>A.{{arry1[1].value}}.{{arry[1].value}}){{freshList[0].subItemNm}}</b></label>
+    <table style="margin-left: 15px; margin-top: 10px;">
+        <ng-container *ngFor="let o of freshList;let i=index">
+        <tr *ngIf="o.feeder=='FIXED'">
+                <label style="margin-right: 10px;">{{o.consumerId1}}</label>
+                <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? 'white' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #colValCd
+                [(ngModel)]="o.colValCd"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text">   
+                <label style="margin-left: 10px;">{{o.continuous}}</label>
+            </tr>           
+        </ng-container>
+    </table>
+    <div class="othersTable">
+            <table id="addOnTabl" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Consumer/Purpose1
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Continuous Demand, m³ / hr
+                </th>
+                
+                <ng-container *ngFor="let v of freshList;let i=index">
+                <tr *ngIf="v.feeder!='FIXED'">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #consumerId1 
+                         [(ngModel)]="v.consumerId1"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <textarea [disabled]="!v.editFlag" [ngStyle]="{ 'background-color':v.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':v.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #continuous
+                        [(ngModel)]="v.continuous"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+                    </td>
+                </tr>
+            </ng-container>
+            </table>
+    </div>
+</div>
+<!-- <div class="headerSub" style="margin-bottom: 12px;">
+    <label><b>A.2.3){{controlList[0].subItemNm}} - </b></label>
+</div> -->
+<div style="margin-left: 35px;" *ngIf="surfCond?.length > 0">
+        <table>
+            <tr>
+<td style="min-width: 0px; font-weight: bolder;">A.{{arry1[1].value}}.{{arry[2].value}}){{surfCond[0].subItemNm}}</td>
+<td>
+<textarea style="border: 1px solid rgb(213,120,23)" required #surfCondValue [(ngModel)]="surfCond[0].colValCd"   (keyup)="mainSaveColor()" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea></td> 
+<td style="min-width: 0px; font-weight: bolder;">{{surfCond[0].continuous}}</td>
+</tr>
+</table>
+</div>
+
+    <div style="margin-left: 35px;" *ngIf="controlList?.length > 0">
+        <table>
+            <tr>
+                    <td style="min-width: 0px; font-weight: bolder;">A.{{arry1[1].value}}.{{arry[3].value}}){{controlList[0].subItemNm}} - </td>
+                    <td><textarea style="border: 1px solid rgb(213,120,23)" required #scfmValue
+                        [(ngModel)]="controlList[0].colValCd" [ngModelOptions]="{standalone: true}" class="othersip"   (keyup)="mainSaveColor()" type="text"></textarea></td>
+        <td style="min-width: 0px; font-weight: bolder;">{{controlList[0].continuous}}</td>
+        
+    </tr>
+</table>
+</div>       
+
+        <div style="margin-left: 35px;" *ngIf="lubeOilList?.length > 0">
+                <table>
+                    <tr>
+    <td style="min-width: 0px; font-weight: bolder;">A.{{arry1[1].value}}.{{arry[4].value}}){{lubeOilList[0].subItemNm}}</td>
+    <td>
+    <textarea style="border: 1px solid rgb(213,120,23)"   (keyup)="mainSaveColor()" required #lubOilValue [(ngModel)]="lubeOilList[0].colValCd" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea></td> 
+    <td style="min-width: 0px; font-weight: bolder;">{{lubeOilList[0].continuous}}</td>
+ </tr>
+ </table>
+</div>
+
+<div class="altAddOns" style="margin-left:30px;margin-top:10px" *ngIf="dboPerformanceList3?.length>0">
+    <label style="margin-left: 10px; margin-bottom: 12px;"><b>A.{{arry1[1].value}}.{{arry[5].value}}){{dboPerformanceList3[0].subItemNm}}</b></label>
+    <div class="othersTable">
+            <form #lhsItem="ngForm" (ngSubmit)="addLhsForm(lhsItem.value ,lhsItem)">
+            <table id="addOnTabl" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    AC Consumer2
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Speed
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Voltage, V
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Feeder Type
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Start up/Stand-by/Intermittant (KW)
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Continuous (KW)
+                </th>
+                <ng-container *ngFor="let o of dboPerformanceList3;let i=index">
+                <tr *ngIf = "o.itemType == 'AC' && o.itemCd != 'TOTAL ='">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #itemCd
+                         [(ngModel)]="o.itemCd" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #speed
+                        [(ngModel)]="o.speed" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #voltage
+                        [(ngModel)]="o.voltage" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #feeder
+                        [(ngModel)]="o.feeder" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" placeholder="-" required #startUp
+                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        (keyup)="continuSumT(o.startUp);" [(ngModel)]="o.startUp" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                        <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" placeholder="-" required #continuous
+                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        (keyup)="continuSum(o.continuous);" [(ngModel)]="o.continuous" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                    </td>
+                    <td style="border:none;" *ngIf="o.newColValFlag">
+                            <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLines(i)" aria-hidden="true"></i>
+                        </td> 
+                </tr>     
+            </ng-container>
+            <tr [hidden]="!lhsnewLine">
+                    <td class="tabBackColor">
+                         <input name="itemCd" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #itemCd="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="speed" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #speed="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="voltage" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #voltage="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="feeder" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #feeder="ngModel"
+                    ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                            <input name="startUp" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #startUp="ngModel"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                      ngModel class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                            <input name="continuous" style="background-color: white; border: 1px solid rgb(213,120,23)" required #continuous="ngModel"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            ngModel class="othersip" type="number">
+                    </td>
+                    <td style="border:none;">
+                            <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;" [disabled]="!lhsItem.form.valid"
+                                type="submit">Save</button>
+                            <button (click)="cancelnewLine()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;"
+                                type="button">Cancel</button>
+                            
+                        </td>
+                </tr>
+                <ng-container *ngFor="let o of dboPerformanceList3;let i=index">
+                <tr *ngIf = "o.itemType == 'AC' && o.itemCd == 'TOTAL ='">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                            <td class="tabBackColor">
+                                <input disabled style="background-color: rgb(239, 239, 245);" required #itemCd
+                                 [(ngModel)]="o.itemCd" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                            </td>
+                            <td class="tabBackColor">
+                                <input disabled style="background-color: rgb(239, 239, 245);" required #startUp
+                                [(ngModel)]="o.startUp" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                            </td>
+                            <td class="tabBackColor">
+                                <input disabled style="background-color: rgb(239, 239, 245);" required #continuous
+                                [(ngModel)]="o.continuous" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                            </td>
+                            
+                </tr>
+                </ng-container>
+            </table>
+            <button *ngIf="addBtnEnb" type="button" class="othersbtn" (click)="addRowsLhs()">Add</button>
+            </form>
+    </div>
+</div>
+
+<div class="altAddOns" style="margin-left:30px;margin-top:10px;" *ngIf="dboPerformanceList3?.length>0">
+    <label style="margin-left: 10px; margin-bottom: 12px;"><b>A.{{arry1[1].value}}.{{arry[5].value}}){{dboPerformanceList3[0].subItemNm}}</b></label>
+    <div class="othersTable">
+            <form #lhsRhsItem="ngForm" (ngSubmit)="addLhsRhsForm(lhsRhsItem.value ,lhsRhsItem)">
+            <table id="addOnTablDC" style="margin-bottom: 10px;" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    DC Consumer
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Speed
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Voltage, V
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Feeder Type
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Start up/Stand-by/Intermittant (KW)
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Continuous (KW)
+                </th>
+                <ng-container *ngFor="let o of dboPerformanceList3;let i=index">
+                <tr *ngIf = "o.itemType == 'DC'">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #itemCd
+                         [(ngModel)]="o.itemCd" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #speed
+                        [(ngModel)]="o.speed" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #voltage
+                        [(ngModel)]="o.voltage" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #feeder
+                        [(ngModel)]="o.feeder" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled [ngStyle]="{'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #startUp
+                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        [(ngModel)]="o.startUp" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                        <input [disabled]="!o.editFlag" [ngStyle]="{ 'background-color':o.editFlag? '#FFFFFF' : 'rgb(239, 239, 245)', 'border':o.editFlag? '1px solid rgb(213,120,23)' : 'none' }" required #continuous
+                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                        [(ngModel)]="o.continuous" [ngModelOptions]="{standalone: true}" class="othersip" type="number">
+                    </td>
+                    <td style="border:none;" *ngIf="o.newColValFlag">
+                            <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesLhs(i)" aria-hidden="true"></i>
+                        </td> 
+                </tr>
+            </ng-container>
+            <tr [hidden]="!lhsRhsnewLine">
+                    <td class="tabBackColor">
+                         <input name="itemCd" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #itemCd="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="speed" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #speed="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="voltage" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #voltage="ngModel"
+                                      ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                    <input name="feeder" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #feeder="ngModel"
+                    ngModel class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                            <input name="startUp" style="background-color: white; border: 1px solid rgb(213,120,23)"  required #startUp="ngModel"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                      ngModel class="othersip" type="number">
+                    </td>
+                    <td class="tabBackColor">
+                            <input name="continuous" style="background-color: white; border: 1px solid rgb(213,120,23)" required #continuous="ngModel"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                            ngModel class="othersip" type="number">
+                    </td>
+                    <td style="border:none;">
+                            <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;" [disabled]="!lhsRhsItem.form.valid"
+                                type="submit">Save</button>
+                            <button (click)="cancelnewLineLhs()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);border-radius: 5px;"
+                                type="button">Cancel</button>
+                            
+                        </td>
+                </tr>
+            </table>
+            <button *ngIf="addBtnEnb" type="button" class="othersbtn" (click)="addRowsLhsRhs()">Add</button>
+        </form>            
+    </div>
+    
+    <table *ngIf="dboPerformanceList3?.length>0">
+        <tr>
+            <td style="min-width: 0px; font-weight: bolder;">
+            <label>Utilities Technical Remarks</label>
+            </td>
+            <td>
+            <textarea style="border: 1px solid rgb(213,120,23)" placeholder="Enter Text .." required #text (keyup)="itmTechInRemarks()"
+            [(ngModel)]="dboPerformanceList3[0].techRemarks" [ngModelOptions]="{standalone: true}" class="othersip" type="text"></textarea>
+            </td>
+        </tr>    
+</table>
+<div><textarea style="border:none; width: 1000px; height: 100px;" readonly="readonly">{{dboPerformanceList3[0].note}}</textarea></div>
+</div>
+          
+<!-- Recommended Steam Purity Chart -->
+<!-- <div class="header"><label style="margin-left: 10px; font-size: 15px; margin-bottom: 12px;"><b>A.3)Recommended Steam Purity Chart</b></label></div>
+<div class="headerSub"><p>{{fixedList[0].fixedText1}}</p></div>
+<div class="headerSub"><p>{{fixedList[0].fixedText2}}</p></div> -->
+
+<!-- <div class="altAddOns" style="margin-left:30px;margin-top:10px">
+    
+    <div class="othersTable">
+            <table id="addOnTabl" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Identifier
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Unit
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Recommended values
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Limit values
+                </th>
+                
+                <tr *ngFor="let v of identList;let i=index">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245); width: 250px;" required #identifier 
+                         [(ngModel)]="v.identifier" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #units
+                        [(ngModel)]="v.units" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #recmd 
+                         [(ngModel)]="v.recmd" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #limit 
+                         [(ngModel)]="v.limit" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+            </table>
+    </div>    
+</div> -->
+
+<!-- RECOMMENDED STEAM PURITY – LIMITS -->
+<!-- <div class="altAddOns" style="margin-left:30px;margin-top:10px;">
+    <label style="margin-bottom: 12px;"><b>Recommended Steam Purity - Limits</b></label>
+    <div class="othersTable">
+            <table id="addOnTabl" style="margin-bottom: 10px;" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    Continuous
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    StartUp
+                </th>
+                <tr>
+                    <td class="tabBackColor"><b>Conductivity</b></td>
+                    <td class="tabBackColor"></td>
+                    <td class="tabBackColor"></td>
+                </tr>
+                <tr>
+                    <td class="tabBackColor"><b>Micro-Mhos / cm at 25°C</b></td>
+                    <td class="tabBackColor"></td>
+                    <td class="tabBackColor"></td>
+                </tr>
+                <ng-container *ngFor="let v of itemList;let i=index">
+                <tr *ngIf = "v.conductivity == 'Micro-Mhos / cm at 25°C'">
+                    <td class="tabBackColor">
+                        <input disabled style="width: 200px; background-color: rgb(239, 239, 245);" required #colNm 
+                         [(ngModel)]="v.colNm" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #continuous
+                        [(ngModel)]="v.continuous" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #startUp 
+                         [(ngModel)]="v.startUp" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+                
+            </ng-container>   
+            <tr>
+                <td class="tabBackColor" style="height: 17px;"></td>
+                <td class="tabBackColor"></td>
+                <td class="tabBackColor"></td>
+            </tr>
+            <tr>
+                    <td class="tabBackColor"><b>Na + K, ppb, max.</b></td>
+                    <td class="tabBackColor"></td>
+                    <td class="tabBackColor"></td>
+                </tr>
+                <ng-container *ngFor="let v of itemList;let i=index">
+                <tr *ngIf = "v.conductivity == 'NA + K, ppb, max.'">
+                    <td class="tabBackColor">
+                        <input disabled style="width: 200px; background-color: rgb(239, 239, 245);" required #colNm 
+                         [(ngModel)]="v.colNm" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #continuous
+                        [(ngModel)]="v.continuous" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #startUp 
+                         [(ngModel)]="v.startUp" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+            </ng-container>                             
+            </table>
+    </div>
+    <div><label><b>{{fixedList[0].fixedText3}}</b></label></div>
+</div> -->
+
+<!--A.4) Recommended Cooling water Analysis -->
+<!-- <div class="header"><label style="margin-left: 10px; font-size: 15px;"><b>A.4)Recommended Cooling water Analysis</b></label></div>
+<div class="altAddOns" style="margin-left:30px;margin-top:10px">    
+    <div class="othersTable">
+            <table id="addOnTabl" class="addOnTable">
+                <th class="tabBackColor" style="background-color: grey; text-align: center; width: 200px;">
+                    PARAMETER
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    UNITS
+                </th>
+                <th class="tabBackColor" style="background-color: grey; text-align: center;">
+                    CIRCULATING WATER WITH COC 4
+                </th>
+                <tr>
+                    <td class="tabBackColor"><b>Physical</b></td>
+                    <td class="tabBackColor"></td>
+                    <td class="tabBackColor"></td>
+                </tr>      
+                <ng-container *ngFor="let v of cirList;let i=index">
+                <tr *ngIf = "v.type == 'PHYSICAL'">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #parameter 
+                         [(ngModel)]="v.parameter" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #units
+                        [(ngModel)]="v.units" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #cirWater 
+                         [(ngModel)]="v.cirWater" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+            </ng-container>          
+                <tr>
+                    <td class="tabBackColor"><b>Chemical</b></td>
+                    <td class="tabBackColor"></td>
+                    <td class="tabBackColor"></td>
+                </tr>
+                <ng-container *ngFor="let v of cirList;let i=index">
+                <tr *ngIf = "v.type == 'CHEMICAL'">
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #parameter 
+                         [(ngModel)]="v.parameter" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #units
+                        [(ngModel)]="v.units" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                    <td class="tabBackColor">
+                        <input disabled style="background-color: rgb(239, 239, 245);" required #cirWater 
+                         [(ngModel)]="v.cirWater" [ngModelOptions]="{standalone: true}" class="othersip" type="text">
+                    </td>
+                </tr>
+            </ng-container>
+            </table>
+    </div>
+</div> -->
+
+  <!-- <div *ngIf=" tableFil==true"> -->
+        
+  <!-- </div> -->
+    </div>
+    
+    <div style="margin-bottom: 30px;" *ngIf="!hideprogress">
+            <div *ngIf="dialogMsgApp" class="msgDiv">
+                    {{dialogMsgVal}}
+                </div>
+    <button class="ovrWriteBtn" style="margin-left:23px;" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+  <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-left:20px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+  type="button" (click)="savePerf()">Save</button>
+  
+</div>

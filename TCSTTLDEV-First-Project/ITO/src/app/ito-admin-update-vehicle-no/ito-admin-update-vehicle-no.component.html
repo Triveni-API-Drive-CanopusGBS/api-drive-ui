@@ -1,0 +1,211 @@
+
+<div>
+  <h2 style="margin-left:25px;color:black; font-size:15px;">
+    {{headingValue}}
+  </h2>
+  <div class="contentDiv">
+
+    <div class="priceDiv">
+      <p-table #dt [style]="{width:'100%'}" [scrollable]="true" [columns]="cols" [value]="FrameVehicleUpdateArray" selectionMode="single"
+        [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+              <!-- <i type="button" class="fa fa-user" routerLink="/addNewframeLink" routerLinkActive="active"  style="float:right ;background-color:rgb(213,120,23); color:white ;padding:8px; border:1px solid rgb(213,120,23); margin:25px;margin-top:0px;">
+                  Add New</i> -->
+              <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                  Export to Excel</i> -->
+                  <i type="button" class="fa fa-file-excel-o fa-2x" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; " title="Export to Excel"></i>
+          </div>
+      </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr >
+            <th *ngFor="let col of columns"  [pSortableColumn]="col.field" >
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+              <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'compoName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevCompoName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'fobplace'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevFOBPlace'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'vehicleName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevVehicleName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'numberOfVehicle'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'prevNoOfvehicles'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr #tr id="{{rowData.transId}}" class="datarow" [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" >
+              {{rowData[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+
+      <p-dialog header="Vehicle Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" *ngIf="selectedRange">
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Frame Name</label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.frameName}}</label>
+            </div>
+          </div>
+          <!-- <div class="ui-g-12"> -->
+            <!-- <div class="ui-g-4">
+              <label for="year">Frame Power </label>
+            </div> -->
+            <!-- <div class="ui-g-8">
+              <label>: {{selectedRange.maxPower}}</label>
+            </div> -->
+          <!-- </div> -->
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Model</label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.turbineType}}</label>
+            </div>
+          </div>
+          <div *ngIf="(transpApp || transRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Component Name </label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.prevCompoName}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Component</label>
+            </div>
+            <div class="ui-g-8">
+              <!-- <label>: {{selectedRange.compoName}}</label> -->
+              <select style="width:150px;" required  name="compoName" #compoName="ngModel" [(ngModel)]="selectedRange.compoName">
+                <option hidden>Please select</option>
+                <option *ngFor="let compo of componentArray">{{compo.categoryDetDesc}}</option>
+            </select>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Place</label> 
+            </div>
+            <div class="ui-g-8">
+              <!-- <label>: {{selectedRange.fobplace}}</label> -->
+              <select style="width:150px;" required  name="fobplace" #fobplace="ngModel" [(ngModel)]="selectedRange.fobplace">
+                <option hidden>Please select</option>
+                <option *ngFor="let place of placeArray">{{place.fobplace}}</option>
+            </select>
+            </div>
+          </div>
+          <div *ngIf="(transpApp || transRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Place </label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.prevFOBPlace}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="brand">Vehicle Name</label>
+            </div>
+            <div class="ui-g-8">
+              <!-- <label>: {{selectedRange.vehicleName}}</label> -->
+              <select required style="width:150px;" name="vehicleName" #vehicleName="ngModel" [(ngModel)]="selectedRange.vehicleName">
+                <option hidden>Please select</option>
+                <option *ngFor="let vehicle of vehicleArray">{{vehicle.categoryDetDesc}}</option>
+            </select>
+            </div>
+          </div>
+          <div *ngIf="(transpApp || transRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous Vehicle Name </label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.prevVehicleName}}</label>
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="color">No. Of Vehicles</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText id="color" [(ngModel)]="selectedRange.numberOfVehicle" />
+            </div>
+          </div>
+          <div *ngIf="(transpApp || transRev)" class="ui-g-12">
+            <div class="ui-g-4">
+              <label>Previous No of Vehicles</label>
+            </div>
+            <div class="ui-g-8">
+              <label>: {{selectedRange.prevNoOfvehicles}}</label>
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+      <form #updatePriceTrans="ngForm" (ngSubmit)="updatePriceTransForm(updatePriceTrans.value)">
+        <div style="margin-left: 2%;" *ngFor="let c of prevRemarks;let i=index;">
+          <label class="pcomentslbl">{{c.assingedToname}} </label>
+          <textarea class="pcomments" disabled placeholder="Enter yor comments" cols="50" rows="2">{{c.comment}}</textarea>
+        </div>
+      
+        <div style="margin-left: 2%;">
+          <label class="comentslbl">Comments
+            <span class="asterisk_input">*</span>
+          </label>
+          <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter yor comments"
+            cols="50" rows="4"></textarea>
+        </div>
+
+
+        <div style="margin-left: 2%;" *ngIf="(transpApp || transRev)">
+          <label class="reviewrlbl"> Accept / Reject the update request here
+            <span class="asterisk_input">*</span>
+          </label>
+          <select class="reviewr" #state="ngModel" required name="status" ngModel>
+            <option selected hidden>Please select </option>
+            <option>Accept</option>
+            <option>Reject</option>
+          </select>
+        </div>
+
+        <div style="margin-left: 2%;" *ngIf="(transpEdit || transRev)">
+          <label class="reviewrlbl">{{labelName}}
+            <span class="asterisk_input">*</span>
+          </label>
+          <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+            <option value="" selected hidden>Please select </option>
+            <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+          </select>
+        </div>
+        <button style="margin-left: 2%;" class="updateTrans" [disabled]="finalRangeList.length==0" (click)="SaveAsDraft()" type="button">Save As Draft</button>
+        <button style="margin-left: 17px;" class="updateTrans" [disabled]="!updatePriceTrans.form.valid" type="submit">Update</button>
+      </form>
+      <!-- <label class="successMsg">{{successMsg}}</label> -->
+      <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </div>
+  </div>
+</div>

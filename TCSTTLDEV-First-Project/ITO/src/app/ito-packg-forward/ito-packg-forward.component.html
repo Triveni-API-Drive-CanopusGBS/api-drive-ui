@@ -1,0 +1,78 @@
+<div class="pckFwdDiv" [appDisable]="appDisable">
+  <h4 style="margin-left:30px;text-decoration: underline;">
+    Packaging and Forwarding
+  </h4>
+  <div>
+    <div class="expDiv">
+      <label class="typeOfCust" for="typeOfCust">Type of Customer :</label>
+      <input type="text" class="selRadioClass" [(ngModel)]="typeOfCust" disabled />
+    <!-- </div>
+
+    <div class="expDiv"> -->
+      <label class="typeOfPkg">Type of Packaging :
+        <span class="asterisk_input">*</span>
+      </label>
+      <select class="selClass" required [(ngModel)]="typOfPkgCd" ngModel name="typeOfPck" #typeOfPck="ngModel" value="p.categoryDetDesc"
+        (change)="typeOfPckg(typeOfPck.value)">
+        <option [ngValue]="undefined" hidden selected>Please select</option>
+        <option *ngFor="let p of packageOpt" [ngValue]="p.categoryDetCode" [selected]="p.categoryDetCode == typOfPkgCd">{{p.categoryDetDesc}}</option>
+      </select>
+    </div>
+    <div *ngIf="!SeaWorthy"></div>
+    <div *ngIf="SeaWorthy">
+          <div class="costDiv">
+        <label class="samllLbl">Cost</label>
+        <input type="number" name="packGCost" disabled [(ngModel)]="packgPrice" ngModel class="ipStyle" id="priceCost">
+          </div>
+          <div class="btnClass">
+            <button class="savebtn" (click)="enableOverWrite()" *ngIf="rewApp" type="button">Overwrite</button>
+            <button class="savebtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite()" type="button">Cancel</button>
+            <button class="savebtn"  (click)="getPrevComments()" *ngIf="rewApp" type="button">Previous comments</button>
+
+        <!-- <i (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+            Previous comments
+          </i> -->
+      </div>
+    </div>
+    <div *ngIf="showForm">
+      <div style="display:relative;" *ngIf="SeaWorthy" style="display:block">
+        <div class="costDiv" *ngIf="!enableOverwriteDiv && overWrittenPackGCost>0">
+          <label class="samllLbl">Overwritten Cost
+            <span class="asterisk_input">*</span>
+          </label>
+          <input class="ipStyle" disabled type="number" [(ngModel)]="overWrittenPackGCost" name="overwrittenCst">
+        </div>
+      </div>
+    </div>
+    <form #packageForm="ngForm" (ngSubmit)="savePackageCost(packageForm.value)">
+      <div *ngIf="showForm">
+        <div style="display:relative;" *ngIf="SeaWorthy" style="display:block">
+          <div class="costDiv" *ngIf="enableOverwriteDiv">
+            <label class="samllLbl">Overwritten Cost
+              <span class="asterisk_input">*</span>
+            </label>
+            <input type="number" *ngIf="enableOverwriteDiv" name="newCost" #newCost="ngModel" required [(ngModel)]="overWrittenPackGCost"
+              ngModel class="ipStyle">
+            <label class="samllLbl">Remarks
+              <span class="asterisk_input">*</span>
+            </label>
+            <textarea name="overWrite" *ngIf="enableOverwriteDiv"  [(ngModel)]="remarksValue"(keyup)="checkRemarks()" #overWrit="ngModel" required ngModel class="remarksField"
+              placeholder="Enter remarks.."></textarea>
+          </div>
+        </div>
+      </div>
+      <div>
+          <div class="succesMsg" *ngIf="totalCostDiv">
+              Cost Saved Successfully
+            </div>
+            <div *ngIf="message" class="msgDiv">
+              {{successMsg}}
+            </div>
+        <button type="submit" [disabled]="(!packageForm.form.valid)||(disableBtn)" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" class="btn2">Save</button>
+      </div>
+    </form>
+    
+  </div>
+</div>
+
+<button class="ovrWriteBtn"  class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button>

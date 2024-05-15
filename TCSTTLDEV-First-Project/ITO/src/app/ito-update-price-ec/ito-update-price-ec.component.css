@@ -1,0 +1,256 @@
+.ecContainer{
+    font-size: 14px;  
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 95px;
+}
+.widthInc{
+    height:27px;
+    border-radius: 5px;
+    border: 1px solid;
+    width: 200px;
+    padding: 0px;
+    margin-top: 10px;
+    display: block;
+}
+.previouFun {
+    position: relative;
+    margin-left: 55px;
+    margin-top: 25px;
+    width: 100%;
+}
+.btn2{
+    border-radius: 5px;
+    width:130px;
+    height: 35px;
+    color: white;
+    margin-left: 10px;
+    background-color: rgb(213,120,23);
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+
+.saveBtn{
+    border-radius: 5px;
+    width:85px;
+    height: 35px;
+    color: white;
+    background-color: rgb(213,120,23);
+}
+.saveDiv{
+    position: relative;
+    margin-top: 25px;
+    width: 100%;
+    text-align: left;
+    margin-left: 32px;
+}
+.priceField{
+    border-radius: 5px;
+    border: 1px solid;
+    width: 130px;
+    padding: 5px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.remarks{
+    display: block;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 15px;
+    margin-bottom: 6px;
+    padding: 7px;
+    outline-style: none;
+    width: 322px;
+    height: 75px;
+    font-style:italic;
+}
+.pcomments{
+    font-style: italic;
+    border-radius: 15px;
+    margin-top: 0px;
+    padding: 7px;
+    outline-style: none;
+    width: 322px;
+}
+
+.filterField{
+    margin-left: 15px;
+    width: 135px;
+    font-size: 16px;
+    margin-right: 0px;    
+}
+ng-container{
+    background-color:blue;
+    border: 1px solid;
+}
+.mat-form-field-label{
+    top: 30px;
+}
+input{
+    padding-bottom: 0px;
+}
+.mat-form-field-underline {
+    top: 55px;
+}
+
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    width: 100px;
+}
+td:first-child{
+    color: blue;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+th{
+    background-color: rgb(213,120,23);
+    text-align: left;
+    color: white;
+    height: 20px;
+    border: 1px solid rgb(213,120,23);
+}
+.datarow:last-child{
+    border-bottom: 1px solid black;
+}
+.secondHeader{
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+
+}
+p-sortIcon {
+    float: right;
+    color: white;
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+
+.fa fa-search{
+    color:red;
+}
+
+.inpStyl{
+    width: 400px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid;
+}
+.selected {
+    background-color: skyblue !important;
+    color: white;
+  }
+  .ui-button-secondary{
+    height: 35px;
+    width: 65px;
+    background-color: steelblue;
+    color: black;
+    outline-style: none;
+    margin-right: 20px;
+    border-radius: 2px;
+    padding: 4px;
+    font-weight: bold;
+}
+button:disabled{
+    border-color: rgb(213,120,23);
+    background-color: gray;
+}
+
+.ecUpdate{
+    border-collapse: collapse;
+}
+
+#ecTable td,tr{
+    border:none;
+    background-color: white;
+    width:210px;
+    padding: 10px;
+}
+#ecTable td:first-child{
+    color: black;
+    border:none;
+}
+.ecComment{
+    border-collapse: collapse;
+    margin-left: 60px;
+}
+
+#comments td,tr{
+    border:none;
+    background-color: white;
+    width:210px;
+    padding: 10px;
+}
+
+#comments td:first-child{
+    color: black;
+    border:none;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+.custStyl{
+    margin-top: 10px;
+    float: left;
+    margin-left: 15px;
+    position: relative;
+    width: 45%;
+    display: block;
+    margin-bottom: 8px;
+}
+.reqStyl{
+    width: 325px;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 15px;
+}
+.msgDiv{
+    margin-left: 65px;
+    margin-top: 15px;
+    padding-bottom: 8px;
+    color:blue;
+    font-size: 18px;
+}
+.highlighted{
+    background-color: red;
+}
+.successMsg{
+    margin-left: 35px;
+    color: blue;
+    display: block;
+}
+.updateTrans{
+    padding: 8px;
+    background-color: rgb(213,120,23);
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgb(213,120,23);
+    border-radius: 5px;
+    width:130px;
+    margin: 15px;
+    margin-left: 20px;
+ }

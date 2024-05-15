@@ -1,0 +1,477 @@
+<div style="margin-bottom : 30px; font-family: Arial, Helvetica, sans-serif;" [hidden]="!(DisableLogin && costEst==false)">
+  <mat-toolbar class="menuDiv">
+    <div class="menuBtn-div" >
+
+      <i id="menuBa" style="margin-left:10px ;padding:10px;color:white;list-style-type: none;background-color:rgb(213,120,23);margin-top: 7px;  " (click)="dropDownCreate()"  class="fa fa-bars" aria-hidden="true"></i>
+      <!-- <img class="menuBtnHover" src="assets\onHoverMenu.png"> -->
+      <div class="loggedUserSel1" id="cnq" [hidden]="hideCQ">
+        <!-- <label class="menuBtnHover"><img src="assets\onHoverMenu.png"></label> -->
+
+        <nav>
+          <ul id="menu" style="border:none"  >
+            <!-- <li [hidden]="!admin" class="subMenuLI">
+              <a class="menuDetails">Customer Profile Management</a>
+              <ul class="subMenuUL3" style="width: 200px;">
+                <li class="subMenuLI">
+                  <a class="subMenuULLI" routerLink="/CustHome" routerLinkActive="active">Customer Information</a>
+                </li>
+                <li class="subMenuLI">
+                  <a class="subMenuULLI" routerLink="/ConsultHome" routerLinkActive="active">Consultant Information</a>
+                </li>
+                <li class="subMenuLI">
+                  <a class="subMenuULLI" routerLink="/EndUserHome" routerLinkActive="active">End User Information </a>
+                </li>
+              </ul>
+            </li> -->
+            <li [hidden]="!quotEdit" class="menuItems">
+              <a class="menuDetails" (click)="hidedropDownCQ()" (click)="newCostEstimation()">Create New Quotation</a>
+            </li>
+            <!-- <li [hidden]="!admin" class="menuItems">
+              <a class="menuDetails" routerLink="/reportsDashbord" routerLinkActive="active">Reports/Dashboard</a>
+            </li> -->
+            <li [hidden]="!(quotApprover||qoutReviewer)" class="menuItems">
+              <a class="menuDetails" (click)="hidedropDownCQ()"  routerLink="/homeScreen" routerLinkActive="active">Audit History</a>
+            </li>
+            <!-- <li [hidden]="!(quotApprover||qoutReviewer)" class="menuItems">
+              <a class="menuDetails" routerLink="/EditQuot" routerLinkActive="active">Role & Access Management</a>
+            </li> -->
+            <li [hidden]="!(transpEdit||transpApp||admin)" class="menuItems">
+              <a>Utilities</a>
+              <ul class="subMenuUL" style="width: 200px;border:1px solid rgb(213,120,23);">
+                <li class="subMenuLI">
+                  <a routerLink="/transport" (click)="hidedropDownCQ()"  (click)="setStandAlone()" routerLinkActive="active">Transportation</a>
+                </li>
+                <li class="subMenuLI">
+                  <a routerLink="/UserManual" (click)="hidedropDownCQ()"  routerLinkActive="active">User Manual</a>
+                </li>
+                <!-- <li class="subMenuLI">
+                  <a routerLink="/AuditHistory" routerLinkActive="active">Audit History</a>
+                </li> -->
+              </ul>
+            </li>
+            <li [hidden]="!admin" class="subMenuLI">
+              <a>Admin</a>
+              <ul class="subMenuUL" style="width: 200px;border:1px solid rgb(213,120,23);">
+                <li class="subMenuLI">
+                  <a>User Profile</a>
+                  <ul class="subMenuUL1" style="width: 200px;border:1px solid rgb(213,120,23);">
+                    <li class="subMenuLI">
+                      <a routerLink="/UserHome" (click)="hidedropDownCQ()"  routerLinkActive="active">Profile Management</a>
+                    </li>
+                    <li class="subMenuLI">
+                      <a routerLink="/adminScreen" (click)="hidedropDownCQ()"  routerLinkActive="active">Region/Role/Department</a>
+                    </li>
+                    <!-- <li class="subMenuLI">
+                      <a routerLink="/adminTransportComponent" routerLinkActive="active">Component/Vehicle/Place</a>
+                    </li> -->
+
+                    <!-- <li class="subMenuLI">
+                      <a routerLink="/UpdateFramePercentageComponent" routerLinkActive="active">Update Percentage</a>
+                    </li> -->
+                    <!-- <li class="subMenuLI">
+                      <a routerLink="/ItoF2fAdminTurbCostComponent" routerLinkActive="active">Update f2f Turbine Cost Componeny</a>
+                    </li> -->
+                  </ul>
+                </li>
+                <li class="subMenuLI">
+                  <a>Performance</a>
+                  <ul class="subMenuUL1" style="width: 200px;border:1px solid rgb(213,120,23);">
+                    <li class="subMenuLI">
+                      <a routerLink="/PerfAdmin" (click)="hidedropDownCQ()"  routerLinkActive="active">PerfAdmin</a>
+                    </li>
+                    <li class="subMenuLI">
+                      <a routerLink="/PerfAdminOther" (click)="hidedropDownCQ()"  routerLinkActive="active">PerfAdminOther</a>
+                    </li>
+                                      <li class="subMenuLI">
+                      <a routerLink="/AdminPerfAcDc" (click)="hidedropDownCQ()"  routerLinkActive="active">AdminPerfAcDc</a>
+                    </li>
+                    <li class="subMenuLI">
+                      <a routerLink="/AdminPerfAcDcMast" (click)="hidedropDownCQ()"  routerLinkActive="active">AdminPerfAcDcMast</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="subMenuLI">
+                  <a class="menuDetails" (click)="hidedropDownCQ()"  routerLink="/addVarientCode" routerLinkActive="active">Add Varient Code</a>
+                </li>
+                <li class="subMenuLI">
+                  <a routerLink="/CurrencyConv" (click)="hidedropDownCQ()"  routerLinkActive="active">Currency Conversion</a>
+                </li>
+                <li class="subMenuLI">
+                  <a routerLink="/Bgm" (click)="hidedropDownCQ()"  routerLinkActive="active">Bgm Rating</a>
+                </li>
+                <li class="subMenuLI">
+                  <a routerLink="/Dcm" (click)="hidedropDownCQ()"  routerLinkActive="active">Dcm Rating</a>
+                </li>
+                <!-- <li class="subMenuLI">
+                  <a routerLink="/Panels" routerLinkActive="active">Panel Names</a>
+                </li> -->
+                <li class="subMenuLI">
+                  <a routerLink="/HeaderFooter" (click)="hidedropDownCQ()"  routerLinkActive="active">Eletrical Header/Footer</a>
+                </li>
+                <li class="subMenuLI">
+                  <a routerLink="/Percentage" (click)="hidedropDownCQ()"  routerLinkActive="active">Percentage</a>
+                </li>
+                <li class="subMenuLI">
+                    <a routerLink="/adminSpares" (click)="hidedropDownCQ()"  routerLinkActive="active">Spares</a>
+                  </li>
+                  <li class="subMenuLI">
+                      <a routerLink="/adminSSL" (click)="hidedropDownCQ()"  routerLinkActive="active">SubSupList</a>
+                    </li>
+                    <li class="subMenuLI">
+                        <a routerLink="/adminQuality" (click)="hidedropDownCQ()"  routerLinkActive="active">Quality</a>
+                      </li>
+                      <li class="subMenuLI">
+                          <a routerLink="/adminTerminal" (click)="hidedropDownCQ()"  routerLinkActive="active">Terminal</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/adminService" (click)="hidedropDownCQ()"  routerLinkActive="active">Admin Service</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/adminAcwrList" (click)="hidedropDownCQ()"  routerLinkActive="active">Acwr List</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/adminComrMonth" (click)="hidedropDownCQ()"  routerLinkActive="active">Commercial Month</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/ExclusionListAdmin" (click)="hidedropDownCQ()"  routerLinkActive="active">Exclusion</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/TenderDrawing" (click)="hidedropDownCQ()"  routerLinkActive="active">Tender Drawing</a>
+                        </li>
+                        
+                <li class="subMenuLI">
+                  <a routerLink="/AdminHistory" (click)="hidedropDownCQ()"  routerLinkActive="active">AdminHistory</a>
+                </li>
+                <!-- <li class="subMenuLI">
+                  <a href="#">Cost Estimation</a>
+                  <ul class="subMenuUL2" style="width: 200px;border:1px solid rgb(213,120,23);"> -->
+                    <!-- <li class="subMenuLI">
+                      <a routerLink="/basicDetails" routerLinkActive="active">Basic Details</a>
+                    </li> -->
+                    <!-- <li class="subMenuLI">
+                      <a href="#">F2F</a>
+                      <ul class="subMenuUL1" style="width: 220px;border:1px solid rgb(213,120,23);">
+                        <li class="subMenuLI">
+                          <a routerLink="/turbineQues" routerLinkActive="active">Add/Edit Questions</a>
+                        </li>
+                        <li class="subMenuLI">
+                          <a routerLink="/AddNewFrameQues" routerLinkActive="active">Add Questions to New Frame</a>
+                        </li>
+                      </ul>
+                    </li> -->
+                    <!-- <li class="subMenuLI">
+                      <a routerLink="/adminAddOn" routerLinkActive="active">Add-On</a>
+                    </li> -->
+                    <!-- <li [hidden]="!dboMechEdit" class="subMenuLI">
+                      <a href="#">DBO Mechanical</a>
+                    </li>
+                    <li [hidden]="!dboEleEdit" class="subMenuLI">
+                      <a href="#">DBO Electrical</a>
+                    </li>
+                  </ul>
+                </li> -->
+              </ul>
+            </li>
+            <li [hidden]="!update" class="subMenuLI">
+              <a href="#">Update Cost</a>
+              <ul class="subMenuUL4"   *ngIf="!update" style="width: 300px;border:1px solid rgb(213,120,23);">
+                <!-- <li class="subMenuLI">
+                  <a href="#">Frame</a>
+                </li>
+                <li class="subMenuLI">
+                  <a href="#">Add-On</a>
+                </li> -->
+                <li class="subMenuLI" [hidden]="!dboMechEdit">
+                  <a routerLink="UpdateCostDbomechPrice" (click)="hidedropDownCQ()"  routerLinkActive="active">DBO Mechanical</a>
+                </li>
+                <!-- <li class="subMenuLI" [hidden]="!dboMechEdit">
+                  <a routerLink="updDboMechCol" routerLinkActive="active">DBO Mechanical Columns</a>
+                </li> -->
+                <li class="subMenuLI" [hidden]="!dboEleEdit">
+                  <a routerLink="updDboEleCol" (click)="hidedropDownCQ()"  routerLinkActive="active">DBO Electrical</a>
+                </li>
+                <!-- <li class="subMenuLI" [hidden]="!dboEleEdit">
+                  <a routerLink="updDboEleCol" routerLinkActive="active">DBO Electrical Columns</a>
+                </li> -->
+				 <!-- <li class="subMenuLI" [hidden]="!dboEleEdit">
+                  <a routerLink="ItoUpdDboEleSpladdonComponent" routerLinkActive="active">DBO Electrical SplAddOn</a>
+                </li> -->
+                <!-- <li class="subMenuLI" [hidden]="!dboEleEdit">
+                  <a routerLink="updDboEleAddOn" routerLinkActive="active">DBO Electrical AddOns</a>
+                </li> -->
+                <!-- <li class="subMenuLI" [hidden]="!dboEleEdit">
+                  <a routerLink="updDboEleAddInstr" routerLinkActive="active">DBO Electrical Additional Instruments</a>
+                </li> -->
+                
+                <!-- <li class="subMenuLI" [hidden]="!PFedit">
+                  <a routerLink="/updatePckg" (click)="hidedropDownCQ()"  routerLinkActive="active">Packaging</a>
+                </li> -->
+                <!-- <li class="subMenuLI" [hidden]="!ecEdit">
+                  <a routerLink="/UpdatePriceEC" (click)="hidedropDownCQ()"  routerLinkActive="active">Erection Commission</a>
+                </li> -->
+                
+                <li class="subMenuLI" >
+                  <a routerLink="/updateTurbineCost">Turbine Cost</a>
+                </li>
+                <li class="subMenuLI" [hidden]="!turbineCost">
+                    <a (click)="hidedropDownCQ()"  routerLink="/updDboF2FAddons">F2F Addons</a>
+                  </li>
+                  
+              </ul>
+            </li>
+            <li class="subMenuLI" [hidden]="!uboEdit">
+              <a routerLink="/UpdateFramePwrPrice" (click)="hidedropDownCQ()" routerLinkActive="active">UBO</a>
+            </li>
+            <li class="subMenuLI" [hidden]="!transpEdit">
+              <a routerLink="/updatePriceTransport" (click)="hidedropDownCQ()"  routerLinkActive="active">Transportation - UnitPrice</a>
+            </li>
+            <li class="subMenuLI" [hidden]="!transpEdit">
+              <a routerLink="/updateVehTransportDm" (click)="hidedropDownCQ()"  routerLinkActive="active">Transportation - Domestic</a>
+            </li>
+            <li class="subMenuLI" [hidden]="!transpEdit">
+              <a routerLink="/UpdateTransportExport" (click)="hidedropDownCQ()" routerLinkActive="active">Transportation - Export</a>
+            </li>
+          <!-- enable update boolean in ts when required sub men where F2F_EDIT, MECH_EDIT -->
+            <li class="subMenuLI" [hidden]="selectedRole!='F2F_EDIT'">
+                <a (click)="hidedropDownCQ()"  routerLink="/updDboF2FAddons">Update F2F</a>
+              </li>
+              <li class="subMenuLI" [hidden]="selectedRole!='F2F_EDIT'">
+                  <a (click)="hidedropDownCQ()"  routerLink="/updateTurbineCost">Shop Conversion and Sub Contracting</a>
+                </li>
+              <li class="subMenuLI" [hidden]="selectedRole!='FINANCE_EDIT'">
+                <a (click)="hidedropDownCQ()"  routerLink="/updateTurbineCost">Update Finance</a>
+              </li>
+              <li class="subMenuLI" [hidden]="selectedRole!='DBO_MECH_EDIT'">
+                  <a routerLink="UpdateCostDbomechPrice" (click)="hidedropDownCQ()" routerLinkActive="active">Update Mechanical</a>
+                </li>
+                <li class="subMenuLI" [hidden]="selectedRole!='DBO_ELE_EDIT'">
+                    <a routerLink="updDboEleCol" (click)="hidedropDownCQ()"  routerLinkActive="active">DBO Electrical</a>
+                  </li>
+                  <li class="subMenuLI" [hidden]="selectedRole!='EC_EDIT'">
+                    <a routerLink="/UpdatePriceEC" (click)="hidedropDownCQ()"  routerLinkActive="active">Erection Commission</a>
+                  </li>
+                  <li class="subMenuLI" [hidden]="selectedRole!='PKG_FW_EDIT'">
+                    <a routerLink="/updatePckg" (click)="hidedropDownCQ()"  routerLinkActive="active">Packaging</a>
+                  </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <label id="headingh3"> Inquiry to Order Process Automation</label>
+    <div class="divStyle1" style="width: 10px;color:white;font-family:helvetica;font-size:12px; ">
+      Change Role
+      <select class="rolSel1" #role name="roleList" (change)="roleCheck1(role.value)">
+        <option>Please select</option>
+        <option [ngValue]="r.code" *ngFor="let r of userRoles">{{r.value}}</option>
+      </select>
+    </div>
+    <!-- <li class="loggedUserinfo">
+          Role Change:
+      <select class="rolSel1" #role name="roleList" (change)="roleCheck(role.value)">
+        <option>Please select</option>
+        <option [ngValue]="r.code" *ngFor="let r of userRoles">{{r.value}}</option>
+      </select>
+    </li> -->
+    <div class="loggeduser" id="profileexpand" style="font-family:Helvetica;" (click)="displaydropDown()"  (blur)="disable()" >
+      <!-- <img class="loggedUserstyle" [src]="imag"> -->
+     <i class="fa fa-user-circle fa-2x" style="color: white; height: 55px; 
+      width: 55px; 
+      border-radius: 25px; 
+      top: 10px; 
+      float: left; 
+      position: relative; " aria-hidden="true" (click)="hidedropDown()" ></i> 
+      <!-- <li class="welcomediv" style="font-size:15px; list-style-type: none; font-family:Helvetica;"> -->
+        <li class="loggedUserinfo" style="margin-top: 10px;" (click)="hidedropDown()">
+        Welcome
+        <b>{{loggedUserName}}</b>
+        <!-- <div class="divStyle1" style="width: 10px;color:rgb(213,120,23);font-family:helvetica;font-size:10px;">
+            Change Role:
+             <select class="rolSel1" #role name="roleList" (change)="roleCheck(role.value)">
+               <option>Please select</option>
+               <option [ngValue]="r.code" *ngFor="let r of userRoles">{{r.value}}</option>
+             </select>
+           </div> -->
+      </li>
+      <li class="loggedUserinfo" (click)="hidedropDown()">
+        Department :
+        <b> {{loggedUserDep}} </b>
+      </li>
+      <!-- <li class="roleList" *ngFor="let role of loggedUserRole;let isLast=last">
+        <span>
+          <b>{{role.value}}{{isLast ? '' : ', '}}</b>
+        </span>
+      </li> -->
+      <li class="roleList" (click)="hidedropDown()">
+        <span>
+          <b>{{selectedRoleDesc}}</b>
+        </span>
+      </li>
+      <div class="loggedUserSel" id="profile" [hidden]="hideDD">
+        <nav>
+          <ul class="profileDDUL">
+            <li (click)="hidedropDown()" class="loginLi" routerLink="EditProfile">Profile</li>
+            <li (click)="hidedropDown()" class="loginLi" routerLink="passwordManagement">Password Management</li>
+            <li (click)="hidedropDown()" [hidden]="!(quotEdit||qoutReviewer||quotApprover)" class="loginLi" routerLink="/MyQuot" routerLinkActive="active">My Quotations</li>
+            <li (click)="hidedropDown()" [hidden]="(quotEdit||qoutReviewer||quotApprover||admin)" class="loginLi" routerLink="/MyWorkFlow"
+              routerLinkActive="active">My Actions</li>
+            <li (click)="hidedropDown()" class="loginLi" (click)="logout()">Log Out</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <img (click)="gotoHome()" class="headerImg" src="assets\TTL_Brand.png">
+  </mat-toolbar>
+</div>
+<router-outlet style="margin-bottom : 30px;">
+</router-outlet>
+<!-- <footer [hidden]="!DisableLogin">
+  <table>
+    <tr>
+      <td>
+        <div class="helpDiv">
+          <a class="Help" routerLink="" routerLinkActive="active">Help</a> |
+          <a class="Help" routerLink="" routerLinkActive="active">Feedback</a> |
+          <a class="Help" routerLink="" routerLinkActive="active">Contact us: 1-800-378-2378</a>
+        </div>
+      </td>
+      <td>
+        <div class="copyRightDiv">
+          &copy; 2015-18 Triveni Turbines, All Rights Reserved
+        </div>
+      </td>
+    </tr>
+  </table>
+</footer> -->
+<div class="container-fluid" style="margin:0px;" [hidden]="DisableLogin">
+  <h2>Inquiry to</h2>
+  <h1>Order Process Automation</h1>
+  <div class="loginBorder">
+    <div class="loginBorderOpacity"></div>
+    <label class="loginStyl">Login</label>
+    <form #loginForm="ngForm" (ngSubmit)="ITOLogin(loginForm.value)">
+      <div class="divStyle">
+        <img class="emailImg" src="assets\emailImg.png">
+        <input name="emailId" #emailid [(ngModel)]="userName" ngModel required type="email" placeholder="Type your TTL Email ID here..."
+          class="inpStyl">
+      </div>
+      <div class="divStyle">
+        <img class="emailImg" src="assets\passwordImg.png">
+        <input name="password" ngModel required type="password" [(ngModel)]="password" placeholder="Type your password here..." class="inpStyl">
+      </div>
+      <div class="CheckBoxSize">
+        <input type="checkbox" name="rememberPassword" [(ngModel)]="rememberMe" ngModel class="remPswdChck" id="rememberPasswrd"> Remember Password
+      </div>
+      <div class="btnStyle">
+        <button [disabled]="!loginForm.form.valid" class="submitStyle" type="submit">Submit</button>
+      </div>
+    </form>
+    <label [hidden]="!enableerrormsg" class="errorMsg">{{errorMessage}}</label>
+    <div class="divStyle" *ngIf="dispRoles">
+      <label class="roleSelStyle">
+        <b>Please select a role :</b>
+      </label>
+      <select class="rolSel" #role name="roleList" (change)="roleCheck(role.value)">
+        <option>Please select</option>
+        <option [ngValue]="r.code" *ngFor="let r of userRoles">{{r.value}}</option>
+      </select>
+    </div>
+    <div class="forgotPassword">
+      <a class="FPLstyle" (click)="showDialog()"> Forgot Password      <h1>FOUND OUT LOGIN PAGE!!</h1></a>
+      <i class="fa fa-info-circle" aria-hidden="true"></i>
+    </div>
+
+  </div>
+
+  <p-dialog class="dialog" header="Forgot Password" [(visible)]="display" showEffect="fade" appendTo="body" [modal]="true"
+    [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+
+    <form #fgtPwdForm="ngForm" (ngSubmit)="fgtPwd(fgtPwdForm.value)">
+      <span class="ui-float-label">
+        <input id="float-input" type="email" [pattern]="emailPattern" required name="emailId" #emailId="ngModel" [ngClass]="{'bordercolor': emailId.errors && emailId.dirty}"
+          ngModel size="30" pInputText>
+        <label for="float-input">User Email ID</label>
+      </span>
+      <button class="submitbtn" [disabled]="!fgtPwdForm.form.valid" type="submit">Submit</button>
+      <div *ngIf="emailId.errors?.pattern" style="margin-left:25px; color:red;">
+        Please enter valid Email Id
+      </div>
+    </form>
+    <label style="margin-left:25px;color:red;">{{frgterrorMessage}}</label>
+    <p-footer>
+      <button type="button" pButton class="fa fa-close" (click)="display=false" class="ui-button-secondary">Close</button>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog class="dialog" header="Confirm Logout" [(visible)]="LogOutdisplay" showEffect="fade" appendTo="body" [modal]="true"
+    [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [maximizable]="false" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+    Please confirm if you wish to Logout
+    <p-footer>
+      <button type="button" style="background-color:rgb(213,120,23); padding: 5px; color:white; padding-bottom: 0px;" class="ui-button-secondary"
+        (click)="LogOutdisplay=false" pButton>Close</button>
+      <button type="button" style="background-color:rgb(213,120,23); padding: 5px; color:white; padding-bottom: 0px;" pButton (click)="LogOutFinal()"
+        class="ui-button-secondary">Logout</button>
+    </p-footer>
+  </p-dialog>
+</div>
+<p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dialogMsgApp" showEffect="fade" appendTo="body" [modal]="true"
+  [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+  <!-- <li *ngFor= "let msg of successMsg">
+      {{msg}}
+    </li> -->
+  {{dialogMsgVal}}
+  <p-footer>
+    <button type="button" (click)="close()" style="background-color:rgb(213,120,23);" pButton class="fa fa-close" class="ui-button-secondary">Close</button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog class="dialog" header="Previous comments" [closable]="false" [(visible)]="dispPrevComments" showEffect="fade" appendTo="body"
+  [modal]="true" [maximizable]="true" [responsive]="true" [width]="680" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+  <div style="padding:15px;text-align:center">
+    <table id="alertTbl" style="border-collapse: collapse;">
+      <th style="width:auto ; min-width:auto;border: 1px solid;">
+        Rev No
+      </th>
+      <th style="border: 1px solid;">
+        Overwritten By
+      </th>
+      <th style="border: 1px solid;">
+        Role
+      </th>
+      <th style="border: 1px solid;">
+        Overwritten Price
+      </th>
+      <th style="border: 1px solid;">
+        Remarks
+      </th>
+      <th style="border: 1px solid;">
+        Modified Date
+      </th>
+      <tr *ngFor="let oc of oldComms">
+        <td style="width:auto ; min-width:auto;border: 1px solid;">
+          {{oc.revNo}}
+        </td>
+        <td style="border: 1px solid;">
+          {{oc.modifiedByName}}
+        </td>
+        <td style="border: 1px solid;">
+          {{oc.roleName}}
+        </td>
+        <td style="border: 1px solid;">
+          {{oc.overwrittenCost}}
+        </td>
+        <td style="border: 1px solid;">
+          {{oc.comment}}
+        </td>
+        <td style="border: 1px solid;">
+          {{oc.modifiedDate}}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p-footer>
+    <button type="button" (click)="closeDialog()" style="padding:4px;background-color:rgb(213,120,23);" class="ui-button-secondary">Close</button>
+  </p-footer>
+</p-dialog>
+<div class="footer" [hidden]="!DisableLogin">
+  © 2015-20 Triveni Turbines, All Rights Reserved
+</div>

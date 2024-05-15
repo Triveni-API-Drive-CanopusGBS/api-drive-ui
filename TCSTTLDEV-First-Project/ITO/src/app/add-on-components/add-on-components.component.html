@@ -1,0 +1,167 @@
+<div class="addOn-container">
+  <div class="addOnCtr">
+    <h4>Add-On Components</h4>
+
+    <div class="checkStyl">
+
+      <li class="checkbox" *ngFor="let addOns of filteredValues;let ind=index;let j=index;let inde=index;">
+        <input type="checkbox" name="addOns" [checked]="addOns.dropDownType.defaultVal" (click)="checkedAddOns($event,addOns,ind)"
+          class="checkBoxStyl"> {{addOns.dropDownType.value}}&nbsp;&nbsp;({{addOns.dropDownType.code}})
+        <div *ngIf="hideDiv[ind]">
+          <form style="margin-left:30px;" #ind="ngForm" (ngSubmit)="getPriceAddOn(ind.value , j)">
+
+            <select class="ansField" name="subType1" [(ngModel)]="subType1[j]" ngModel *ngIf="addOns.addOnValueList[0].subType1List.length>0">
+              <option selected hidden>Please select</option>
+              <option *ngFor="let opt of addOns.addOnValueList[addOns.addOnValueList.length-1].subType1List">{{opt}}</option>
+            </select>
+            <select class="ansField" name="subType2" [(ngModel)]="subtype2[j]" ngModel *ngIf="addOns.addOnValueList[0].subType2List.length>0">
+              <option selected hidden>Please select</option>
+              <option *ngFor="let opt of addOns.addOnValueList[addOns.addOnValueList.length-1].subType2List">{{opt}}</option>
+            </select>
+            <select class="ansField" name="make" [(ngModel)]="makeOptions[j]" ngModel *ngIf="addOns.addOnValueList[0].makeList.length>0"
+              (change)="changed()">
+              <option selected hidden>Please select</option>
+              <option *ngFor="let opt of addOns.addOnValueList[addOns.addOnValueList.length-1].makeList;let j=index">{{opt}}</option>
+            </select>
+            <select class="ansField" name="qty" [(ngModel)]="quantityName[j]" ngModel *ngIf="addOns.addOnValueList[0].quantityList.length>0">
+              <option selected hidden>Please select</option>
+              <option *ngFor="let opt of addOns.addOnValueList[addOns.addOnValueList.length-1].qtyNameList">{{opt}}</option>
+            </select>
+            <button *ngIf="(addOns.addOnValueList[0].makeList.length>0||addOns.addOnValueList[0].subType1List.length>0||addOns.addOnValueList[0].subType2List.length>0||addOns.addOnValueList[0].quantityList.length>0)"
+              class="getPriceBtn" type="submit">Get Cost</button>
+          </form>
+          <label class="costLbl" for="cost">Cost :</label>
+          <input type="text" id="cost{{j}}" class="costField" name="cost" [(ngModel)]="excelAddOnCost[j]" [disabled]="!enableOverWrite[j]"
+          />
+          <!-- <button type="button" class="ovrWriteBtn" *ngIf="eligibleToOW[j]" (click)="OverWrite(j)">Over-write</button>
+          <button type="button" class="ovrWriteBtn" *ngIf="enableOverWrite[j]" (click)="cancelOverWrite(j)">Cancel</button>
+          <form #inde="ngForm" (ngSubmit)="remarksForm(j)">
+            <textarea class="remarkField" ngModel #remrk="ngModel" required [(ngModel)]="remarks[j]" *ngIf="enableOverWrite[j]" name="remarks"
+              cols="20" rows="3"></textarea>
+            <button class="savePriceBtn" *ngIf="enableOverWrite[j]" (click)="remarksForm(j)" [disabled]="!(inde.form.valid && excelAddOnCost[j] > excelAddOnCostRes[j])"
+              type="submit">Save</button>
+          </form> -->
+          <!-- <hr> -->
+        </div>
+      </li>
+
+      <li class="checkbox">
+        <input type="checkbox" [checked]="othersCheck" name="addOns" (click)="openTable($event)" class="checkBoxStyl">
+        <b>Others</b>
+      </li>
+      <div *ngIf="displayOthersTable" class="othersTable">
+        <form #others="ngForm" (ngSubmit)="othersForm(others.value ,others)">
+          <table id="addOnTabl" class="addOnTable">
+            <th class="tabBackColor">
+              Component Name
+              <span class="asterisk_input">*</span>
+            </th>
+            <th class="tabBackColor">
+              Quantity
+              <span class="asterisk_input">*</span>
+            </th>
+            <th class="tabBackColor">
+              Cost
+              <span class="asterisk_input">*</span>
+            </th>
+            <th class="tabBackColor">
+              Remarks
+              <span class="asterisk_input">*</span>
+            </th>
+            <tr *ngFor="let o of othersAddonList;let i=index">
+              <td class="tabBackColor">
+                <label class="othersip">{{o.newCompName}}</label>
+              </td>
+              <td class="tabBackColor">
+                <label class="othersip">{{o.newCompQty}}</label>
+              </td>
+              <td class="tabBackColor">
+                <label class="othersip">{{o.newCompPrice| number}}</label>
+              </td>
+              <td class="tabBackColor">
+                <textarea class="othersip"> {{o.newCompRemark}}</textarea>
+              </td>
+              <td style="border:none;">
+                <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLines(i)" aria-hidden="true"></i>
+              </td>
+            </tr>
+            <tr [hidden]="!displaynewLine">
+              <td class="tabBackColor">
+                <input name="newCompName" style="background-color: #efeff5" placeholder="Enter Component Name .." required #newCompNam="ngModel"
+                  ngModel class="othersip" type="text">
+              </td>
+              <td class="tabBackColor">
+                <input name="newCompQty" style="background-color: #efeff5" placeholder="Enter Quantity .." required #newCompQt="ngModel"
+                  ngModel class="othersip" type="number">
+              </td>
+              <td class="tabBackColor">
+                <input name="newCompPrice" style="background-color: #efeff5" placeholder="Enter Price .." required #newCompPric="ngModel"
+                  ngModel class="othersip" type="number">
+              </td>
+              <td class="tabBackColor">
+                <textarea name="newCompRemark" style="background-color: #efeff5" placeholder="Enter Remarks .." required #newCompRemar="ngModel"
+                  ngModel class="othersip" type="text"></textarea>
+              </td>
+              <td style="border:none;">
+                <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!others.form.valid"
+                  type="submit">Save</button>
+                <button (click)="cancelnewLine()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                  type="button">Cancel</button>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <button type="button" class="othersbtn" (click)="addRows()">Add</button>
+      </div>
+    </div>
+    <div class="previouFun">
+      <!-- <button class="btn3" routerLink="/CostEstimation/CustomerInformation/CustomerRequirement">Previous</button> -->
+      <button class="btn2" type="button" [disabled]="!getTotalBtn" [ngStyle]="{'margin-bottom':(finalAddOnCost > 0) ? '0%' : '10%' }" (click)="send()">Get Total Cost</button>
+    </div>
+    <div class="tatalCostDiv" *ngIf="finalAddOnCost > 0">
+      <div style="display:inline-block">
+        <label class="samllLbl" for="cost" style="font-weight:bold;">
+          Total Add-On Cost :
+        </label>
+        <input type="number" class="costField" name="cost" [(ngModel)]="finalAddOnCost" disabled />
+        <button type="button" class="ovrWriteBtn" *ngIf="finalAddOnCost > 0" (click)="OverWrite(j)">Overwrite</button>
+      </div>
+      <div style="display:inline-block" *ngIf="enableOverWrite">
+
+
+
+
+      </div>
+      <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+        Previous comments
+      </i> -->
+      <button type="button" class="ovrWriteBtn" style="position: absolute; margin-top: 26px; margin-left: 18px;" (click)="getPrevComments()">Previous Remarks</button>
+      <form #inde="ngForm">
+
+        <div *ngIf="enableOverWrite">
+          <label class="samllLbl" for="cost" style="font-weight:bold;">Overwrittten Cost
+            <span class="asterisk_input">*</span>
+          </label>
+          <input type="number" style="width: 151px;" required placeholder="Enter Cost" class="costField" name="cost" (keyup)="onKey($event)"
+            [disabled]="!enableOverWrite" [(ngModel)]="overWrittenFinalAddOnCost" />
+          <button type="button" class="ovrWriteBtn" *ngIf="enableOverWrite" (click)="cancelOverWrite(j)">Cancel</button>
+
+          <br>
+          <label *ngIf="enableOverWrite" style="margin-left: 10px; font-weight:bold;">Remarks
+            <span *ngIf="enableOverWrite" class="asterisk_input">*</span>
+          </label>
+          <textarea class="remarks" ngModel #remrk="ngModel" required [(ngModel)]="remarks" *ngIf="enableOverWrite" name="remark" cols="20"
+            rows="3"></textarea>
+        </div>
+
+        <div *ngIf="messagediv" class="msgDiv">
+          {{successMsg}}
+        </div>
+        <div *ngIf="showMsg" class="errorMsg">
+          {{errorMsg}}
+        </div>
+        <button class="savePriceBtn" *ngIf="finalAddOnCost > 0"  (click)="finalSubmitAddOn(j)" [disabled]="!inde.form.valid" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<h1>Student component works!</h1>
+
+<form (ngSubmit)="onSubmit()" #studentForm="ngForm">
+  <div>
+    <label>First Name:</label>
+    <input type="text" name="firstName" [(ngModel)]="student.firstName" required>
+  </div>
+  <div>
+    <label>Last Name:</label>
+    <input type="text" name="lastName" [(ngModel)]="student.lastName" required>
+  </div>
+  <div>
+    <label>Email:</label>
+    <input type="email" name="email" [(ngModel)]="student.email" required>
+  </div>
+  <div>
+    <label>Age:</label>
+    <input type="number" name="age" [(ngModel)]="student.age" required>
+  </div>
+  <div>
+    <label>Address:</label>
+    <textarea name="address" [(ngModel)]="student.address" required></textarea>
+  </div>
+  <div>
+    <label>City:</label>
+    <input type="text" name="city" [(ngModel)]="student.city" required>
+  </div>
+  <div>
+    <label>Country:</label>
+    <input type="text" name="country" [(ngModel)]="student.country" required>
+  </div>
+  <button type="submit" [disabled]="!studentForm.valid">Register</button>
+</form>

@@ -1,0 +1,153 @@
+<div>
+  <h4 style="margin-left:25px; font-size:15px; color: black;">Update Package & Forwarding Cost</h4>
+  <button style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px;" class="updateTrans"  (click)="bulkUpd()"  >Bulk Update</button>
+    <div class="priceDiv">
+      <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="true" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+        [value]="packageDetailsWithPriceList" selectionMode="single">
+        <ng-template pTemplate="caption">
+          <div class="ui-helper-clearfix">
+              <i type="button" class="fa fa-file-excel-o fa-2x" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:10px; padding-top: 3px;" title="Export to Excel"></i>
+            <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+              Export to Excel</i> -->
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbDesgnName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbTypeName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condensingType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+              <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)"> -->
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'price'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr #tr id="{{rowData.pkgId}}" class="datarow" (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+            <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+              {{rowData[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+      <p-dialog header="Enter Percentage" [(visible)]="displayDialogBulk" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <div class="ui-g ui-fluid" >
+          <div class="ui-g-12">
+            <div class="ui-g-4">
+              <label for="vin">Percentage</label>
+            </div>
+            <div class="ui-g-8">
+              <input pInputText [(ngModel)]="percentage" />
+            </div>
+          </div>
+          </div>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="saveBulk()" label="Ok"></button>
+          </div>
+          </p-dialog>
+      <p-dialog header="Request Status" [(visible)]="displayMessage" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+        <label class="successMsg" *ngFor="let s of successMsg">{{s}}</label>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="closeMessage()" label="Ok"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+      <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+        <div class="ui-g ui-fluid" *ngIf="selectedFrame">
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="vin">Frame Name</label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.frameName}}</label>
+            </div>
+          </div>
+          <!-- <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="year">power </label>
+            </div>
+            <div class="ui-g-6">
+              <label>: {{selectedFrame.maxPower}}</label>
+            </div>
+          </div> -->
+          <div class="ui-g-12">
+            <div class="ui-g-5">
+              <label for="color">Packaging Cost</label>
+            </div>
+            <div class="ui-g-4">
+              <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedFrame.price" />
+            </div>
+          </div>
+          <div *ngIf="(transpApp || transRev)"  class="ui-g-12">
+            <div class="ui-g-5">
+              <label>Previous Cost</label>
+            </div>
+            <div class="ui-g-4">
+              <label>: {{selectedFrame.prevPrice}}</label>
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="Ok"></button>
+          </div>
+        </p-footer>
+      </p-dialog>
+      <form #updatePricePckg="ngForm" (ngSubmit)="updatePricePckgForm(updatePricePckg.value)">
+        <div style="margin-left: 10%;" *ngFor="let c of prevRemarks;let i=index;">
+          <div *ngIf="c.comment!=null">
+            <label class="pcomentslbl">{{c.assingedToname}} </label>
+            <textarea class="pcomments" disabled placeholder="Enter your comments" cols="50" rows="2">{{c.comment}}</textarea>
+          </div>
+        </div>
+        <div style="margin-left: 10%;">
+          <label class="comentslbl">Comments
+            <span class="asterisk_input">*</span>
+          </label>
+          <textarea name="coments" [(ngModel)]="remarkss" #comments="ngModel" required class="comments" ngModel placeholder="Enter yor comments"
+            cols="50" rows="4"></textarea>
+        </div>
+
+        <div style="margin-left: 10%;" *ngIf="(transpApp || transRev)">
+          <label class="reviewrlbl"> Accept / Reject the update request here
+            <span class="asterisk_input">*</span>
+          </label>
+          <select class="reviewr" #state="ngModel" required name="status" ngModel>
+            <option selected hidden>Please select</option>
+            <option>Accept</option>
+            <option>Reject</option>
+          </select>
+        </div>
+
+        <div style="margin-left: 10%;" *ngIf="(transpEdit || transRev)">
+          <label class="reviewrlbl">{{labelName}}
+            <span class="asterisk_input">*</span>
+          </label>
+          <select class="reviewr" #assignee="ngModel" required name="assigne" ngModel (change)="assignedUser(assignee.value)">
+            <option value="" selected hidden>Please select </option>
+            <option [ngValue]="u.userId" *ngFor="let u of newUsersLilst">{{u.empName}}</option>
+          </select>
+          <!-- <button style="width:auto" class="updateTrans" type="button" (click)="assinToOthers()">Assign</button> -->
+        </div>
+        <button style="margin-left: 10%;" class="updateTrans" [disabled]="!(updatePricePckg.form.valid && finalFrameList.length!=0)"
+          type="submit">Submit</button>
+        <button style="margin-left: 25px;" class="updateTrans" [disabled]="finalFrameList.length==0" (click)="saveAsDraftPckg()"
+          type="button">Save As Draft</button>
+      </form>
+    </div>
+  </div>

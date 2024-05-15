@@ -1,0 +1,135 @@
+<div class="outerDiv">
+  <div class="example-container">
+    <h4>Turbine Configurations</h4>
+    <div>
+      <div style="margin-left:65%;">
+        <p-progressSpinner [hidden]="hideprogress"></p-progressSpinner>
+      </div>
+      <div class="custStyl" *ngFor="let question of questionsBean ; let i=index">
+        <label>{{questionsBean[i].dropDownType.value}}</label>
+        <select class="widthInc" [(ngModel)]="defaultValues[i]" ngModel>
+          <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+            {{questionsBean[i].dropDownValueList[j].value}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 
+  <div class="bockLS" *ngFor="let field of turbinFieldsValues ; let i=index">
+    <label class="TClabelStyle">{{turbinFieldsValues[i].dropDownType.value}}</label>
+    <select #F2FDD [(ngModel)]="F2FCodeArray[i]" (change)="CreateCno(F2FDD.value,i,j)" class="TCSelStyle">
+      <option *ngFor="let option of turbinFieldsValues[i].dropDownValueList;let j=index">
+          {{turbinFieldsValues[i].dropDownValueList[j].value}}
+      </option>
+    </select>
+    </div> -->
+
+    <div class="newDiv">
+      <button class="submitBtn" type="button" (click)="submitTurbineDetails()">Submit</button>
+      <button class="submitBtn" style="background-color: olivedrab;" type="button" (click)="infoData()">Info</button>
+    </div>
+  </div>
+  <p-dialog header="Info Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" 
+  [modal]="true" [width]="750" [closable]="true">
+  <p-table [columns]="regCols" #dt [value]="questionEntity" selectionMode="single" [paginator]="true"
+  [rows]="10">
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+      </tr>
+      <tr>
+          <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'questionCode'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'questionDesc'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'answerCd'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+              <input class="localIp" placeholder="Search here.." *ngSwitchCase="'answerDesc'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+          <td *ngFor="let col of columns" style="border:1px solid black">
+              {{rowData[col.field]}}
+          </td>
+      </tr>
+  </ng-template>
+</p-table> 
+  </p-dialog>
+  <div>
+    <label style="margin-left:25px;">
+      {{unmatchedMsg}}
+    </label>
+  </div>
+  <div *ngIf="hideprogressC" style="margin-left:45%;">
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+  </div>
+  <h4  style="font-weight:bold; font-family: helvetica; font-size:13px; margin-left: 26px;" *ngIf="displayCno"> List of Projects</h4>
+  <div *ngIf="displayCno" class="cOrderDiv">
+    <!-- <div> -->
+      <table>
+        <th>
+          Varient Code
+        </th>
+        <th>
+          C number
+        </th>
+        <th>
+          Customer Name
+        </th>
+        <tr style="border:1px solid;" *ngFor="let matchedCProject of matchedCProjectList" (click)="CnoSelection(matchedCProject)"
+          [class.selected]="matchedCProject === selectedCno">
+          <td>
+            <input type="radio" name="matchedCpro" [checked]="matchedCProject.defaultFlag"> {{matchedCProject.variantCode}}
+          </td>
+          <td>
+            {{matchedCProject.cNum}}
+          </td>
+          <td>
+            {{matchedCProject.custName}}
+          </td>
+        </tr>
+      </table>
+  </div>
+      <div class="cnumCls" *ngIf="!matchedCProjectAvailable">
+    <label style="color:red;" *ngIf="!matchedCProjectAvailable">
+        {{CnumbersMessage}}
+        </label>
+      <button class="showAllC" (click)="showAllC()">
+        Show All C Numbers
+      </button>
+  </div>
+  <div *ngIf="enableBOM" class="BomDisplay">
+    <button class="BOMButton" (click)="displayOnelineCost()">Get SAP Cost</button>
+  </div>
+  <div style="display:inline-block;margin-bottom: 25px;" *ngIf="dispSaveBtn">
+    <div class="frameDet">
+      <label style="display:inline-block">Turbine Material Cost</label>
+      <input class="manualDip" type="text" style="margin-left:15px;" disabled [value]="sapData.turbineMaterialCost">
+    </div>
+    <div class="frameDet">
+      <label style="display:inline-block">Shop Conversion Cost</label>
+      <input class="manualDip" type="text" disabled [value]="sapData.shopCoverCost">
+    </div>
+    <div class="frameDet">
+      <label style="display:inline-block">Sub - Contracting Cost</label>
+      <input class="manualDip" type="text" disabled [value]="sapData.subContrCost">
+    </div>
+    <div class="frameDet">
+      <label style="display:inline-block">Total</label>
+      <input class="manualDip" type="text" style="margin-left:120px;" disabled [value]="sapData.total">
+    </div>
+  </div>
+  <div class="newDiv" *ngIf="dispSaveBtn">
+      <button class="BOMButton" type="button" (click)="saveSapCost()" style="margin-bottom: 5%">Save</button>
+      <div *ngIf="message" class="msgDiv">
+          {{successMsg}}
+      </div>
+   
+  </div>
+  <button class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+
+</div>

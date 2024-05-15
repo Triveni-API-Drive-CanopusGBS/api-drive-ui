@@ -1,0 +1,94 @@
+.consultantInfo{
+    padding-left: 15px;
+    padding-top: 25px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    width:50%;
+   
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.consultantDisplay{
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+.radioStyl{
+    margin: 15px;
+    margin-left: 7px;
+}
+.btn1{
+    background-color: rgb(213,120,23);
+    border-radius: 8px;
+    color: white;
+    width:180px;
+    height: 20px;
+    padding: 8px;
+    }
+.btn2{
+    border-radius: 5px;
+    width:130px;
+    height: 35px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgb(213,120,23);
+    }
+.custStyl{
+    margin-top: 10px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+.inpStyl{
+    width: 400px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid;
+    display:inline-block;
+}
+.previouFun {
+    position: relative;
+    margin-left:950px;
+    margin-top: 280px;
+    padding-right: 20px;
+    }
+.btn3{
+    border-radius: 3px;
+    width:130px;
+    height: 35px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgb(213,120,23);
+    
+    }
+label{
+    font-weight: bolder;
+    font-size: 15px;
+    margin: 5px;
+}
+form{
+    margin-left: 50px;
+}
+button:disabled{
+    background-color: gray;
+}
+.istyle{
+    width: 500px;
+    padding: 5px; 
+}

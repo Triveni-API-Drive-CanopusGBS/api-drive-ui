@@ -1,0 +1,540 @@
+<div style="width:100%;height:500px;">
+  <div class="alignOrder">
+    <nav>
+      <table>
+        <tr>  
+            <td>
+                <div style="width:100px;" class="decoLink1">
+                    <button [routerLink]="['CommercialSec1']" routerLinkActive="active decoLink1">Commercial Section l</button>
+                  </div>
+            </td>
+            <td>
+                <div style="width:100px;" class="decoLink1">
+                    <button [routerLink]="['CommercialSec2']" routerLinkActive="active decoLink1">Commercial Section ll</button>
+                  </div>
+            </td>       
+          <td *ngFor="let o of disableArray;let i=index">            
+            <div *ngIf="o.defaultValue && o.scopeCode == 'PF' && !disableWStd" style="width:170px;" class="decoLink1">
+              <button [routerLink]="['packgFrwrd']" routerLinkActive="active decoLink1">Packaging and Forwarding</button>
+            </div>
+            <div *ngIf="o.defaultValue && o.scopeCode == 'TC' && !disableWStd" style="width:170px;" class="decoLink1">
+              <button [routerLink]="['transport']" routerLinkActive="active decoLink1">Transportation Charges</button>
+            </div>          
+            <div *ngIf="o.defaultValue && o.scopeCode == 'VC' && !disableWStd" style="width:130px;" class="decoLink1">
+              <button [routerLink]="['variableCost']" routerLinkActive="active decoLink1">Variable Cost</button>
+            </div>
+            <div *ngIf="o.defaultValue && o.scopeCode == 'PR' && !disableWStd" style="width:100px;" class="decoLink1">
+                <button [routerLink]="['quotComplt']" routerLinkActive="active decoLink1">Project Cost</button>
+              </div>             
+
+              <!-- <td>
+            <div style="width:150px;" class="decoLink1">
+              <button [routerLink]="['ErrectionCommision']" routerLinkActive="active decoLink1">Erection & commision</button>
+            </div>
+          </td> -->
+          <!-- <td *ngIf="disbaleBoolean[5]">
+            <div style="width:170px;" class="decoLink1">
+              <button [routerLink]="['sparesCost']" routerLinkActive="active decoLink1">Spares</button>
+            </div>
+          </td> -->
+          <!-- <td *ngIf="disbaleBoolean[8]">
+            <div style="width:170px;" class="decoLink1">
+              <button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Warranty</button>
+            </div>
+          </td>
+          <td *ngIf="disbaleBoolean[9]">
+            <div style="width:170px;" class="decoLink1">
+              <button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Bank Guarantee</button>
+            </div>
+          </td>
+          <td *ngIf="disbaleBoolean[10]">
+            <div style="width:170px;" class="decoLink1">
+              <button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Contingency</button>
+            </div>
+          </td>
+          <td *ngIf="disbaleBoolean[11]">
+            <div style="width:110px;" class="decoLink1">
+              <button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Agency commission</button>
+            </div>
+          </td>
+          <td *ngIf="disbaleBoolean[12]">
+            <div style="width:100px;" class="decoLink1">
+              <button [routerLink]="['ScopeOfSupply']" routerLinkActive="active decoLink1">Other Charges</button>
+            </div>
+          </td> -->
+          <!-- <td [hidden]="!(s.defaultValue)" *ngFor="let s of disableArray;let i=index;">
+            <div [hidden]="!(s.defaultValue)" style="width:100px;" class="decoLink1">
+              <button [hidden]="!(s.defaultValue)" (click)="navigate(s)" >{{s.scopeName}}</button>
+            </div>
+          </td> -->
+          </td>          
+        </tr>
+      </table>
+    </nav>
+    <router-outlet></router-outlet>
+  </div>
+  <div class="ttlCostEst">
+    <div class="decoLink" style="border-top-style: none;border-left-style: none;border-right-style: none;">
+      <label class="estimateCostLab" title="Total Estimate cost : {{quotationNumber}}">Total Estimate cost : {{quotationNumber}}</label>
+    </div>
+    <div class="scrollClass">
+      <ul>
+          <li>
+              <label class="nameCell"><b>Flange to Flange</b></label>
+              <!-- <label class="priceCell">
+                <b>{{totalF2FCost}}</b>
+              </label> -->
+            </li>
+            <hr style="width:400px;margin-top:5px;">
+            <ul>
+              <li *ngFor="let f2f of f2fList">
+                  <label class="subitemName" title="{{f2f.categoryDetDesc}}">{{f2f.categoryDetDesc}}</label>
+                  <label class="subitemPrice">{{f2f.price}}</label>
+                </li>
+                 <li>
+                <label class="subitemName" title="Turbine Material Cost"><b>Turbine Material Cost</b></label>
+                <label class="subitemPrice"><b>{{turbineMaterialCost}}</b></label>
+              </li>
+              <!-- <li *ngIf="dispAddOn">
+                <label class="subitemName"> AddOn Cost</label>
+                <label class="subitemPrice">{{addonCost}}</label>
+              </li> -->
+              <!-- <li *ngIf="defaultAddOns.length!=0">
+              <label class="subitemName">
+                <b>Default AddOn Components</b>
+              </label>
+            </li>
+            <li *ngFor="let defaultAddOn of defaultAddOns">
+              <label class="subitemName">{{defaultAddOn.addOnCompo_cd}}</label>
+              <label class="subitemPrice">{{defaultAddOn.excelCost}}</label>
+            </li> -->
+              <div *ngIf="addons.length!=0">
+                <hr style="width:400px;margin-top:5px;">
+                <li>
+                  <label class="nameCell"><b>AddOn components</b></label>
+                  <label class="priceCell">
+                   <b>{{addonCost}}</b>
+                  </label>
+                </li>
+    
+                <hr style="width:400px;margin-top:5px;">
+                <li *ngFor="let addon of addons">
+                  <label class="subitemName" title="{{addon.addOnCompo_cd}}">{{addon.addOnCompo_cd}}</label>
+                  <label class="subitemPrice">{{addon.selectedCost}}</label>
+                </li>
+              </div>
+            </ul>
+    
+            <!-- F2F Addon -->
+    
+          <div *ngIf="f2fAddOnCostFlag">
+              <hr style="width:400px;margin-top:5px;"> 
+              <li>
+                  <label class="nameCell"><b>F2F Add-Ons</b></label>
+                </li>
+              <hr style="width:400px;margin-top:5px;">          
+              <li *ngFor="let f2fAdd of f2fAddOnList">
+                <label class="subitemName" title="{{f2fAdd.categoryDetDesc}}">{{f2fAdd.categoryDetDesc}}</label>
+                <label class="subitemPrice">{{f2fAdd.price}}</label>
+              </li>
+              <li>
+                  <label class="nameCell"><b>Total F2F Add-Ons</b></label>
+                  <label class="priceCell">
+                  <b> {{totalF2fAddOnCost}}</b> 
+                  </label>
+                </li>
+              </div>
+              <hr style="width:400px;margin-top:5px;">   
+                <li>
+                    <label class="subitemName">Shop Conversion Cost</label>
+                  <label class="subitemPrice">{{shopCoverCost}}</label>
+                </li>
+                <li>
+                    <label class="subitemName">Sub-Contracting Cost</label>
+                    <label class="subitemPrice">{{subContrCost}}</label>
+                  </li>
+                
+                  <li>
+                      <label class="nameCell"><b>Total F2F Cost</b></label>
+                      <label class="priceCell">
+                        <b>{{totalF2FCost}}</b>
+                      </label>
+                    </li>
+
+        <!-- //Mechanical -->
+        <div *ngIf="dboMechList.length!=0 || dboMechAuxList.length!=0 || totalMechCost != 0">
+            <hr style="width:400px;margin-top:5px;">          
+            <li>
+              <label class="nameCell"><b>DBO Mechanical</b></label>
+             
+            </li>
+            </div>
+        <div *ngIf="dboMechList.length!=0"> 
+          <hr style="width:400px;margin-top:5px;">          
+          <li *ngFor="let dboMech of dboMechList">
+            <label class="subitemName" title="{{dboMech.categoryDetDesc}}">{{dboMech.categoryDetDesc}}</label>
+            <label class="subitemPrice">{{dboMech.price}}</label>
+          </li>
+          <li>
+            <label class="nameCell"><b>Total Mechanical Items</b></label>
+            <label class="priceCell">
+            <b> {{dboMechCost}}</b> 
+            </label>
+          </li>
+          </div>
+          
+          <!-- Mech Aux  -->
+          <div *ngIf="dboMechAuxList.length!=0">  
+            <hr style="width:400px;margin-top:5px;">          
+            <li *ngFor="let mechAux of dboMechAuxList">
+              <label class="subitemName" title="{{mechAux.categoryDetDesc}}">{{mechAux.categoryDetDesc}}</label>
+              <label class="subitemPrice">{{mechAux.price}}</label>
+            </li>
+            <li>
+              <label class="nameCell"><b>Total Mechanical Aux</b></label>
+              <label class="priceCell">
+              <b> {{dboMechAuxCost}}</b> 
+              </label>
+            </li>
+            </div>
+            
+            <!-- Mech Extended scope -->
+            <div *ngIf="dboMechExtList.length!=0">
+              <hr style="width:400px;margin-top:5px;">          
+              <li *ngFor="let mechExt of dboMechExtList">
+                <label class="subitemName" title="{{mechExt.categoryDetDesc}}">{{mechExt.categoryDetDesc}}</label>
+                <label class="subitemPrice">{{mechExt.price}}</label>
+              </li>
+              <li>
+                <label class="nameCell"><b>Total Mechanical Extended Scope</b></label>
+                <label class="priceCell">
+                <b> {{dboMechExtCost}}</b> 
+                </label>
+              </li>
+              </div>
+              <div *ngIf="dboMechList.length!=0 || dboMechAuxList.length!=0 || totalMechCost != 0">
+                <hr style="width:400px;margin-top:5px;">          
+                <li>
+                  <label class="nameCell"><b>Total DBO Mechanical</b></label>
+                  <label class="priceCell">
+                  <b> {{totalMechCost}}</b> 
+                  </label>
+                </li>
+                </div>
+
+<!-- //Electrical -->
+
+<div *ngIf="totalDboEleCost != 0 || dboEleList.length!=0 || dboEleAuxList.length != 0">
+    <hr style="width:400px;margin-top:5px;">          
+    <li>
+      <label class="nameCell"><b>DBO Electrical</b></label>
+    </li>
+    </div>
+  
+  
+          <!-- Ele Data -->
+          <div *ngIf="dboEleList.length!=0">
+            <hr style="width:400px;margin-top:5px;">          
+            <li *ngFor="let dboEle of dboEleList">
+              <label class="subitemName" title="{{dboEle.categoryDetDesc}}">{{dboEle.categoryDetDesc}}</label>
+              <label class="subitemPrice">{{dboEle.price}}</label>
+            </li>
+            <li>
+                <label class="nameCell"><b>Total Electrical Items</b></label>
+                <label class="priceCell">
+                 <b>{{dboEleCost}}</b> 
+                </label>
+              </li>
+          </div>
+  
+          <!-- Ele Aux -->
+          <div *ngIf="dboEleAuxList.length!=0">  
+  
+            <hr style="width:400px;margin-top:5px;">          
+            <li *ngFor="let eleAux of dboEleAuxList">
+              <label class="subitemName" title="{{eleAux.categoryDetDesc}}">{{eleAux.categoryDetDesc}}</label>
+              <label class="subitemPrice">{{eleAux.price}}</label>
+            </li>
+            <li>
+                <label class="nameCell"><b>Total Electrical Auxialries</b></label>
+                <label class="priceCell">
+                 <b>{{dboEleAuxCost}}</b> 
+                </label>
+              </li>
+          </div>
+  
+          <!-- Ele Extended -->
+          <div *ngIf="dboEleExtList1.length!=0 || dboEleExtCost > 0">
+            <hr style="width:400px;margin-top:5px;">          
+            <li *ngFor="let eleExt of dboEleExtList1">
+              <label class="subitemName" title="{{eleExt.categoryDetDesc}}">{{eleExt.categoryDetDesc}}</label>
+              <label class="subitemPrice">{{eleExt.price}}</label>
+            </li>
+            <li>
+                <label class="nameCell"><b>Total Electrical Extended Scope</b></label>
+                <label class="priceCell">
+                 <b>{{dboEleExtCost}}</b> 
+                </label>
+              </li>
+          </div>
+  
+          <div *ngIf="totalDboEleCost != 0 || dboEleList.length!=0 || dboEleAuxList.length != 0">
+              <hr style="width:400px;margin-top:5px;">          
+              <li>
+                <label class="nameCell"><b>Total DBO Electrical</b></label>
+                <label class="priceCell">
+                <b> {{totalDboEleCost}}</b> 
+                </label>
+              </li>
+              </div>
+
+       <!-- CI Data -->
+
+       <div *ngIf="totalDboCiCost != 0 || dboCIAuxList.length != 0 || dboCIExtList.length != 0">
+          <hr style="width:400px;margin-top:5px;">          
+          <li>
+            <label class="nameCell"><b>Control & Instrumentation</b></label>
+          </li>
+          </div>
+
+        <div *ngIf="dboCIList.length!=0">
+          <hr style="width:400px;margin-top:5px;">          
+          <li *ngFor="let dboCI of dboCIList">
+            <label class="subitemName" title="{{dboCI.categoryDetDesc}}">{{dboCI.categoryDetDesc}}</label>
+            <label class="subitemPrice">{{dboCI.price}}</label>
+          </li>
+          <li>
+              <label class="nameCell"><b>Total Control & Instrumentation Items</b></label>
+              <label class="priceCell">
+               <b>{{cICost}}</b> 
+              </label>
+            </li>
+        </div>
+
+        <!-- CI Aux Data -->
+        <div *ngIf="dboCIAuxList.length!=0">   
+          <hr style="width:400px;margin-top:5px;">          
+          <li *ngFor="let ciAux of dboCIAuxList">
+            <label class="subitemName" title="{{ciAux.categoryDetDesc}}">{{ciAux.categoryDetDesc}}</label>
+            <label class="subitemPrice">{{ciAux.price}}</label>
+          </li>
+          <li>
+              <label class="nameCell"><b>Total Control & Instrumentation Aux</b></label>
+              <label class="priceCell">
+               <b>{{cIAuxCost}}</b> 
+              </label>
+            </li>
+        </div>
+
+        <!-- CI Extended scope -->
+        <div *ngIf="dboCIExtList.length!=0"> 
+          <hr style="width:400px;margin-top:5px;">          
+          <li *ngFor="let ciExt of dboCIExtList">
+            <label class="subitemName" title="{{ciExt.categoryDetDesc}}">{{ciExt.categoryDetDesc}}</label>
+            <label class="subitemPrice">{{ciExt.price}}</label>
+          </li>
+          <li>
+              <label class="nameCell"><b>Total Control & Instrumentation Extended Scope</b></label>
+              <label class="priceCell">
+               <b>{{cIExtCost}}</b> 
+              </label>
+            </li>
+        </div>
+        <div *ngIf="totalDboCiCost != 0 || dboCIAuxList.length != 0 || dboCIExtList.length != 0">
+            <hr style="width:400px;margin-top:5px;">          
+            <li>
+              <label class="nameCell"><b>Total Control & Instrumentation</b></label>
+              <label class="priceCell">
+              <b> {{totalDboCiCost}}</b> 
+              </label>
+            </li>
+            </div>
+
+        <div>
+          <hr style="width:400px;margin-top:5px;">           
+          <li *ngFor="let c of costSheetList;let j=index;">
+            <label class="subitemName" title="{{c.categoryDetCode}}"><b>{{c.categoryDetCode}}</b> </label>
+            
+            <label class="subitemPrice">
+              <b>{{c.price}}</b>
+            </label>
+          </li>
+        </div>
+       
+         <!-- variable Cost Starts -->
+       <div *ngIf="varCostFlag">
+        <hr style="width:400px;margin-top:5px;">
+        <li>
+          <label class="nameCell">
+            <b>Variable Cost</b>
+          </label>
+          <!-- <label class="priceCell">
+            <b>{{otherCostsOneLine.totalVariableCost}}</b>
+          </label> -->
+        </li>
+        <hr style="width:400px;margin-top:5px;">
+        <ul>
+          <li>
+            <label class="subitemName" title="Contigency General">Contigency General</label>
+            <label class="subitemPrice">{{otherCostsOneLine.contigencyGeneral}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="LD for Performance">LD for Performance</label>
+            <label class="subitemPrice">{{otherCostsOneLine.ldPerformance}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="LD for Late delivery">LD for Late delivery</label>
+            <label class="subitemPrice">{{otherCostsOneLine.ldforLateDelivery}}</label>
+          </li>
+         
+          <li>
+            <label class="subitemName">BG Charges For ABG</label>
+            <label class="subitemPrice">{{otherCostsOneLine.bankingCharges1}}</label>
+          </li>
+          <li>
+            <label class="subitemName">BG Charges For PBG</label>
+            <label class="subitemPrice">{{otherCostsOneLine.bankingCharges2}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Overhead on Total Sale Value">Overhead on Total Sale Value</label>
+            <label class="subitemPrice">{{otherCostsOneLine.ovrheadSaleCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Warranty Cost">Warranty Cost</label>
+            <label class="subitemPrice">{{otherCostsOneLine.warrantyCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Interest Charges">Interest Charges</label>
+            <label class="subitemPrice">{{otherCostsOneLine.intrestCharges}}</label>
+          </li>
+
+          <li>
+            <label class="subitemName" title="Insurance">Insurance</label>
+            <label class="subitemPrice">{{otherCostsOneLine.insurance}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Travel Expenses">Travel Expenses</label>
+            <label class="subitemPrice">{{otherCostsOneLine.travelExpenses}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Contingency for Turbine">Contingency for Turbine</label>
+            <label class="subitemPrice">{{otherCostsOneLine.turbineContigency}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Sales Expenses">Sales Expenses</label>
+            <label class="subitemPrice">{{otherCostsOneLine.salesExpenses}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Contingency for DBO">Contingency for DBO</label>
+            <label class="subitemPrice">{{otherCostsOneLine.dboContigency}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Engineering Charges">Engineering Charges</label>
+            <label class="subitemPrice">{{otherCostsOneLine.engineCharges}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Agency Commission">Agency Commission</label>
+            <label class="subitemPrice">{{otherCostsOneLine.agencyCommCharges}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Overhead Raw Material Cost">Overhead Raw Material Cost</label>
+            <label class="subitemPrice">{{otherCostsOneLine.overRawMaterialCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Others">Others</label>
+            <label class="subitemPrice">{{otherCostsOneLine.others}}</label>
+          </li>
+        </ul>
+        <li>
+            <label class="nameCell">
+              <b>Variable Cost</b>
+            </label>
+            <label class="priceCell">
+              <b>{{otherCostsOneLine.totalVariableCost}}</b>
+            </label>
+          </li>
+      </div>
+      <!-- variable Cost Ends -->
+      <!-- Spares Cost Starts -->
+
+      <div *ngIf="sparesFlag">
+        <hr style="width:400px;margin-top:5px;">
+        <li>
+          <label class="subitemName"><b>Spares</b></label>
+          <!-- <label class="subitemPrice"><b>{{otherCostsOneLine.totalSparesCost}}</b></label> -->
+        </li>
+        <hr style="width:400px;margin-top:5px;">
+        <ul>
+          <li>
+            <label class="subitemName" title="Over Heads of Spares cost">Over Heads of Spares cost</label>
+            <label class="subitemPrice">{{otherCostsOneLine.ovrheadSparesCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Order Booking Price for spares">Over heads on Total Sale Value</label>
+            <label class="subitemPrice">{{otherCostsOneLine.ovrheadTotSaleCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="">Order Booking Price for spares</label>
+            <label class="subitemPrice">{{otherCostsOneLine.orderBookingSpares}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Net Profit">Net Profit</label>
+            <label class="subitemPrice">{{otherCostsOneLine.sparesNetProfit}}</label>
+          </li>
+
+        </ul>
+        
+          <li>
+              <label class="subitemName"><b>Spares</b></label>
+              <label class="subitemPrice"><b>{{otherCostsOneLine.totalSparesCost}}</b></label>
+            </li>
+      </div>
+      <!-- Spares Cost Ends -->
+      <!-- Project Cost Starts -->
+      <div *ngIf="projectCostFlag">
+        <hr style="width:400px;margin-top:5px;">
+        <li>
+          <label class="nameCell">
+            <b>Project Cost</b>
+          </label>
+          <label class="priceCell">
+            <b></b>
+          </label>
+        </li>
+        <hr style="width:400px;margin-top:5px;">
+        <ul>
+          <li>
+            <label class="subitemName" title="Cost For Turbine And Spares">Cost For Turbine And Spares</label>
+            <label class="subitemPrice">{{otherCostsOneLine.turbineSparesCost}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Net Profit">Net Profit</label>
+            <label class="subitemPrice">{{otherCostsOneLine.totOrderCostNetProfit}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Percent Profit">Percent Profit</label>
+            <label class="subitemPrice">{{otherCostsOneLine.percentProfit}}</label>
+          </li>
+          <li>
+            <label class="subitemName" title="Order Booking Price For Turbine And Spares">Order Booking Price For Turbine And Spares</label>
+            <label class="subitemPrice">{{otherCostsOneLine.turbineOrderBookCost}}</label>
+          </li>
+
+        </ul>
+      </div>
+      <!-- Project Cost Ends -->
+        <li>
+          <hr style="width:400px;margin-top:5px;">
+          <!-- <div style="display:block">
+            <label class="nameCell">
+              <b>Total</b>
+            </label>
+            <label class="priceCell">
+              <b>{{total}}</b>
+            </label>
+          </div> -->
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

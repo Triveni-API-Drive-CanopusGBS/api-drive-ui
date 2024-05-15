@@ -1,0 +1,36 @@
+export class addOnComponentsFields{
+    subtype2Id:number;
+    subtype1Id:number;
+    selectedCostFlag:number;
+    selectedCost:number;
+    sapCostFlag:number;
+    sapCost:number;
+    remarks:any;
+    quantity:number;
+    quantityName:string; //added by nidhi
+    makeId:number;
+    excelCostFlag:number;
+    excelCost:number;
+    comp_detail_id:number;
+    addOnCompoId:number;
+    name:string;
+    newCompRemark:string;
+    constructor(obj){
+        this.subtype2Id=obj.subtype2Id;
+        this.subtype1Id=obj.subtype1Id;
+        this.selectedCostFlag=obj.selectedCostFlag;
+        this.selectedCost=obj.selectedCost;
+        this.sapCostFlag=obj.sapCostFlag;
+        this.sapCost=obj.sapCost;
+        this.remarks=obj.remarks;
+        this.quantity=obj.quantity;
+        this.quantityName=obj.quantityName;
+        this.makeId=obj.makeId;
+        this.excelCostFlag=obj.excelCostFlag;
+        this.excelCost=obj.excelCost;
+        this.comp_detail_id=obj.comp_detail_id;
+        this.addOnCompoId=obj.addOnCompoId;   
+        this.name=obj.name;     
+        this.newCompRemark=obj.newCompRemark; 
+    }
+}

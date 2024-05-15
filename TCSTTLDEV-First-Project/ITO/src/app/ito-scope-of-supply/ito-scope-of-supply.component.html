@@ -1,0 +1,37 @@
+<div class="scopeOfSup-container">
+  <label class="quotNumber">Quotation Number : {{quotationNumber}}</label>
+  <form class="example-form">
+    <div>    
+      <div class="scopeOfSupCtr">
+      <h4> Scope of Supply & Offer Annextures</h4>
+      <div *ngIf = "enbSelAll" style="width:100%;display:block">
+        <input class="checkBoxStyl" style="height:17px;width:17px;" type="checkBox" [checked]="selectAllVal" (click)="selectAll($event)"> Select All </div>
+      <div class="checkStyl">
+        <li class="checkbox" *ngFor="let scopeOfSupply of ScopeOfSupply ; let ind=index">
+          <input type="checkbox" value="scopeOfSupply" name="scopeOfSupply" [checked]="scopeOfSupply.defaultValue" (click)="checkedScopes($event,scopeOfSupply,ind)"
+            [disabled]="disabledArray[ind]" class="checkBoxStyl">{{scopeOfSupply.scopeName}}
+        </li>
+      </div>
+    </div>
+    <div *ngIf = "enbSelAll" class="noteMsg"><b>Note:</b> Flange to flange / DBO Mechanical / DBO Electrical/Control & Instrumentation<br/>
+       is mandatory option, please select that to proceed ..<br/>
+        <div style="height: 31px;"></div>
+       <!-- <b>Caution:</b> Whenever there is a removal from the scope of supply, all the costs will be reset<br/>
+       Cost Engineer has to re-do the estimation -->
+
+    </div>
+  </div>
+  <div *ngIf="message" class="msgDiv">
+    {{successMsg}}
+</div>
+    <div class="previouFun" [ngStyle]="{ 'margin-top':enbSelAll? '5px' : '300px' }" >
+      <!-- <button class="btn3"  routerLink="/CostEstimation/CustomerInformation/CustomerRequirement">Previous</button>  -->
+      <!-- <button type="submit" (click)="send()" class="btn2">Submit</button>  -->
+      <button class="btn2" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+      <button [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" class="btn2" *ngIf="disabled" type="submit" (click)="send()">Submit</button>
+      <p-progressSpinner [hidden]="!hidespinner" [style]="{width: '25px', height: '25px'}" strokeWidth="5" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+    </div>
+
+  </form>    
+ 
+</div>

@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+/* material styles */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css"; 
+
+body{
+    font-family: Helvetica;
+    font-size: 13px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+i{
+  cursor: -webkit-grab;
+}

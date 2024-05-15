@@ -1,0 +1,81 @@
+export class dboClass {
+    colId: number;
+    colNm: string;
+    colValCd: string;
+    userVal: number;
+    colValNm: string;
+    itemId: number;
+    itemNm: string;
+    itemName:string;
+    subItemId:number;
+    subItemName: string;
+    subItemTypeId: number;
+    subItemTypeName: string;
+    Qyt: number;
+    quotId: number;
+    cost: number;
+    quantity: number;
+    colValComments: string;
+    comrComments: string;
+    techRemarks: string;
+    comrRemarks: string;
+    othColValFlag: number;
+    addOnFlg: number;
+    techFlag: number;
+    comrFlag: number;
+    addOnCostMeFlag: number;
+    f2fItemId: number;
+    paramId: number;
+    unitId: number;
+    guaranteed: string;
+    condition: string;
+    unitNm:string;
+    paramNm:string;
+    cond1:number;
+    cond2:number;
+    cond3:number;
+    cond4:number;
+    cond5:number;
+    cond6:number;
+    cond7:number;
+    cond8:number;
+    cond9:number;
+    cond10:number;
+    consumerId1 : string;
+    startUp: string;
+    continuous: string;
+    editFlag: number;
+    itemType: string
+    itemCd: string;
+    speed: string;
+    voltage: string;
+    feeder: string;
+    information:string; 
+    finalts:string; 
+    subItemCd:string; 
+    description :string; 
+    equipment:string; 
+    equivalent:string; 
+    panelType:string; 	
+    custType:string; 
+    quant:number;
+    seqNo:number;
+    ssId:number;
+    newColValFlag:number;
+    remarks:string;
+    test:string;
+    fixedText1: string;
+    fixedText2: string;
+    fixedText3: string;
+    sectionCd: string;
+    subItemTypeCd: string;
+    uncheckFlag: number;
+    newItem: string;
+    slNo:number;
+    name:string;
+    item: any;
+    constructor() {
+        
+
+    }
+}

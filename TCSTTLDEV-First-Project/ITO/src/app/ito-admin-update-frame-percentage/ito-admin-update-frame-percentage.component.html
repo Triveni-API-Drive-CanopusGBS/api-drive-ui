@@ -1,0 +1,116 @@
+
+      <div> 
+        <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dialogMsgApp" showEffect="fade" appendTo="body" [modal]="true"
+        [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+        {{dialogMsgVal}}
+        <p-footer>
+          <button type="button" (click)="close()" style="background-color:rgb(213,120,23); height:50px;" pButton class="fa fa-close" class="ui-button-secondary">Close</button>
+        </p-footer>
+      </p-dialog>
+          <p-table [columns]="newCols" #dt [value]="turbineInstrumentList" selectionMode="single" [paginator]="true"
+                [rows]="10"  >
+                <ng-template pTemplate="caption">
+                    List of Frames with percentage
+                    <div class="ui-helper-clearfix">
+                            <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" (click)="simple()" 
+                            style="float:left ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                              Export to Excel</i>
+                          </div>
+                </ng-template>
+               
+                <ng-template pTemplate="header" let-columns>
+                    <tr style="width:1530px">
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                    <tr  style="width:1530px">
+                        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameDesc'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineDesignCd'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbineCode'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'maxPower'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'bleedType'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condensingtypes'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'suppChainCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'percentIncr'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'estimateCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'turbInstrCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'condInstrCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'subContrCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input class="localIp" placeholder="Search here.." *ngSwitchCase="'totalFTFCost'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+
+                        </th>
+                        <th style="border:1px solid white; background-color:white;"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns" style="border:1px solid black">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td style="text-align:left;">
+                            <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editFrame(rowData)"></i>
+                        </td>
+
+                    </tr>
+                </ng-template>
+            </p-table>   
+            <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="400">
+                <form #editFrameForm="ngForm" (ngSubmit)="UpdateExistingFrame(editFrameForm.value,newFrameArray)">
+                    <div class="ui-g ui-fluid" *ngIf="newFrameArray">
+                        <div class="ui-g-12">
+                            <div class="ui-g-4">
+                                <label >Frame Name</label>
+                            </div>
+                            <div class="ui-g-8">
+                                <label>{{newFrameArray.frameDesc}}</label>
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                          <div class="ui-g-4">
+                              <label for="currencyCode">Frame Design</label>
+                          </div>
+                          <div class="ui-g-8">
+                              <label>{{newFrameArray.turbineDesignCd}}</label>
+                          </div>
+                      </div>
+                      <div class="ui-g-12">
+                     <div class="ui-g-4">
+                       <label>Frame Type</label>
+                     </div>
+                     <div class="ui-g-8">
+                        <label>{{newFrameArray.turbineCode}}</label>
+                    </div>
+                      </div>
+                      <div class="ui-g-12">
+                          <div class="ui-g-4">
+                            <label >Frame Power</label>
+                          </div>
+                          <div class="ui-g-8">
+                              <label>{{newFrameArray.maxPower}}</label>
+                          </div>
+                         </div>
+                         <div class="ui-g-12">
+                            <div class="ui-g-4">
+                              <label for="rupee">Percent Increment</label>
+                            </div>
+                             <div class="ui-g-8">
+                                <input pInputText name="precentInc" [(ngModel)]="newFrameArray.percentIncr" />
+                             </div>
+                           </div>
+                    </div>
+                    <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                            <button type="submit" class="btn2">Ok</button>
+                        </div>
+                    </p-footer>
+                </form>
+            </p-dialog>  
+                    <div   class="ui-dialog-buttonpane ui-helper-clearfix">
+                      <button type="button" pButton icon="fa fa-check" (click)="saveData()" label="Save"></button>
+                    </div>
+      </div> 
+      

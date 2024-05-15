@@ -1,0 +1,194 @@
+.UBOContainer{
+    font-size: 14px;  
+    font-family: Arial, Helvetica, sans-serif;
+}
+.userCreation{
+    float: left;
+    display:flex;
+    flex-direction:column;
+}
+.frameDet{
+    margin-top: 10px;
+    float: left;
+    /* margin-left: 15px; */
+    /* position: relative; */
+    width: 34%;
+    /* display: block; */
+    margin-bottom: 15px;
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+.asterisk_input{
+    color:red;
+}
+.widthInc{
+    height:27px;
+    width: 185px;
+    border-radius: 5px;
+    border: 1px solid;
+    margin-left: 3px;
+    padding: 0px;
+    margin-top: 10px;
+    display: block;
+}
+label{
+    font-weight: bold;
+}
+/* .tableStyle{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left:30px;
+    width: 1080px;
+} */
+button:disabled{
+    background-color: gray;
+    border-color: gray;
+}
+.localIp{
+    padding: 3px;
+    height: 30px;
+    width: 100%;
+    border: none;
+}
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+th{
+    background-color: gray;
+    text-align: center;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+}
+.datarow:last-child{
+    border-bottom: 1px solid black;
+}
+
+ tr:nth-child(even){
+    background-color: #f2f2f2;   
+    color:black;
+} 
+
+.updateTrans{
+    padding: 8px;
+    background-color: rgb(213,120,23);
+    font-weight: bold;
+    color: white;
+    /* border: 1px solid rgb(213,120,23); */
+    border-radius: 5px;
+    width:130px;
+    margin: 15px;
+    margin-left: 20px;
+}
+
+.comentslbl{
+    display: block;
+    margin: 10px;
+    margin-left: 0px;
+    padding: 5px;
+    font-weight: bold;
+}
+.successMsg{
+    font-size: 13px;
+    margin-left: 35px;
+    color: blue;
+}
+.mesgDiv{
+    font-size: 18px;
+    margin-left: 35px;
+    color: blue;
+    display: block;
+}
+
+.pcomments{
+    font-style: italic;
+    border-radius: 15px;
+    margin-top: 0px;
+    padding: 7px;
+    outline-style: none;
+    width: 322px;
+}
+
+tr:nth-child(even){
+     background-color: #f2f2f2;
+}
+.datarow:last-child{
+     border-bottom: 1px solid;
+}
+.reqStyl{
+    display: inline-block;
+    width: 315px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.uboComment{
+    border-collapse: collapse;
+    margin-left: 105px;
+    margin-top: 50px;
+}
+.previouFun{
+    margin-left: 92px;
+}
+.remarks{
+    display: block;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 15px;
+    margin-bottom: 6px;
+    padding: 7px;
+    outline-style: none;
+    width: 322px;
+    height: 87px;
+}
+#comments td,tr{
+    border:none;
+    background-color: white;
+    width:210px;
+    padding: 10px;
+}
+
+#comments td:first-child{
+    color: black;
+    border:none;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.countDsply{
+    float: right;
+    color: indigo;
+}
+.msgDiv{
+    margin-left: 108px;
+    margin-top: 15px;
+    padding-bottom: 8px;
+    color: blue;
+    font-size: 20px;
+}
+.priceField{
+    border-radius: 5px;
+    border: 1px solid;
+    width: 130px;
+    padding: 5px;
+    margin-top: 10px;
+    display: inline-block;
+}

@@ -1,0 +1,72 @@
+
+<div class="example-container">
+    <h4 style="width:auto;display:block;">Profile Management</h4> 
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <form class="example-form" *ngIf="hideprogress" #editUserProfileForm="ngForm" (ngSubmit)="userProfileManagement(editUserProfileForm.value)">
+        <!-- <i style="position: absolute;margin:0 0 0 80%; color:rgb(213,120,23)" title="Edit" class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="enablefields(displayMode)"></i> -->
+        <div class="userCreation">
+          <div style="position: absolute;margin-left:50%;margin-top:30px;">
+              <img class="loggedUserstyle" [src]="image"> 
+              <label class="uploadStyl" >Upload Photo</label>
+              <input type="file" accept="/image*" (change)="fileChangeEvent($event)" ngModel name="image" [disabled]="displayMode"><br/>
+          </div>
+            <div class="custStyl">
+                <!-- <label hidden>User Id</label>  -->
+                <input hidden type="text" [(ngModel)]="loggedInUser.userId"  ngModel name="userId" class="inpStyl"/>
+              </div>
+            <div class="custStyl">
+                <label>Employee Id</label> 
+                <input type="number" [(ngModel)]="loggedInUser.empId"  ngModel name="empId" class="inpStyl" [disabled]="displayMode"  placeholder="Type Employee Id"/>
+              </div>
+              <div class="custStyl">
+                  <label>Employee Name</label> 
+                  <input type="text" [(ngModel)]="loggedInUser.name"  ngModel name="empName" class="inpStyl" [disabled]="displayMode"  placeholder="Type Employee Name"/>
+                </div>
+                <div class="custStyl">
+                    <label>Email Id</label> 
+                    <input type="email" [(ngModel)]="loggedInUser.emailId"  ngModel name="emailId" class="inpStyl" [disabled]=true/>
+                </div>
+              <div class="custStyl">
+                  <label>Contact Number</label> 
+                  <input type="number" [(ngModel)]="loggedInUser.phoneNumber"  ngModel name="contactNumber" class="inpStyl" [disabled]="displayMode"  placeholder="Type Contact Number"/>
+                </div>
+                <div class="custStyl">
+                    <!-- <label hidden>Department Id</label> -->
+                    <input  hidden type="text" [(ngModel)]="loggedInUser.deptId"  ngModel name="groupId" class="inpStyl">
+                  </div>
+                <div class="custStyl">
+                  <label>Department</label>
+                  <input type="text" [(ngModel)]="loggedInUser.dept"  ngModel name="group" class="inpStyl" [disabled]=true>
+                </div>
+                <div class="custStyl">
+                  <label>Designation</label> 
+                  <input type="text" [(ngModel)]="loggedInUser.designation"  ngModel name="designation" class="inpStyl" [disabled]="displayMode"  placeholder="Enter Designation"/>
+                </div>
+                 <div class="checkStyl" *ngIf="Regions.length >0" >
+                  <label style="margin-top:20px;">Region Coverage</label>
+                    <li class="checkbox" *ngFor="let region of Regions">
+                    <input type="checkbox" [disabled]=true  value="region" name="region" checked class="checkBoxStyl">{{region.value}} ({{region.code}})
+                    </li> 
+                  </div>
+                  <div class="checkStyl">
+                    <label>Role</label>
+                    <li class="checkbox" *ngFor="let role of Roles;let ind=index">
+                      <input type="checkbox" [disabled]=true checked class="checkBoxStyl">{{role.value}}
+                    </li>
+                  </div>
+                  <div class="custStyl">
+                    <label class="valStyl">Is Active?</label>
+                    <input type="checkbox" [(ngModel)]="loggedInUser.active" ngModel name="active" class="checkBoxStyl" ngModel name="active" [disabled]="true" value="Active">
+                </div>
+               
+                <div class="btn1"> 
+                    <button class="btn2" type="submit">Submit</button>                   
+                </div>
+                <div style="margin-left:47%;padding-bottom:30px;">
+                    <p-progressSpinner *ngIf="!hidespinner"></p-progressSpinner>
+                </div>
+        </div>
+    </form>
+  </div>      

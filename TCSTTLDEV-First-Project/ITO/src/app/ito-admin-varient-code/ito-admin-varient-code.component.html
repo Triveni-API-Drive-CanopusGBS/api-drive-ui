@@ -1,0 +1,224 @@
+<div>
+    <button class="collapsible" (click)="displayAdd()">Add Varients</button>
+
+
+  </div>
+<div class="transportDiv" *ngIf="addVarient">
+
+  <h2>Add Varients</h2>
+  <div class="outerDiv">
+    <form class="basicForm" #basicVarientForm="ngForm" (ngSubmit)="basicVarient(basicVarientForm.value)">
+      <div >
+        <label class="bLabel">Type Of Blade</label>
+        <select style="margin:15px;margin-left:32px;" #typeOfBlad name="typeOfBlade" #typeOfTur="ngModel" required ngModel (change)="TOBsel(typeOfBlad.value)">
+          <option selected hidden>Please select</option>
+          <option *ngFor="let n of typeOfBlades">{{n.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div>
+        <label class="bLabel">Turbine</label>
+        <select style="margin:15px;margin-left:72px;" name="typeOfTrbine" required ngModel #typeOfTrbines="ngModel" (change)="TOTsel(typeOfTrbines.value)">
+          <option hidden>Please select</option>
+          <option [selected]="t.defaultVal" *ngFor="let t of typeOfTurbine">{{t.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div *ngIf="enableCT">
+        <label class="bLabel">Condenser Type</label>
+        <select style="margin:15px;" #typeOfCon="ngModel" required ngModel name="condenserType" [(ngModel)]="condensType">
+          <option hidden>Please select</option>
+          <option *ngFor="let c of condenserTypes" [selected]="c.defaultVal">{{c.categoryDetDesc}}</option>
+        </select>
+      </div>
+      <div >
+        <label class="bLabel">Frame</label>
+        <select style="margin:15px;margin-left:77px;" #frme="ngModel" required name="frames" ngModel (change)="FrameSel(frme.value)">
+          <option hidden>Please select</option>
+          <option [selected]="f.defaultVal" *ngFor="let f of newFrames">{{f.frameDesc}}</option>
+        </select>
+      </div>
+      <div *ngIf="!isStndLone" >
+        <label class="bLabel">Power</label>
+        <select style="margin:15px;margin-left:77px;" #powr="ngModel" required name="power" ngModel (change)="PowSel(powr.value)">
+          <option hidden>Please select</option>
+          <option *ngFor="let p of powerList">{{p}}</option>
+        </select>
+      </div>
+      <div>
+        <button class="BasicbtnStyle" [disabled]="!basicVarientForm.form.valid" type="submit">
+          Get Frame Details
+        </button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="showQues" style="margin-left:15%;display:block">
+    <div>
+      <!-- <p-progressSpinner [hidden]="hideprogress"></p-progressSpinner> -->
+    </div>
+    <form #quesions="ngForm" (ngSubmit)="getQesAns(quesions.value)">
+      <div style="display:block;width:100%;">
+        <div class="custStyl" *ngFor="let question of quesBean; let i=index">
+          <label>{{quesBean[i].dropDownType.value}}</label>
+          <select name="{{i}}" class="widthInc"  (change)="optionSelChange()" [(ngModel)]="defaultValues[i]" ngModel>
+            <option [selected]="quesBean[i].dropDownValueList[j].defaultVal" *ngFor="let Dropdown of quesBean[i].dropDownValueList; let j=index">
+              {{quesBean[i].dropDownValueList[j].value}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="newDiv">
+        <button class="submitBtn" type="submit">Generate Varient Code</button>
+        <label style="display:block;" *ngIf="showcAndCustDiv">Generated Varient Code is {{varientCode}}</label>
+      </div>
+    </form>
+    <div *ngIf="showcAndCustDiv" class="cAndCustDiv">
+      <form #cAndCustForm="ngForm" (ngSubmit)="cAndCust(cAndCustForm.value)">
+        <div>
+          <label class="lables">Please enter C project number : </label>
+          <label class="cLbale">c-</label>
+          <input ngModel name="cNum" #cNumb="ngModel" (blur)="checkFourDigit($event)" required class="cInput" type="number"/>
+        </div>
+        <div>
+          <label class="lables">Please select the customer : </label>
+          <div class="istyle">
+            <input type="search" name="customer" ngModel required #cust="ngModel" list="customers" class="inpStyl" placeholder="Type Customer Name"
+            />
+            <datalist id="customers">
+              <option *ngFor="let customr of customers">{{customr.custName}} </option>
+            </datalist>
+          </div>
+        </div>
+        <div class="newDiv">
+          <button class="submitBtn" [disabled]="!cAndCustForm.form.valid" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <p-dialog header="Saved" [(visible)]="sucessboolean" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+    <div class="ui-g-6">
+        <label>{{successMsg}}</label>
+      </div> 
+  <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="closeDialog()" label="Ok"></button>
+        </div>
+      </p-footer>
+</p-dialog>
+</div>
+<div>
+    <button class="collapsible" (click)="displayUpdate()">Update/Delete</button>
+
+
+    <div class="flexCollll"  *ngIf="updateVarianttemp">
+        <p-progressSpinner [hidden]="spinner" class="spinnerWidth" [style]="{width: '50px', height: '50px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+        <p-table #dt [style]="{width:'80%','margin-left':'8%'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+        [value]="varientCodeTemp" selectionMode="single" [(selection)]="selectedRange" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="caption">
+          <div  class="ui-helper-clearfix">
+    
+            <!-- <i type="button" class="fa fa-file-excel-o"c label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+              Export to Excel</i> -->
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+    
+             
+    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">
+    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'framePowerId'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">               
+    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'c_num'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">               
+    <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'bgmRating'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+    (keyup)="searchSet(dt,$event.target.value)">                -->
+              <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                (keyup)="searchSet(dt,$event.target.value)"> -->
+            
+            </th>
+            <th style="border:1px solid white; background-color:white;"></th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+              <td *ngFor="let col of columns" style="border:1px solid black"   (click)="rowSelected(rowData)" [pSelectableRow]="rowData">
+                  {{rowData[col.field]}}
+              </td>
+            <td    style="text-align:left;background-color: white;border-right: none;border-bottom-color: white;">
+                <input type="checkbox" [checked]="deleteBooleantemp[rowData[variant_id]]"  [ngModelOptions]="{standalone: true}" ngModel name="addOns" (click)="deletEdit($event,rowData)" class="checkBoxStyl">
+    
+              </td>
+           
+
+          </tr>
+        </ng-template>
+    
+      </p-table>
+      <p-dialog header="Frame Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+    
+    
+    
+          <div class="ui-g ui-fluid" *ngIf="selectedVariant">
+                            <div class="ui-g-12">
+                              <div class="ui-g-5">
+                                <label for="vin">Frame Name</label>
+                              </div>
+                              <div class="ui-g-6">
+                                <label>: {{selectedVariant.frameName}}</label>
+                              </div>
+                            </div>
+                                            <div class="ui-g-12">
+                              <div class="ui-g-5">
+                                <label for="vin">Power</label>
+                              </div>
+                              <div class="ui-g-6">
+                                <label>: {{selectedVariant.framePowerId}}</label>
+                              </div>
+                            </div>
+
+    
+                                                      
+                  
+                                                           <div class="ui-g-12">
+                              <div class="ui-g-5">
+                                <label for="color">C-Num</label>
+                              </div>
+                              <div class="ui-g-4">
+                                <input pInputText id="color" style="margin-left:20px;"[(ngModel)]="selectedVariant.c_num" />
+                              </div>
+                            </div>
+                          
+                          </div>
+                          <p-footer>
+                            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                              <button type="button" pButton icon="fa fa-check" (click)="saveEdit()" label="Ok"></button>
+                            </div>
+                          </p-footer>
+                        </p-dialog>
+                        <p-dialog header="Saved" [(visible)]="sucessboolean" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+                            <div class="ui-g-6">
+                                <label>{{successMsg}}</label>
+                              </div> 
+                          <p-footer>
+                                <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                  <button type="button" pButton icon="fa fa-check" (click)="closeDialog()" label="Ok"></button>
+                                </div>
+                              </p-footer>
+                        </p-dialog>
+                        <!-- <button style="margin-left: 125px;width:70px;"   (click)="update()" class="updateTrans"  *ngIf="finalFrameList.length!=0"
+                        type="button" >Update</button> -->
+                        <div class="newDiv">
+                            <button class="submitBtn" type="submit" *ngIf="variantList.length!=0 || booleanButton"  (click)="updateVariant()">Update</button>
+                          </div>
+                       
+    </div>
+    
+    
+  </div>

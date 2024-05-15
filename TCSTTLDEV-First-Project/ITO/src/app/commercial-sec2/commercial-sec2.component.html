@@ -1,0 +1,234 @@
+<div>
+
+           <p style="font-weight: bold; margin-bottom:20px;font-size:14px;font-family:helvetica;margin-left:30em;">
+            SECTION-IIB
+           </p>
+<div class="frstBorder">
+<div class="double-border">
+    <p class="quesLabel">Definition:</p>
+    <p>{{definition}}</p> 
+</div> 
+</div> 
+<p style="font-weight: bold; margin-bottom:20px;font-size:14px;font-family:helvetica;margin-left:30em;">
+    SECTION-IIB
+   </p>
+   <p style="font-weight: bold; margin-bottom:20px;font-size:14px;font-family:helvetica;margin-left:22em;">
+    GENERAL TERMS & CONDITIONS ({{qouttype}})
+   </p>
+<!-- <div    *ngFor="let Dropdown1 of display ; let j=index">
+       
+    <p style="font-weight: bold; margin-bottom:20px;font-size:14px;font-family:helvetica;margin-left:100px">
+            {{j+1}}.{{display[j].itemNm}}
+     </p> -->
+
+<table id="addOnTable1"   class="addOnTable1" style="margin-left:100px">
+                                             
+            
+  <!-- <tr>
+     <div class="flexCollll">
+          <label class="othersip" style="width:20px; text-align: center;font-weight: bold;"></label> -->
+   
+        <!-- <label class="othersip" style="width:50px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;">SL.NO</label> -->
+         <!-- <label class="othersip" style="width:730px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;">{{}}</label> -->
+            <!-- </div>
+        </tr>  -->
+        <div *ngFor="let Dropdown of othetList ; let i=index">
+
+
+  <tr >
+  
+          
+                 
+    
+    <input type="checkbox"   style="width:20px;" [checked]="this.arraycheck[othetList[i].itemId]" [(ngModel)]="this.arraycheck[othetList[i].itemId]" name="itemRemark" (click)="itemRmrkCheck($event,othetList[i].itemId)" class="checkBoxStyl">
+
+    
+                       <label class="othersip" style="width:50px;  text-align: center;font-weight: bold;">{{i+1}}</label>
+                       <label class="othersip" style="width:50px; text-align: center;font-weight: bold;">{{othetList[i].itemName}}</label>
+
+                    </tr>
+                    <div>
+                        <p></p>
+                        </div>
+
+                <!-- <div >
+                        <input type="checkbox"   style="width:20px;" [checked]="this.arraycheck[display[j].itemId][othetList[i].seqNo]" [(ngModel)]="this.arraycheck[display[j].itemId][othetList[i].seqNo]" name="itemRemark" (click)="itemRmrkCheck($event,display[j].itemId,othetList[i].seqNo)" class="checkBoxStyl">
+    </div> -->
+        <!-- <input name="othetList[i].seqNo" [ngStyle]="{ 'background-color':arraycheck[display[j].itemId][othetList[i].seqNo] && disableData==false ? 'white' : '#efeff5' }"  *ngIf="Dropdown1.itemNm ==Dropdown.itemNm "
+        [(ngModel)]="othetList[i].seqNo" class="othersip" [disabled]="!arraycheck[display[j].itemId][othetList[i].seqNo] || disableData" style="resize:none;width:50px;height:50px;font-size:13px;font-family:helvetica;border:1px solid black" type="text"> -->
+         
+  
+    
+   
+                                         
+        <!-- <textarea name="othetList[i].fixedText1" 
+        [(ngModel)]="othetList[i].fixedText1" class="othersip"  style="resize:none;width:730px;height:50px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea>                          
+        <textarea name="othetList[i].fixedText2"   
+        [(ngModel)]="othetList[i].fixedText2" class="othersip"  style="resize:none;width:730px;height:50px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea>  -->
+        <tr>                                    
+        <textarea  [disabled]="!arraycheck[othetList[i].itemId]" name="othetList[i].fixedText3" *ngIf="othetList[i].itemName!='Termination'"  rows="{{defaultvalueshieght[i]}}"   
+                                            [(ngModel)]="othetList[i].fixedText3" required #othComrRem  (keyup)="checkIfEdited(othComrRem.value,i)" class="othersip"  style="resize:none;width:730px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                            <textarea [disabled]="!arraycheck[othetList[i].itemId]" name="othetList[i].fixedText1" *ngIf="othetList[i].itemName=='Termination'"  rows="{{defaultvalueshieght[i]}}"   
+                                            [(ngModel)]="othetList[i].fixedText1" class="othersip"  style="resize:none;width:730px;font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                           </tr>  
+  
+
+
+                                         
+
+                                                <tr *ngIf="othetList[i].itemName=='Termination'" style="margin-top: 50px;margin-left:60px;" >
+                                                            <!-- <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label> 
+                                                            <label class="othersip" style="width:100px; border:1px solid black; text-align: center;font-weight: bold;background-color: grey;"></label>  -->
+                                                            <textarea  *ngIf="othetList[i].itemName=='Termination'"   
+                                                            class="othersip"  readonly="readonly" style="resize:none;margin-left:60px;width:150px;   font-size:13px;font-family:helvetica;border:1px solid black" type="text">Contract Termination within</textarea>
+                                                            <textarea   readonly="readonly" *ngIf="othetList[i].itemName=='Termination'"  
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">Within 15 days</textarea>
+                                                            <textarea  readonly="readonly" *ngIf="othetList[i].itemName=='Termination'"  
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">Between 15 to 30 days</textarea>
+                                                            <textarea  readonly="readonly" *ngIf="othetList[i].itemName=='Termination'"   
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">Between 1 to 2 months</textarea>
+                                                            <textarea  readonly="readonly" *ngIf="othetList[i].itemName=='Termination'"  
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">Between 2 to 4 months</textarea>
+                                                            <textarea   readonly="readonly" *ngIf="othetList[i].itemName=='Termination'" 
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">Between 4 to 5 months</textarea>
+                                                            <textarea   readonly="readonly" *ngIf="othetList[i].itemName=='Termination'"
+                                                            class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text">More than 5 months</textarea>
+                                                                                                                                                                                                                
+                                                </tr>
+                                                <tr *ngIf="othetList[i].itemName=='Termination'">
+                                                      <textarea readonly="readonly" *ngIf="othetList[i].itemname==Termination"    
+                                      class="othersip"  style="resize:none;width:150px; ;margin-left:60px; font-size:13px;font-family:helvetica;border:1px solid black" type="text">Compensation to Seller</textarea>
+                                                      
+              <textarea name="tabletext[0]" [disabled]="!arraycheck[othetList[i].itemId]"   *ngIf="othetList[i].itemName=='Termination'"
+              [(ngModel)]="tabletext[0]" class="othersip"  style="resize:none;width:70px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea>
+              <textarea name="tabletext[1]" [disabled]="!arraycheck[othetList[i].itemId]"   *ngIf="othetList[i].itemName=='Termination'" 
+              [(ngModel)]="tabletext[1]" class="othersip"  style="resize:none;width:70px ;font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+              <textarea name="tabletext[2]" [disabled]="!arraycheck[othetList[i].itemId]"  *ngIf="othetList[i].itemName=='Termination'"  
+              [(ngModel)]="tabletext[2]" class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                        
+              <textarea name="tabletext[3]" [disabled]="!arraycheck[othetList[i].itemId]"  *ngIf="othetList[i].itemName=='Termination'"  
+              [(ngModel)]="tabletext[3]" class="othersip"  style="resize:none;width:70px;  font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                          
+              <textarea name="tabletext[4]" [disabled]="!arraycheck[othetList[i].itemId]" *ngIf="othetList[i].itemName=='Termination'"    
+              [(ngModel)]="tabletext[4]" class="othersip"  style="resize:none;width:70px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+              <textarea name="tabletext[5]" [disabled]="!arraycheck[othetList[i].itemId]"    *ngIf="othetList[i].itemName=='Termination'" 
+              [(ngModel)]="tabletext[5]" class="othersip"  style="resize:none;width:70px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                          
+          
+          
+          </tr>
+          <tr *ngIf="othetList[i].itemName=='Termination'" >
+                <textarea name="othetList[i].fixedText3" [disabled]="!arraycheck[othetList[i].itemId]" *ngIf="othetList[i].itemName=='Termination'"  rows="{{defaultvalueshieght[i]}}"   
+                [(ngModel)]="othetList[i].fixedText3" class="othersip"  style="resize:none;width:730px; font-size:13px;font-family:helvetica;border:1px solid black" type="text"></textarea> 
+                                             
+        </tr>
+        </div>
+
+                                            </table>
+                                          
+                                        
+                                      
+                                       <div >
+                                         
+
+
+                                               <button type="button" [disabled]="disableData" class="othersbtn3" (click)="addRowsOth1()">Add</button>
+
+                                                  <form #others212="ngForm" (ngSubmit)="compOthersForm1(others212.value ,others212)" style="margin-bottom:15px;">
+
+                                                    <table  id="addOnTable1 "class="addOnTable1" style="margin-left:100px;">
+                                                        
+
+
+                                                         
+                                                        <div *ngFor="let o of itemOthersList1;let i=index">
+                                                                <div class="flexCollll" >
+                                                          <tr>
+                                                                <div class="flexCollll" >
+                                                                        <textarea 
+                                                                        value="{{o.itemName}}" class="othersip" readonly="readonly" style="resize:none;width:200px;height:30px; font-size:13px;font-family:helvetica;border:1px solid black;" type="text"></textarea>    
+                                                                       
+                                                                <textarea  
+                                                                value="{{o.fixedText3}}" class="othersip" [disabled]="!disableexclusion[i]"   [(ngModel)]="o.fixedText3" [ngModelOptions]="{standalone: true}" ngModel style="resize:none;width:525px;height:30px; font-size:13px;font-family:helvetica;border:1px solid black;" type="text"></textarea>    
+                                                               
+                                                             
+                                                                <div class="flexCollll" >
+                                                          
+                                                                    <i style="margin-top:10px;color:rgb(213,120,23);"  class="fa fa-times fa-2x" (click)="cancelLinesOth1(i)" aria-hidden="true"></i>
+                                                                    <button (click)="editlhs(i)"   *ngIf="!disableexclusion[i]" style="color:white;border-radius: 5px; margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;"
+                                                                    type="button">Edit</button>
+                                                                    <button (click)="savelhs(i)" *ngIf="disableexclusion[i]" style="color:white; border-radius: 5px;margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;"
+                                                                    type="button">Save</button>
+                                                                </div>
+                                                                </div>
+                                                          </tr>
+                                                        </div>
+                                                  </div>
+
+
+                                                          <div  *ngIf="displayOthnewLine1"  >
+                                                                <div  class="flexCollll"  >
+                                                          <tr>
+                                                              
+                                                                <div class="flexCollll" >
+
+                                                                        <textarea name="othdes1"  style="resize:none;width:200px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black"  placeholder="Enter ItemName" required #othdes1="ngModel"
+                                                                        ngModel class="othersip" type="text">
+                                                                        </textarea>
+                                                                            <textarea name="othdes2"  style="resize:none;width:525px;height:40px; font-size:13px;font-family:helvetica;border:1px solid black"  placeholder="Enter Description" required #othdes2="ngModel"
+                                                                            ngModel class="othersip" type="text">
+                                                                            </textarea>
+                                                                   
+                                                                  
+                                                                            <div class="flexCollll" >
+                                                                   
+                                                                        <button style="color:white; margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);margin-left:10px;height:30px;margin-top:8px;" [disabled]="!others212.form.valid"
+                                                                            type="submit">Save</button>
+                                                                        <button (click)="cancelnewLineOth1()" style="color:white;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);;height:30px;;margin-top:8px;"
+                                                                            type="button">Cancel</button>
+                                                                     </div>
+                                                                     </div>
+                                                          </tr>
+                                                        </div> 
+                                                        </div>
+
+                                                      </table>
+
+
+                                                  </form>
+
+                                              
+
+                                                
+                                            
+                                           
+                                        
+                                          
+                                         
+                                         
+                                  
+
+                            
+</div> 
+
+<!-- </div> -->
+<div style="margin-left: 100px;">
+        <div *ngIf="dialogMsgApp" class="msgDiv">
+                {{dialogMsgVal}}
+            </div>
+    <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:70px;margin-right:10px;margin-bottom:50px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+     *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+  <button  [ngStyle]="{ 'background-color':dialogMsgApp? 'green' : 'rgb(213,120,23)' }" style="margin-top:10px; border-radius: 5px;color:white;padding:7px; width:70px;margin-bottom:20px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+  type="button" (click)="saveOthers()">Save</button>
+  </div> 
+
+</div>
+
+
+
+

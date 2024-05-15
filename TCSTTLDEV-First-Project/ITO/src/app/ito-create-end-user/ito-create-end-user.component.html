@@ -1,0 +1,157 @@
+<!-- <div class="example-container">
+  <form class="example-form" #endUserCreationForm="ngForm" (ngSubmit)="createEndUser(endUserCreationForm.value)">
+    <h3>End User Creation</h3> 
+      <div class="userCreation">
+          <div class="custStyl">
+              <label>End User Name</label> 
+              <input type="text" class="inpStyl" ngModel name="endUserName" placeholder="Type End User Name"/>
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label>  
+                <input type="number" class="inpStyl" ngModel name="contactNumber"  placeholder="Type Contact Number"/>
+              </div>
+              <div class="custStyl">
+                  <label>Email Id</label> 
+                  <input type="email" class="inpStyl" ngModel name="emailId"  placeholder="Type Email Id"/>
+              </div>
+              <div class="custStyl">
+                  <label>Address</label> 
+                  <textarea  class="textAreaStyl" ngModel name="address"  placeholder="Type Address"></textarea>
+              </div>
+              <div class="custStyl">
+                  <label>City</label> 
+                  <input type="text" class="inpStyl" ngModel name="city"  placeholder="Type City "/>
+              </div>
+              <div class="custStyl">
+                  <label>State</label> 
+                  <input type="text" class="inpStyl" ngModel name="state"  placeholder="Type State"/>
+              </div>
+              <div class="custStyl">
+                  <label>Country</label> 
+                  <input type="text" class="inpStyl" ngModel name="country"  placeholder="Type Country"/>
+              </div>
+              <div class="custStyl">
+                  <label>Pincode</label> 
+                  <input type="number" class="inpStyl" ngModel name="pincode"  placeholder="Type Pincode"/>
+              </div>
+              <div class="checkStyl">
+                  <input type="checkbox" class="checkBoxStyl" ngModel name="active" value="Active">
+                  <label class="valStyl">Is Active?</label>
+              </div>
+              <div class="btn1">
+                  <button class="btn2Style" type="reset">Reset</button> 
+                  <button class="btn2" type="submit">Submit</button>                  
+              </div>
+      </div>
+  </form>
+</div>       -->
+
+<div class="example-container">
+    <h2>End User Creation</h2>
+    <div *ngIf="!hideprogress" style="margin-left:40%;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <form class="example-form" *ngIf="hideprogress" #endUserCreationForm="ngForm" (ngSubmit)="createEndUser(endUserCreationForm.value)">
+        <div class="userCreation">
+            <div class="custStyl">
+                <label>End User Name
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="endUserName" #endUserName="ngModel" [ngClass]="{'bordercolor': endUserName.errors && endUserName.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type End User Name" />
+            </div>
+            <div class="custStyl">
+                <label>Contact Number</label>
+                <input type="number" class="inpStyl" [pattern]="mobnumPattern" ngModel name="contactNumber" #contactNumber="ngModel" placeholder="Type Contact Number"
+                />
+            </div>
+            <div *ngIf="contactNumber.errors?.pattern" style="margin:10px; color:red;">
+                Contact number should be of 10 digits
+            </div>
+            <div class="custStyl">
+                <label>Email Id
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="email" class="inpStyl" required [pattern]="emailPattern" ngModel name="emailId" #emailId="ngModel" [ngClass]="{'bordercolor': emailId.errors && emailId.dirty && emailId.touched }"
+                    placeholder="Type Email Id" />
+            </div>
+            <div *ngIf="emailId.errors?.pattern" style="margin:10px; color:red;">
+                Please enter valid Email Id
+            </div>
+            <div class="custStyl">
+                <label>Address</label>
+                <textarea class="textAreaStyl" minlength="15" ngModel name="address" #address="ngModel" placeholder="Type Address"></textarea>
+            </div>
+            <div *ngIf="address.errors?.minlength" style="margin:10px; color:red;">
+                Minimum length must be 15 characters
+            </div>
+
+            <div class="custStyl">
+                <label>Country
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="country" value="country.locationName" #country="ngModel" (blur)="selectedCountry(country.value)"
+                    [ngClass]="{'bordercolor': country.errors && country.dirty}" required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let country of Countries">{{country.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>States
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="state" value="states.locationName" #state="ngModel" (blur)="selectedStates(state.value)"
+                    [ngClass]="{'bordercolor': state.errors && state.dirty}" required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let states of StatesList">{{states.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdownList" class="custStyl">
+                <label>Districts
+                    <span class="asterisk_input">*</span>
+                </label>
+                <select class="widthInc" ngModel name="district" value="district.locationName" #district="ngModel" [ngClass]="{'bordercolor': district.errors && district.dirty}"
+                    required>
+                    <option hidden> Please select</option>
+                    <option *ngFor="let district of DistrictsList">{{district.locationName}}</option>
+                </select>
+            </div>
+            <div *ngIf="disableDropdown" class="custStyl">
+                <label>State
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="state" #state="ngModel" [ngClass]="{'bordercolor': state.errors && state.dirty}"
+                [pattern]="emptyTextPattern" required placeholder="Type State" />
+            </div>
+            <div class="custStyl">
+                <label>City
+                    <span class="asterisk_input">*</span>
+                </label>
+                <input type="text" class="inpStyl" ngModel name="city" #city="ngModel" placeholder="Type City " [ngClass]="{'bordercolor': city.errors && city.dirty}"
+                [pattern]="emptyTextPattern" required />
+            </div>
+            <div class="custStyl">
+                <label>Pincode</label>
+                <input type="number" class="inpStyl" ngModel name="pincode" #pincode="ngModel" [ngClass]="{'bordercolor': pincode.errors && pincode.dirty}"
+                [pattern]="emptyTextPattern"  min="0" placeholder="Type Pincode" />
+            </div>
+            <div class="custStyl">
+                <label hidden>Modified By</label>
+                <input hidden type="text" [(ngModel)]="modifiedById" ngModel name="modifiedById" class="inpStyl" />
+            </div>
+            <!-- <div class="checkStyl">
+                    <input type="checkbox" class="checkBoxStyl" ngModel name="active"  value="Active">
+                    <label class="valStyl">Is Active?</label>
+                </div> -->
+            <div class="btn1">
+                <button class="btn2Style" type="button" (click)="goback()">Cancel</button>
+                <button class="btn2Style" type="reset">Reset</button>
+                <button [disabled]="!endUserCreationForm.form.valid" class="btn2" type="submit">Submit</button>
+            </div>
+        </div>
+
+    </form>
+    <div style="margin-left:50%; margin-top: 20%">
+        <p-progressSpinner [hidden]="hidespinner"></p-progressSpinner>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+<div class="vCostDiv" [appDisable]="appDisable">
+  <div class="vCostDivContainer">
+    <h4 style="text-decoration: underline;">Variable Cost</h4>
+    <div class="rowInd">
+      <div class="indComp" [ngStyle]="{'display':v.dropDownType.code=='CONT_GEN' ||(v.dropDownType.code=='OVR_SL') ||(v.dropDownType.code=='OVR_MT')? 'inline-block' : 'none' }"
+        *ngFor="let v of variableCost; let i=index">
+
+        <label [ngStyle]="{'display':v.dropDownType.code=='CONT_GEN' ||(v.dropDownType.code=='OVR_SL') ||(v.dropDownType.code=='OVR_MT') ? 'inline-block' : 'none' }"
+          class="QDstyle">{{v.dropDownType.value}}</label>
+        <div style="border:none" [ngStyle]="{'display':v.dropDownType.code=='CONT_GEN' || (v.dropDownType.code=='OVR_SL') || (v.dropDownType.code=='OVR_MT') ? 'inline-block' : 'none' }">
+          <input type="text" class="manualDip" disabled [value]="v.dropDownValueList[0].percentage + '%'" style="margin-left: 12px;" />
+        </div>
+
+      </div>
+    </div>
+    <!-- <div class="indComp"> -->
+    <form #vCostForm="ngForm" (ngSubmit)="getVarCost(vCostForm.value)">
+      <div class="mIstyle" style="margin-left:30px;">
+        <!-- <label class="Qstyle">Travel Expenses
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" required ngModel name="travelExp" [(ngModel)]="travelExps" /> -->
+        <label class="contentlabel"> Travel Expenses
+          <span class="asterisk_input">*</span> 
+          <div class="radioStylediv">                                         
+            <input class="radioStyl" type="radio" ngModel [(ngModel)]="travelExps" name="travelExp" value="YES" (click)="enableyes()">Yes
+            <input class="radioStyl" type="radio" ngModel [(ngModel)]="travelExps" name="travelExp" value="NO" (click)="enableNo()">No                
+          </div>
+        </label>
+        <div *ngIf="travelVisit">
+          <label class="Qstyle">No Of Visit
+            <span class="asterisk_input">*</span>
+           </label>
+        <input class="manualip" type="number" required ngModel name="noOfVisit" [(ngModel)]="noOfVisits" />
+         <label class="Qstyle">Tickect Cost For Each Visit
+         <span class="asterisk_input">*</span>
+         </label>
+          <input class="manualip" type="number" required ngModel name="ticketCost" [(ngModel)]="ticketCostV" />
+        </div>
+
+        <label class="Qstyle">Contigency For Turbine
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" required ngModel name="cTurbine" [(ngModel)]="cTurbines" />
+
+        <label class="Qstyle">Contigency For DBO
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" class="manualip" required ngModel type="number" name="cDbo" [(ngModel)]="cDbos" />
+
+        <label class="Qstyle">Insurance
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="insuranceCharge" [(ngModel)]="insurance" />
+
+        <label class="Qstyle">Sales Expenses
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" required ngModel name="sales" [(ngModel)]="saless" />
+        
+        <label class="Qstyle">Special Provision
+            <span class="asterisk_input">*</span>
+          </label>
+          <input class="manualip" type="number" required ngModel name="splProvisio" [(ngModel)]="splProvision" />
+
+        <label class="Qstyle">Engineering Charges
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" required ngModel name="engg" [(ngModel)]="enggs" />
+
+
+        <label class="Qstyle">Interest Charges (No of Months)
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="interest" [(ngModel)]="interests" />
+
+        <!-- <label class="Qstyle">Agency Commission %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" disabled class="manualip" required ngModel type="number" min="0" name="agencyComm" [(ngModel)]="agencyComm"/> -->
+        
+        <label class="Qstyle">Additional Warranty (No of Months)
+          <span class="asterisk_input">*</span>
+        </label>
+        <select class="manualip" style="width:15%; margin-right:44px;" [(ngModel)]="warantyPeriod" required ngModel name="warrantyPeriod"
+          #warrantyPeriod="ngModel">
+       <!--   <option hidden>Please select</option>-->
+          <input class="manualip" type="number" ngModel name="warrantyPeriod" [(ngModel)]="warantyPeriod" />
+          <option [selected]="d.noOfMonths == warantyPeriod" *ngFor="let d of wrntyCostList; let j=index">
+            {{d.noOfMonths}}
+          </option>
+        </select>
+        <label class="Qstyle">Intrest %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="intPer" [(ngModel)]="intrestPercentage" />
+
+
+        <label class="Qstyle">{{ldLateDelLabel}} %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="ldLateDel" [(ngModel)]="ldLateDelVal" />
+
+        <label class="Qstyle">{{ldPerLabel}} %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="ldPer" [(ngModel)]="ldPerVal" />
+
+        <label class="Qstyle">{{BG1Label}} %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="bg1Value" [(ngModel)]="BG1Val" />
+
+        <label class="Qstyle">{{BG2Label}} %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" ngModel name="bg2Value" [(ngModel)]="BG2Val" />
+
+        <label class="Qstyle">Profit %
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="manualip" type="number" required ngModel name="profit" [(ngModel)]="profitVal" />
+        <div style="display:flex">
+
+          <label class="Qstyle">Others</label>
+          <input class="manualip" type="number" style="margin-left:4px;" required ngModel name="others" (keyup)=checkOthers() [(ngModel)]="otherss"
+          />
+
+          <textarea *ngIf="enableRemarks" name="othRemarks" [(ngModel)]="otherRemarks" #othRemarks="ngModel" required ngModel style="border-radius: 3px;"
+            placeholder="Enter remarks.."></textarea>
+
+        </div>
+      </div>
+
+      <button class="btn2" style="margin-left: 30px;"  type="submit">Get Cost</button>
+    </form>
+    <div class="mIstyle" style="margin-left:30px;" *ngIf="otherCostBean!=null">
+
+      <label class="Qstyle">Total Order Price</label>
+      <input class="manualip" type="text" disabled [value]="otherCostBean.totOrderCost" />
+
+      <label class="Qstyle">Contigency General</label>
+      <input class="manualip" type="text" disabled ngModel name="contigencyGeneral" [(ngModel)]="otherCostBean.contigencyGeneral"
+      />
+
+      <label class="Qstyle">Agency Commisssion Charges</label>
+      <input class="manualip" type="text" disabled ngModel name="agencyCommCharges" [(ngModel)]="otherCostBean.agencyCommCharges"/>
+
+      <label class="Qstyle">LD for Performance</label>
+      <input class="manualip" type="text" disabled ngModel name="ldPerformance" [(ngModel)]="otherCostBean.ldPerformance" />
+
+      <label class="Qstyle">LD for Late Delivery</label>
+      <input class="manualip" type="text" disabled ngModel name="ldforLateDelivery" [(ngModel)]="otherCostBean.ldforLateDelivery"
+      />
+
+
+      <label class="Qstyle">BG Charges For ABG</label>
+      <input class="manualip" type="text" disabled ngModel name="bankingCharges1" [(ngModel)]="otherCostBean.bankingCharges1" />
+
+      <label class="Qstyle">BG Charges For PBG</label>
+      <input class="manualip" type="text" disabled ngModel name="bankingCharges2" [(ngModel)]="otherCostBean.bankingCharges2" />
+
+      <label class="Qstyle">Overhead on Total Sale Value</label>
+      <input class="manualip" type="text" disabled ngModel name="ovrheadSaleCost" [(ngModel)]="otherCostBean.ovrheadSaleCost" />
+
+      <label class="Qstyle">Warranty cost</label>
+      <input class="manualip" type="text" disabled ngModel name="warrantyCost" [(ngModel)]="otherCostBean.warrantyCost" />
+
+      <label class="Qstyle">Interest charges</label>
+      <input class="manualip" type="text" disabled ngModel name="intrestCharges" [(ngModel)]="otherCostBean.intrestCharges" />
+
+      <label class="Qstyle">Overhead Raw Material Cost</label>
+      <input class="manualip" type="text" disabled ngModel name="overRawMaterialCost" [(ngModel)]="otherCostBean.overRawMaterialCost"/>
+
+      <label class="Qstyle">Travel Expenses</label>
+      <input class="manualip" type="text" disabled ngModel name="travelExpenses" [(ngModel)]="otherCostBean.travelExpenses"/>
+
+    </div>
+    <div class="btnClass">
+      <label>Total Variable Cost
+      </label>
+      <br>
+      <input type="number" name="totalVariableCost" disabled [(ngModel)]="totalVariableCost" ngModel class="ipStyle">
+
+      <button class="importbtn" (click)="enableOverWrite()"  *ngIf="rewApp" type="button">Overwrite</button>
+      <button class="importbtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite()" type="button">Cancel</button>
+      <!-- <i (click)="getPrevComments()" class="fa fa-comments-o fa-2x" aria-hidden="true" title="Previous comments"></i> -->
+      <button type="button" (click)="getPrevComments()"  *ngIf="rewApp" class="importbtn"> Previous Remarks</button>
+      <div class="costDiv" *ngIf="!enableOverwriteDiv && overWrittenCost>0">
+        <label class="samllLbl">Overwritten Cost
+        </label>
+        <input style="width: 168px;" class="inpStyle" disabled type="number" [(ngModel)]="overWrittenCost" name="overwrittenCst">
+      </div>
+      <form #varCostForm="ngForm" (ngSubmit)="SaveVarCost(varCostForm.value)">
+        <div class="costDiv" *ngIf="enableOverwriteDiv">
+          <label class="samllLbl">Overwritten Cost
+            <span class="asterisk_input">*</span>
+          </label>
+          <input style="width: 168px;" required class="inpStyle" placeholder="Enter Cost" *ngIf="enableOverwriteDiv" ngModel name="updatedCost"
+            #updatedCost="ngModel" [(ngModel)]="overWrittenCost" type="number" />
+          <label class="samllLbl">Remarks
+            <span class="asterisk_input">*</span>
+          </label>
+          <textarea *ngIf="enableOverwriteDiv" name="remarks" [(ngModel)]="remarksVal" (keyup)="checkRemarks()" #remarks="ngModel"
+            required ngModel class="remarks" placeholder="Enter remarks.."></textarea>
+        </div>
+        <div *ngIf="message" class="msgDiv">
+          {{successMsg}}
+        </div>
+       
+        <div>
+          <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:7px; width:90px;margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+          *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+          <button *ngIf="varSuccess" type="submit" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" style="margin-top: 15px;" class="btnSave" [disabled]="(!varCostForm.form.valid||disableBtn)">Save</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

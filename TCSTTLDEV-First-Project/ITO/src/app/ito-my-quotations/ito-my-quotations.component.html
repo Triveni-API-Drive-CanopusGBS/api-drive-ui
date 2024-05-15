@@ -1,0 +1,120 @@
+<div class="container">
+
+    <h4>My Quotations</h4>
+    <div style="margin-left:45%;">
+        <p-progressSpinner [hidden]="hideprogress"></p-progressSpinner>
+    </div>
+    <p-table [hidden]="!hideprogress" #dt [columns]="cols" [value]="quotations" [paginator]="true" [rows]="15">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+                <!-- <button type="button" (click)="newCostEstimation()" style="float:right ; color:white ;height:30px; background-color: rgb(213,120,23); margin:10px;margin-top:10px;margin-bottom:10px;">
+                    New Cost Estimation</button> -->
+                <i type="button" class="fa fa-file-pdf-o fa-2x" label="All Data" (click)=" exportPDF(dt)" style="float:right; background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;" title="Export to PDF"></i>
+                <i type="button" class="fa fa-file-excel-o fa-2x" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:10px; padding-top: 3px;" title="Export to Excel"></i>
+                <button type="button" *ngIf="quotSelected" (click)="saveAsfn()" style="float:right ; color:white ;height:30px; background-color: rgb(213,120,23); border-radius: 5px; margin:10px;margin-top:10px;margin-bottom:10px;">
+                    Save As</button>
+                <i type="button" class="fa fa-pencil-square-o fa-2x" *ngIf="quotSelected" label="All Data" (click)="editQuot()" style="float:left ;background-color:white; color:rgb(213,120,23) ; margin:10px; padding-top: 3px;" title="Edit"></i>
+                <button type="button" *ngIf="(quotSelected && assginOthers)" (click)="assigntoOthers()" style="float:left ;background-color:rgb(213,120,23); color: white ; margin:10px;margin-top:10px; margin-bottom:10px; height:30px;border-radius: 5px;">
+                    Assign to others</button>
+                <!-- <select  style="float:left; background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0px;padding:8px; border:1px solid rgb(213,120,23);">
+                <option class="regionOpt" *ngFor="let region of RegionsList">{{region.value}}</option>
+              </select> -->
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                </th>
+            </tr>
+            <tr>
+
+                <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'quotNumber'" pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'custName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'statusName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'frameName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'capacity'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'region'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'modifyDate'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    <input class="localIp" placeholder="Search here.." *ngSwitchCase="'assignedTo'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="datarow" [pSelectableRow]="rowData">
+                <td class="quesLabel" title="{{rowData[col.field]}}" *ngFor="let col of columns" [class.selected]="rowData === selectedMyQuot" (click)="navigatetoNext(rowData)">
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog header="Assign to" [(visible)]="display" [modal]="true" [responsive]="true" [width]="550" [minWidth]="200" [minY]="70"
+        [maximizable]="true" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+        <form #assignToOthers="ngForm" (ngSubmit)="assignTo(assignToOthers.value)">
+            <input type="text" class="inpStyl" list="users" #userName="ngModel" required ngModel name="userName" placeholder="Type User Name"
+            />
+            <datalist id="users" style="height:100px">
+                <option class="list" *ngFor="let user of users">{{user.empName}} </option>
+                <hr>
+            </datalist>
+            <button [disabled]="!assignToOthers.form.valid" type="submit" class="saveBtn">Assign</button>
+
+            <label style="margin:10px; color:red;font-size:13px;">{{messageToUser}}</label>
+            <label style="margin:10px; color:red;font-size:13px;">{{successMesg}}</label>
+        </form>
+        <p-footer>
+            <button type="button" pButton class="fa fa-close" (click)="display=false" class="ui-button-secondary">Close</button>
+        </p-footer>
+    </p-dialog>
+
+    <p-dialog header="Save As" [(visible)]="displaySaveAs" [modal]="true" [responsive]="true" [width]="550" [minWidth]="200"
+        [minY]="70" [maximizable]="true" [closable]="false" [baseZIndex]="10000" [style]="{'background-color': 'white', 'padding-top':'10px'}">
+        <form #saveAs="ngForm" (ngSubmit)="saveAsForm(saveAs.value)">
+            <!-- Opportunity Sequence Number  -->
+            <label>Opportunity Sequence Number</label>
+            <input type="text" placeholder="Type Opportunity Sequence Number" required [(ngModel)]="opportunitySeqNO" name="opportunitySeqNO"  style="padding: 4px; border-radius:5px; width:220px;margin:5px;">
+            <!-- user Region 
+            <label>Region</label>
+            <select class="widthInc" name="region" #region="ngModel" required ngModel>
+                <option hidden selected>Please select</option>
+                <option *ngFor="let region of RegionsList">
+                    {{region.value}}
+                </option>
+            </select>-->
+            <input type="text" class="inpStyl" list="users" #cloneAssign="ngModel" required ngModel name="cloneAssign" placeholder="Type User Name"
+            />
+            <datalist id="users" style="height:100px">
+                <option class="list" *ngFor="let user of users">{{user.empName}} </option>
+                <hr>
+            </datalist>
+
+            <button type="submit" [disabled]="!saveAs.form.valid" class="saveBtn">Save</button>
+            <!-- <label style="margin:10px; color:red;font-size:13px;">{{messageToUserSaveAs}}</label> -->
+            <label style="margin:10px; color:red;font-size:13px;">{{successMesgSaveAs}}</label>
+        </form>
+        <p-footer>
+            <button type="button" pButton class="fa fa-close" (click)="closeRef()" class="ui-button-secondary">Close</button>
+        </p-footer>
+    </p-dialog>
+    <p-dialog class="dialog" header="Revision List" [closable]="false" [(visible)]="dispRev" showEffect="fade" appendTo="body"
+      [modal]="true" [maximizable]="true" [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      <div style="padding:15px;text-align:center">
+        <table id="alertTbl" style="border-collapse: collapse;">
+          <th style="width:auto ; min-width:auto;background-color:#4273EC;color:white; border: 1px solid #4273EC;font-family: helvetica;font-size:13px;">
+            Rev No
+          </th>
+          <tr *ngFor="let rev of revList">
+            <td style="width:auto ; min-width:auto;font-family: helvetica;font-size:13px;">
+              {{rev.revNo}}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p-footer>
+        <button type="button" (click)="closeDialog()" style="padding:4px;background-color:rgb(213,120,23);" class="ui-button-secondary">Close</button>
+      </p-footer>
+    </p-dialog>
+</div>

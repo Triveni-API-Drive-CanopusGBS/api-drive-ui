@@ -1,0 +1,178 @@
+.example-container{
+    padding-left: 100px;
+    margin-top:0px;
+    padding-bottom: 25px;
+    margin-bottom: 20px;
+    font-family: Helvetica;
+    font-size: 15px;
+}
+
+.reqStyl{
+    width: 315px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.widthInc{
+    height:27px;
+    border-radius: 5px;
+    border: 1px solid;
+    width: 250px;
+    padding: 0px;
+    margin-top: 10px;
+    display: block;
+}@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke:  rgb(213,120,23);
+    }
+    40% {
+        stroke:  rgb(213,120,23);
+    }
+    66% {
+        stroke:  rgb(213,120,23);
+    }
+    80%,
+    90% {
+        stroke:  rgb(213,120,23);
+    }
+  }
+h2{
+    color: gray;
+}
+.btn2{
+    border-radius: 5px;
+    width:130px;
+    height: 35px;
+    margin-top: 20px;
+    color: white;
+    margin-left: 10px;
+    background-color: rgb(213,120,23);
+}
+
+.selectInc{
+    height:27px;
+    border-radius: 5px;
+    border: 1px solid;
+    width: 250px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.inpStyl{
+    width: 450px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid;
+}
+.btn2Style{
+    border-radius: 5px;
+    width:130px;
+    height: 35px;
+    margin-top: 20px;
+    color: white;
+    background-color: rgb(213,120,23);
+}
+.btn1{
+    width:100%;
+    display:flex;
+}
+.divCust{
+  margin-left:220px;
+}
+td{
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+th{
+    background-color: gray;
+    text-align: left;
+    color: white;
+    height: 40px;
+    border: 1px solid gray;
+}
+.datarow:last-child{
+    border-bottom: 1px solid black;
+}
+
+ tr:nth-child(even){
+    background-color: #f2f2f2;   
+    color:black;
+} 
+
+.tabContainer{
+    padding: 10px;
+    color:black;
+}
+ .labelDiv{
+    margin-bottom: 10px;  
+    display:block;
+} 
+.addNewClass{
+    margin-left: 120px;
+}
+.radioStylediv{
+    margin-bottom: 20px;
+}
+.quesDiv{
+    display:inline-block;
+    margin-top: 10px;
+    /* padding:10px; */
+}
+
+.divStyl{
+    padding:80px;
+}
+.tabStyle{
+    background-color: red;
+}
+#addQues td,th{
+    border: 0px solid;
+}
+#addQues tr:nth-child(even){
+    background-color:white ;   
+    color:black;
+} 
+#addAns td,th{
+    border: 1px solid #dddddd;
+    padding:10px;
+}
+#addAns tr:nth-child(even){
+    background-color:white ;   
+    color:black;
+} 
+.buttonDiv{
+    padding: 0.375em 0.75em;
+    text-align: center;
+    
+}
+.ansStyl{
+        width: 350px;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 10px;
+        border: 1px solid;
+}
+.ansDiv{
+    width:230px;
+    word-break: normal;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 0.5em 0.75em;
+}
+.asterisk_input{
+    color:red;
+    margin-left:3px;
+}
+label{
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+button:disabled{
+    border-color: gray;
+    background-color: gray;
+}

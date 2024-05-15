@@ -1,0 +1,30 @@
+<div class="example-container">
+  <form class="example-form" #turbineFrameUpdateForm="ngForm" (ngSubmit)="updateTurbineFrame(turbineFrameUpdateForm.value)">
+    <h2>Turbine Frame Update</h2> 
+      <div class="userCreation">
+            <div class="custStyl">
+            <label>Turbine Type<span class="asterisk_input">*</span></label> 
+            <select class="widthInc" required ngModel name="turbineType" #turbineType="ngModel">
+              <option *ngFor="let turbine of TurbineTypeArray">{{turbine}}</option>
+              </select>
+            </div>
+            <div class="custStyl">
+              <label>Model Type<span class="asterisk_input">*</span></label> 
+              <select class="widthInc" required ngModel name="modelType" #modelType="ngModel" >
+                <option *ngFor="let model of ModelTypeArray">{{model}}</option> 
+                </select>
+              </div>
+            <div class="custStyl">
+              <label>Frames<span class="asterisk_input">*</span></label> 
+              <select class="widthInc" required ngModel name="frames" #frames="ngModel" >
+                <option *ngFor="let frame of FramesArray">{{frame}}</option>   
+                </select>
+              </div>
+              <div class="btn1">
+                  <button class="btn2Style" type="button" (click)="goback()">Cancel</button> 
+                  <button class="btn2Style" type="reset">Reset</button>
+                  <button [disabled]="!turbineFrameUpdateForm.form.valid" class="btn2" type="submit">Save</button>                   
+              </div>
+      </div>
+  </form>
+</div>      

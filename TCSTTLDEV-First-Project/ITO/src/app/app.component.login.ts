@@ -1,0 +1,42 @@
+export class LoginValues {
+    emailId:string;
+    password:string;
+    userId:number;
+    empId:number;
+    name:string;
+    phoneNumber:string;
+    dept:string;
+    createdDate:string;
+    createdBy:string;
+    ModifyDate:string;
+    ModifyBy:string;
+    userRolesList:Array<string>;
+    flag:boolean;
+    successCode:string;
+    successMsg:string;
+    image:any;
+    userRegionsList:Array<any>;
+    designation:string;
+
+
+    constructor(obj){
+      this.emailId=obj.emailId;
+      this.password=obj.password;
+      this.userId=obj.userId;
+      this.empId=obj.empId;
+      this.name=obj.name;
+      this.phoneNumber=obj.phoneNumber;
+      this.dept=obj.dept;
+      this.createdBy=obj.createdBy;
+      this.createdDate=obj.createdDate;
+      this.designation=obj.designation;
+      this.ModifyDate=obj.ModifyDate;
+      this.ModifyBy=obj.ModifyBy;
+      this.userRolesList=obj.userRolesList;
+      this.flag=obj.flag;
+      this.successCode=obj.successCode;
+      this.successMsg=obj.successMsg;
+      this.image=obj.image;
+      this.userRegionsList=obj.userRegionsList;
+    }
+}

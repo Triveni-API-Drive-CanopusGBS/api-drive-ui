@@ -1,0 +1,529 @@
+<div class="dboMechContainer">
+    <div class="dboMechList">
+        <ul>
+            <li *ngFor="let d of newArray;let i=index">
+                <input style="float:left;margin-top:8px;" type="checkbox" 
+                name="selectedE" value="selectedE" [disabled]="!selectdEl[i]" (click)="dboMechItmAux($event,d.itemId,i)" [checked]="selectdEl[i]">
+                <div *ngIf="!d.enabled"> <!--Disabled -->
+                    <label  class="dboEls" (click)="dboMechAuxselect(d, i)" title="{{d.itemName}}" style= "background-color: lightgray;">{{d.itemName}}</label>             
+                </div>
+                <div *ngIf="d.enabled"> <!--Enabled -->
+                    <label  class="dboEls" [ngStyle]="{ 'pointer-events':diableitemname? 'visible' : 'none' }" (click)="dboMechAuxSel(d,d.itemName,i)" title="{{d.itemName}}">{{d.itemName}}</label>
+                </div> 
+               
+            </li>
+        </ul>
+    </div>  
+    <!-- <div class="altAddOns" style="margin-left:20px;margin-top:20px" *ngIf="dboMechFullArray1?.length > 0">
+        <input type="checkbox" [checked]="othItmTechRemChk" [(ngModel)]="itemtechRemarkCheck" name="itemRemark" (click)="itemRmrkCheck($event)" class="checkBoxStyl">
+        <b>Technical Comments</b>
+        <div *ngIf="itemRemarkDiv">
+           <textarea  (keyup)="checkRemarks()" name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+            [(ngModel)]="itemRemarksVal" required placeholder="Technical Remarks"></textarea>                
+        </div>
+    </div>     
+    <div class="altAddOns" style="margin-left:20px;margin-top:10px" *ngIf="dboMechFullArray1?.length > 0">
+        <input type="checkbox" [checked]="othItmComrRemChk" [(ngModel)]="itemComrRemarkCheck" name="itemRemark" (click)="itmComrRmrk($event)" class="checkBoxStyl">
+        <b>Commercial Comments</b>
+        <div *ngIf="itemComrRemarkDiv">
+            <textarea  (keyup)="checkItemComrRmrks()"  name="quotRemark"  class="othersipOutRem"  style="background-color: #efeff5;" placeholder="Enter Remarks .." required
+            [(ngModel)]="itemCmrRemarksVal" required placeholder="Commercial Remarks"></textarea>                
+        </div>
+    </div>    -->
+
+    <!-- <div class="altAddOns" style="margin-left:20px;margin-top:10px">
+        <input type="checkbox" [checked]="othersCheck" [(ngModel)]="othersItemCompCheck" name="addOns" (click)="openItemCompTable($event)" class="checkBoxStyl">
+        <b>Others</b>
+        <div *ngIf="displayItemCompOthTable" class="othersTable">
+            <form #othersItem="ngForm" (ngSubmit)="itemOthersForm(othersItem.value ,othersItem)">
+                <table id="addOnTabl" class="addOnTable">
+                    <th class="tabBackColor">
+                        Item Name
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <th class="tabBackColor">
+                        Quantity
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <th class="tabBackColor">
+                        Cost
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <th class="tabBackColor">
+                       Technical Remarks
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <th class="tabBackColor">
+                        Commercial Remarks
+                         <span class="asterisk_input">*</span>
+                     </th>
+                    <tr *ngFor="let o of itemOthersAddonList;let i=index">
+                        <td class="tabBackColor">
+                            <label class="othersip">{{o.itemName}}</label>
+                        </td>
+                        <td class="tabBackColor">
+                                <label class="othersip">{{o.quantity}}</label>
+                        </td>
+                        <td class="tabBackColor">
+                            <label class="othersip">{{o.cost}}</label>
+                        </td>
+                        <td class="tabBackColor">
+                            <textarea class="othersip">{{o.techRemarks}}</textarea>
+                        </td>
+                        <td class="tabBackColor">
+                            <textarea class="othersip"> {{o.comrRemarks}}</textarea>
+                        </td>
+                        <td style="border:none;">
+                            <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesItemOth(i)" aria-hidden="true"></i>
+                            <button (click)="addLhsRhsItem(i)" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+                            type="button">Add Lhs/Rhs</button>
+                        </td>
+                    </tr>
+                    <tr [hidden]="!displayItmOthnewLine">
+                        <td class="tabBackColor">
+                            <input name="itemCompName" style="background-color: #efeff5;" placeholder="Enter Item Name .." required #itemCompName="ngModel"
+                                ngModel class="othersip" type="text">
+                        </td>
+                        <td class="tabBackColor">
+                            <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                name="itemQuantity" style="background-color: #efeff5;" placeholder="Enter Quantity .."
+                                required #itemQuantity="ngModel" ngModel class="othersip" type="number">
+                        </td>
+                        <td class="tabBackColor">
+                            <input name="itemPrice" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                             style="background-color: #efeff5;" placeholder="Enter Price .." required #othPrice="ngModel" ngModel
+                                class="othersip" type="number">
+                        </td>
+                        <td class="tabBackColor">
+                            <textarea name="itemTechRemarks" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #itemTechRemarks="ngModel"
+                                ngModel class="othersip" type="text"></textarea>
+                        </td>
+                        <td class="tabBackColor">
+                            <textarea name="itemComrRemr" style="background-color: #efeff5;" placeholder="Enter Remarks .." required #itemComrRemr="ngModel"
+                                ngModel class="othersip" type="text"></textarea>
+                        </td>
+                        <td style="border:none;">
+                            <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!othersItem.form.valid"
+                                type="submit">Save</button>
+                            <button (click)="cancelnewLineItem()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                                type="button">Cancel</button>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <button type="button" class="othersbtn" (click)="addRowsItem()">Add</button>
+            <button type="button" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!itemOthersAddonList.length>0" (click)="itemsSubmit()">Save Items</button>
+        </div>
+    </div> -->
+
+    <p-dialog [header]="lhsRhsItemSel" [(visible)]="displayDialogLhsRhs" [responsive]="true" showEffect="fade" [modal]="true" [width]="800" [height]="500">
+        <div *ngIf="displayDialogLhsRhs" class="othersTable">
+            <form #lhsRhsItem="ngForm" (ngSubmit)="addLhsRhsForm(lhsRhsItem.value ,lhsRhsItem)">
+                <table id="addOnTablLR" class="addOnTable">
+                    <th class="tabBackColor">
+                       LHS
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <th class="tabBackColor">
+                        RHS
+                        <span class="asterisk_input">*</span>
+                    </th>
+                    <ng-container  *ngFor="let o of lhsRhsItemsList;let i=index">
+                         <tr *ngIf="o.itemName == lhsRhsItemSel && o.colNm != null">
+                        <td class="tabBackColor">
+                            <label class="othersip">{{o.colNm}}</label>
+                        </td>
+                        <td class="tabBackColor">
+                                <label class="othersip">{{o.colValCd}}</label>
+                        </td>
+                        <td style="border:none;">
+                            <i style="color:rgb(213,120,23);" class="fa fa-times fa-2x" (click)="cancelLinesLhs(i)" aria-hidden="true"></i>
+                        </td> 
+                    </tr>                       
+                    </ng-container>
+                    <tr [hidden]="!lhsRhsnewLine">
+                        <td class="tabBackColor">
+                            <input name="lhsVal" style="background-color: #efeff5;" placeholder="Enter LHS .." required #lhsVal="ngModel"
+                                ngModel class="othersip" type="text">
+                        </td>
+                        <td class="tabBackColor">
+                            <input name="rhsVal" style="background-color: #efeff5;" placeholder="Enter RHS .."
+                                required #rhsVal="ngModel" ngModel class="othersip" type="text">
+                        </td>
+                        <td style="border:none;">
+                            <button style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" [disabled]="!lhsRhsItem.form.valid"
+                                type="submit">Save</button>
+                            <button (click)="cancelnewLineLhs()" style="color:white;padding:7px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);"
+                                type="button">Cancel</button>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <button type="button" class="othersbtn" (click)="addRowsLhsRhs()">Add</button>
+        </div>
+     </p-dialog>
+
+
+
+
+
+
+     <p-dialog [header]="finalItem" [(visible)]="displayF2f" [maximizable]="true" [baseZIndex]="10000" [minY]="20" [style]="{'background-color': 'white', 'padding-top':'10px', 'height': 'auto', 'font-family':'Helvetica', 'font-size':'13px'}">
+            <div class="tabContent">
+                    <label *ngIf="uniqueCode!='FILL_FLU'" class="samllLblInd">Quantity :</label>
+                    <input  *ngIf="uniqueCode!='FILL_FLU'" type="number" style="width:50px;padding:4px;border-radius:5px;" [(ngModel)]="qty">
+                    <label class="samllLblIndCLose" for="priceField">Basic Cost :</label>
+                    <input type="number" name="dboCost1" disabled [(ngModel)]="dboCost1" ngModel class="ipStyle" disabled>
+                    <div class="addOnDiv" >
+                        <label class="samllLblIndCLose" for="priceField">Add On Cost :</label>
+                        <input type="number" disabled name="dboAddOnCost1"  [(ngModel)]="dboAddOnCost1" ngModel
+                            class="ipStyle">
+                            <div class="addOnDiv" *ngIf="rewApp">
+                                    <label class="samllLblIndCLose" for="priceField">Discount% :</label>
+                                    <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    type="number" style="width:85px;padding:4px;border-radius:5px; margin-left:0px;"
+                                    [(ngModel)]="discountPer">
+                                </div>
+                            <label class="samllLblIndCLose" for="priceField">Total Cost :</label>
+                            <input type="number" name="itemcost" disabled  [(ngModel)]="itemcost" ngModel
+                                class="ipStyle">
+                               
+                        <div style="display:inline-block;position: relative;height:20px;width:230px;">
+                            <label class="samllLblIndCLose" style="margin-right:0px;" for="priceField">Remarks</label>
+                            <!-- <span  *ngIf="!oilBoolean" class="asterisk_input" style="margin-left:0px;">*</span> -->
+                            <textarea (keyup)="onKeyData1(dboAddOnCost,remarksAdd)" class="remarkField" style="position: absolute; top:-16px; margin-left: 10px" ngModel
+                                [(ngModel)]="remarksAdd" name="remarkAdd" cols="20" rows="1" placeholder="Enter remarks"></textarea>
+                        </div>
+                       
+                    </div>
+                    <button type="button" *ngIf="!enableGetPriceBtn"    [disabled]="subEnable || enableGetPriceBtn" (click)="getPriceExel()" [ngStyle]="{ 'background-color':saveBtColor? 'rgb(213,120,23)' : buttonColor }"  [disabled]="addonflg==1" class="submitButtn">Submit</button>
+                    <!-- <button class="savebtn" (click)="enableOverWrite()" type="button">Over Write</button>
+                                    <button class="savebtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite()" type="button">Cancel</button> -->
+
+
+                    <!-- <div *ngIf="enableOverwriteDiv" class="overwriteDiv">
+                                    <form #remark="ngForm" (ngSubmit)="remarksForm(remark.value,i)">
+                                        <textarea name="overWrite" [(ngModel)]="remarksValue" #overWrit="ngModel" required ngModel style="margin-top:10px;margin-left:40px;"
+                                            placeholder="Enter remarks.."></textarea>
+                                    </form>
+                                </div> -->
+                                <div *ngIf="!getPriceNew" style ="color: red;">
+                                    PLease save all the Add-On's below !! For saving the Item
+                                </div>
+                    <div  class="questionnaireDiv">
+                        <div class="custStyl" *ngFor="let question of questionsBean ; let i=index">
+                            <label class="quesLabel">{{questionsBean[i].dropDownType.value}}</label>
+                            <!-- [disabled]="!disbaleQues[i]" -->
+                             <input *ngIf="uniqueCode=='FILL_FLU'" type="number" class="widthInc"  [(ngModel)]="oilinput">
+                            <!-- <div  *ngIf="questionsBean[i].colType =='TEXT' && uniqueCode!='FILL_FLU'" >
+                               
+                                    <textarea class="widthIncText" rows="3" cols="50" disabled  [(ngModel)]="defaultValues[i]"></textarea>
+                            </div> -->
+                            <!-- <div  *ngIf="questionsBean[i].colType =='DROPDOWN'" > -->
+                            <select class="widthInc" *ngIf="(questionsBean[i].dropDownType.value!='FLOW' && questionsBean[i].dropDownType.value!='No Of Litres')"
+                                #flow (change)="optionSel(questionsBean[i].dropDownValueList,flow.value,i,1)" [disabled]="lhsdisableparent[questionsBean[i].dropDownType.key]" [(ngModel)]="defaultValues[i]"
+                                ngModel>
+                                <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                                    {{questionsBean[i].dropDownValueList[j].value}}
+                                </option>
+                            </select>
+                            <!-- </div> -->
+                            <p *ngIf="errDisplayPnl1[questionsBean[i].dropDownType.key]" class="msgDisp">{{errMsgRhsCost1[questionsBean[i].dropDownType.key]}}</p>                   
+                            <div *ngIf="openOth[questionsBean[i].dropDownType.key]" style="margin-left:480px; margin-bottom: 500px; display:block; Position: absolute">
+                                    <table id="addOntbl">                         
+                                        <tr>
+                                            <div class = addonTableCheck>
+                                            <td *ngIf="openOth[questionsBean[i].dropDownType.key]"> Name
+                                                    <span class="asterisk_input">*</span>
+                                                <input type="text" [disabled]="!openbtn[questionsBean[i].dropDownType.key]" [(ngModel)]="newAddNameO[questionsBean[i].dropDownType.key]">
+                                            </td>
+                                          
+                                            <td *ngIf="openOth[questionsBean[i].dropDownType.key]"> Cost
+                                                     <span class="asterisk_input">*</span>
+                                               
+                                                <input type="text" [disabled]="!openbtn[questionsBean[i].dropDownType.key]"  required #ysR (keypress)="keyPress($event,ysR.value,$event.target.selectionStart)"
+                                                 [(ngModel)]="newAddCostO[questionsBean[i].dropDownType.key]">
+                                                    </td>      
+                                            <td *ngIf="openOth[questionsBean[i].dropDownType.key]">Remarks
+                                                <span class="asterisk_input">*</span>
+                                                <input type="text" [disabled]="!openbtn[questionsBean[i].dropDownType.key]" [(ngModel)]="newAddComRemrkO[questionsBean[i].dropDownType.key]">
+                                            </td>
+                                            </div>
+                                                    <!-- </td> -->
+                                            <!-- <td *ngIf="openOth[z]"> -->
+                                                <div  *ngIf ="openbtn[questionsBean[i].dropDownType.key]">
+                                           
+                                                <button (click)="rhsOthersForm(questionsBean[i].dropDownType.value,questionsBean[i].dropDownType.key,i)" [disabled] ="(newAddNameO[questionsBean[i].dropDownType.key]=='') || (newAddNameO[questionsBean[i].dropDownType.key]==null)|| (newAddComRemrkO[questionsBean[i].dropDownType.key]=='') || (newAddComRemrkO[questionsBean[i].dropDownType.key]==null) || (newAddCostO[questionsBean[i].dropDownType.key]=='') || (newAddCostO[questionsBean[i].dropDownType.key]=='-') || ((newAddCostO[questionsBean[i].dropDownType.key][0]=='-') &&  (newAddCostO[questionsBean[i].dropDownType.key][1]=='.')) || (newAddCostO[questionsBean[i].dropDownType.key][newAddCostO[questionsBean[i].dropDownType.key].length-1]=='.')" class="okStylu" type="button">Ok</button>
+                                            
+                                        </div>
+                                        <div  *ngIf ="!openbtn[questionsBean[i].dropDownType.key]">
+                                           
+                                                <button (click)="rhsOthersFormEdit(questionsBean[i].dropDownType.value,questionsBean[i].dropDownType.key,i)" [disabled] ="(newAddNameO[questionsBean[i].dropDownType.key]=='') || (newAddNameO[questionsBean[i].dropDownType.key]==null)|| (newAddComRemrkO[questionsBean[i].dropDownType.key]=='') || (newAddComRemrkO[questionsBean[i].dropDownType.key]==null) || (newAddCostO[questionsBean[i].dropDownType.key]==undefined)" class="okStylu" type="button">Edit</button>
+                                            
+                                        </div>
+                                        
+                                            <td style="border:none;">
+                                                <i style="color:rgb(213,120,23); margin-left: 5px; position : relative; bottom : 60px;" class="fa fa-times fa-2x" (click)="cancelAddOn(questionsBean[i].dropDownType.key, i)" aria-hidden="true"></i>
+                                            </td>
+                                                </tr>                                    
+                                            </table>                           
+                                </div>
+                        <div *ngIf="AddOnFlag[i]">
+                                <button class="widthIncBtn" [disabled]="AddOnFlagNew2[questionsBean[i].dropDownType.key] || addonflg==1 "(click)="newAddOn123(questionsBean[i].dropDownType.key, i);" type="button">AddOn</button>
+                        </div>
+                     
+                    </div>
+                    </div>
+                    <!-- <div class="suggDiv">
+                        suggestef List:
+                        <ul class="suggestedList" style="margin-left:0px;padding:0px;">
+                            <li style="margin-left:0px;" (click)="priceCodeSel(a)" (click)="displayVarientGrid=true" *ngFor="let a of dispAvailablePrice">
+                                {{a.price}} &nbsp; &nbsp;
+                                <br>{{a.priceCode}}
+                            </li>
+                        </ul>
+                    </div> -->
+
+                    </div>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div>
+            <!-- displaying array data starts -->
+            <div *ngFor="let d of dboMechFullArray ; let k=index">
+              
+                <div class="tabContent" *ngIf="d.id==mechid1">
+                    <label  class="samllLblInd">Quantity :</label>
+                    <input  type="number" style="width:50px;padding:4px;border-radius:5px;" [(ngModel)]="d.qty">
+                    <label class="samllLblIndCLose" for="priceField">Basic Cost :</label>
+                    <input type="number" disabled name="dboCost" [(ngModel)]="d.dboCost" ngModel class="ipStyle" disabled>
+                    <div class="addOnDiv">
+                        <label class="samllLblIndCLose" for="priceField">Add On Cost :</label>
+                        <input type="number" name="dboAddOnCost" disabled (keyup)="onKeyOldData(d.addCost,d.remrk,k)" [(ngModel)]="d.dboAddOnCost" ngModel class="ipStyle">
+                        <div class="addOnDiv" *ngIf="rewApp">
+                                <label class="samllLblIndCLose" for="priceField">Discount% :</label>
+                                <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                type="number" style="width:85px;padding:4px;border-radius:5px;margin-left:0px;"
+                                [(ngModel)]="d.discountPer">
+                            </div>
+                        <label class="samllLblIndCLose" for="priceField">Total Cost:</label>
+                        <input type="number" name="dboAddOnCost12" disabled (keyup)="onKeyOldData(d.addCost,d.remrk,k)" [(ngModel)]="d.itemcost" ngModel class="ipStyle">
+                        
+                        <div style="display:inline-block;position: relative;height:20px;width:230px;">
+                            <label class="samllLblIndCLose" style="margin-right:0px;" for="priceField">Remarks</label>
+                            <span class="asterisk_input" style="margin-left:0px;">*</span>
+                            <textarea class="remarkField"  (keyup)="onKeyData120(data.subItemId)" style="position: absolute;top:-16px; margin-left: 10px;" ngModel required
+                                [(ngModel)]="d.comrRemarks" name="remarkAdd" cols="20" rows="1" placeholder="Enter remarks"></textarea>
+                        </div>
+                       
+                    </div>
+                    <button type="button"  *ngIf="d.comrRemarks!=NULL && d.comrRemarks!='' " (click)="getOldPriceExel(d)" [ngStyle]="{ 'background-color':saveBtColorArray[d.subItemId]? 'green' : 'rgb(213,120,23)' }" [disabled]="addonflg==1" class="submitButtn">Submit</button>
+                    <button type="button"  (click)="removeItem(d)" class="submitButtn">Remove</button>
+                    <div *ngIf="getPriceOld[d.subItemId]" style ="color: red;" >
+                        PLease save all the Add-On's below !! For saving the Item
+                    </div>
+                    <div class="questionnaireDiv">
+                        <div class="custStyl" *ngFor="let question of questionsBean ; let i=index">
+                            <label class="quesLabel">{{questionsBean[i].dropDownType.value}}</label>
+
+                            <!-- <div  *ngIf="questionsBean[i].colType =='TEXT'" >
+                               
+                                    <textarea class="widthIncText" rows="3" cols="50" disabled  [(ngModel)]="d.defaultValues[i]"></textarea>
+                            </div> -->
+                            <!-- [disabled]="!disbaleQues[i]" -->
+                            <!-- <div  *ngIf="questionsBean[i].colType =='DROPDOWN'" > -->
+                            <select class="widthInc" *ngIf="(questionsBean[i].dropDownType.value!='FLOW' && questionsBean[i].dropDownType.value!='No Of Litres')"
+                                #flow (change)="optionSel(questionsBean[i].dropDownValueList,flow.value,i,d.subItemId)"  [disabled]="lhsdisable[d.subItemId][questionsBean[i].dropDownType.key]==1"
+                                [(ngModel)]="defaultValuesTemp[d.subItemId][i]" ngModel>
+                                <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                                    {{questionsBean[i].dropDownValueList[j].value}}
+                                </option>
+                            </select>
+                        <!-- </div> -->
+                        <p *ngIf="errDisplayPnl[d.subItemId][questionsBean[i].dropDownType.key]==1 " class="msgDisp">{{errMsgRhsCost[d.subItemId][questionsBean[i].dropDownType.key]}}</p>                   
+
+                            <div *ngIf="arraycheck[d.subItemId][questionsBean[i].dropDownType.key]==1" style="margin-left:480px; margin-bottom: 500px; display:block; Position: absolute">
+                                    <table id="addOntbl">                         
+                                        <tr>
+                                            <div class = addonTableCheck2>
+                                            <td *ngIf="arraycheck[d.subItemId][questionsBean[i].dropDownType.key]"> Name
+                                                    <span class="asterisk_input">*</span>
+                                                <input type="text" [disabled]="!openbtn2[d.subItemId][questionsBean[i].dropDownType.key]==0" [(ngModel)]="newAddNameO2[d.subItemId][questionsBean[i].dropDownType.key]">
+                                            </td>
+                                          
+                                            <td *ngIf="arraycheck[d.subItemId][questionsBean[i].dropDownType.key]"> Cost
+                                                     <span class="asterisk_input">*</span>
+                                                
+                                                <input type="text" [disabled]="!openbtn2[d.subItemId][questionsBean[i].dropDownType.key]==0" required #ysR (keypress)="keyPress($event,ysR.value,$event.target.selectionStart)"
+                                                 [(ngModel)]="newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key]">
+                                                    </td>
+                                           
+                                                    
+                                            <td *ngIf="arraycheck[d.subItemId][questionsBean[i].dropDownType.key]">Remarks
+                                                <span class="asterisk_input">*</span>
+                                                <input type="text" [disabled]="!openbtn2[d.subItemId][questionsBean[i].dropDownType.key]==0" [(ngModel)]="newAddComRemrkO2[d.subItemId][questionsBean[i].dropDownType.key]">
+                                                    <!-- </td> -->
+                                            <!-- <td *ngIf="openOth[z]"> -->
+                                                </td>
+                                            </div>
+                                                <div *ngIf = "openbtn2[d.subItemId][questionsBean[i].dropDownType.key]==0">
+                                                <button (click)="rhsOthersForm12(questionsBean[i].dropDownType.value,questionsBean[i].dropDownType.key,d)" [disabled] ="(newAddNameO2[d.subItemId][questionsBean[i].dropDownType.key]=='') || (newAddNameO2[d.subItemId][questionsBean[i].dropDownType.key]==null)|| (newAddComRemrkO2[d.subItemId][questionsBean[i].dropDownType.key]=='') || (newAddComRemrkO2[d.subItemId][questionsBean[i].dropDownType.key]==null) || (newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key]=='') || (newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key]=='-') || ((newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key][0]=='-') &&  (newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key][1]=='.')) || (newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key][newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key].length-1]=='.')"class="okStylu_child" type="button">Ok</button>
+                                            </div>
+                                            <div *ngIf = "!openbtn2[d.subItemId][questionsBean[i].dropDownType.key]==0">
+                                                    <button (click)="rhsOthersForm12Edit(questionsBean[i].dropDownType.value,questionsBean[i].dropDownType.key,d)" [disabled] ="(newAddNameO2[d.subItemId][questionsBean[i].dropDownType.key]=='') || (newAddNameO2[d.subItemId][questionsBean[i].dropDownType.key]==null)|| (newAddComRemrkO2[d.subItemId][questionsBean[i].dropDownType.key]=='') || (newAddComRemrkO2[d.subItemId][questionsBean[i].dropDownType.key]==null) || (newAddCostO2[d.subItemId][questionsBean[i].dropDownType.key]=='') "class="okStylu_child" type="button">Edit</button>
+                                                </div>
+
+                                        <td style="border:none;">
+                                            <i style="color:rgb(213,120,23); margin-left: 5px; position:relative; bottom:58px;" class="fa fa-times fa-2x" (click)="cancelAddOn12(questionsBean[i].dropDownType.key, questionsBean[i].dropDownType.key,d)" aria-hidden="true"></i>
+                                        </td>
+                                            </tr>                                    
+                                        </table>                           
+                            </div>
+                            <div *ngIf="AddOnFlag[i]"> 
+                            <button class="widthIncBtn"  (click)="newAddOn12345(questionsBean[i].dropDownType.value, d.subItemId,questionsBean[i].dropDownType.key)" [disabled]="AddOnFlagNew[d.subItemId][questionsBean[i].dropDownType.key]==1 || addonflg==1" type="button">AddOn</button>
+                            </div>
+                          
+                            <input class="widthInc" min="0" [(ngModel)]="cmnPwr" *ngIf="questionsBean[i].dropDownType.value=='FLOW'" type="number" disabled/>
+                            <input type="text" *ngIf="questionsBean[i].dropDownType.value=='No Of Litres'" class="widthIncSap" list="opts" [(ngModel)]="d.qty"
+                                placeholder="Please Enter.." />
+                            <datalist id="{{i}}">
+                                <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                                    {{questionsBean[i].dropDownValueList[j].value}}
+                                </option>
+                            </datalist>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- displaying array data ends-->
+
+            <div class="tabContent" *ngIf="dispNewComp">
+            
+                <label  class="samllLblInd">Quantity :</label>
+                <input type="number" style="width:50px;padding:4px;border-radius:5px;" [(ngModel)]="newQty">
+                <label class="samllLblIndCLose" for="priceField">Basic Cost :</label>
+                <input type="number" name="dboCost"  disabled [(ngModel)]="newdboCost" ngModel class="ipStyle" disabled>
+                <div class="addOnDiv" >
+                        <div class="addOnDiv" *ngIf="rewApp">
+                                <label class="samllLblIndCLose" for="priceField">Discount% :</label>
+                                <input onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                type="number" style="width:85px;padding:4px;border-radius:5px; margin-left:0px;"
+                                [(ngModel)]="newDiscountPer">
+                            </div>
+                    <label class="samllLblIndCLose" for="priceField">Add On Cost :</label>
+                    <input type="number" name="dboAddOnCost" disabled (keyup)="onKeyData(newdboAddOnCost,newRemarksAdd)" [(ngModel)]="newdboAddOnCost"
+                        ngModel class="ipStyle">
+                        
+                    <div style="display:inline-block;position: relative;height:20px;width:230px;">
+                        <label class="samllLblIndCLose" style="margin-right:0px;" for="priceField">Remarks</label>
+                        <span class="asterisk_input" style="margin-left:0px;">*</span>
+                        <textarea required (keyup)="onKeyData(newdboAddOnCost,newRemarksAdd)" class="remarkField" style="position: absolute; top:-16px; margin-left: 10px;"
+                            ngModel [(ngModel)]="newRemarksAdd" name="remarkAdd" cols="20" rows="1"
+                            placeholder="Enter remarks"></textarea>
+                    </div>
+                    
+                </div>
+                <button type="button" *ngIf="newRemarksAdd!=NULL && newRemarksAdd!='' "  [disabled]="subEnable" (click)="getnewPriceExel()" class="submitButtn">Submit</button>
+
+                <div class="questionnaireDiv">
+                    <div class="custStyl" *ngFor="let question of questionsBean ; let i=index">
+                        <label class="quesLabel">{{questionsBean[i].dropDownType.value}}</label>
+                        <!-- [disabled]="!disbaleQues[i]" -->
+                        <!-- <div  *ngIf="questionsBean[i].colType =='TEXT'">                           
+                                <textarea class="widthIncText" rows="3" cols="50" disabled  [(ngModel)]="newDefaultValues[i]"></textarea>
+                        </div>
+                        <div  *ngIf="questionsBean[i].colType =='DROPDOWN'"> -->
+                        <select class="widthInc" *ngIf="(questionsBean[i].dropDownType.value!='FLOW' && questionsBean[i].dropDownType.value!='No Of Litres')"
+                            #flow (change)="optionSel(questionsBean[i].dropDownValueList,flow.value,i)" [(ngModel)]="newDefaultValues[i]"
+                            ngModel>
+                            <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                                {{questionsBean[i].dropDownValueList[j].value}}
+                            </option>
+                        </select>
+                    <!-- </div> -->
+                       
+                        <input class="widthInc" min="0" [(ngModel)]="cmnPwr" *ngIf="questionsBean[i].dropDownType.value=='FLOW'" type="number" disabled/>
+                        <input type="text" *ngIf="questionsBean[i].dropDownType.value=='No Of Litres'" class="widthIncSap" list="opts" [(ngModel)]="newNoLtrs"
+                            placeholder="Please Enter.." />
+                        <datalist id="{{i}}" style="height:100px">
+                            <option *ngFor="let Dropdown of questionsBean[i].dropDownValueList; let j=index">
+                                {{questionsBean[i].dropDownValueList[j].value}}
+                            </option>
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- adding new componenets -->
+        <div *ngIf="buttonEnable">
+        <button type="button" class="othersbtn" (click)="newAddOn1()" [disabled]="enableAdd || addonflg==1">Add</button>
+        </div>
+        <p-dialog [(visible)]="dispSCFM" [maximizable]="true" [width]="400" [height]="200" [minY]="20">
+            <p-header style="color: blue;" class="dialogHeader" >
+               &nbsp;&nbsp;{{alert}}
+    </p-header>     
+            <p class="quesLabel1" style="font-size: 15px;color: buttonColor">Get the Basic cost from SCM</p>
+    
+    <button type="button" style="background-color: blue"  class="submitButtn27" (click)="clearerror()" >Close</button> 
+    
+        </p-dialog>
+
+    </p-dialog>
+
+    <button class="ovrWriteBtn" style="margin-left:23px; margin-right: 10px; width: 90px;" *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+    <button type="button" [ngStyle]="{ 'background-color':mainSave2? 'rgb(213,120,23)' : 'green' }" style="margin-right:10px; margin-left: 23px;" class="ovrWriteBtn" (click)="calcTotal()">Calculate Total</button>
+            <p-progressSpinner *ngIf="hideprogressCost1" [style]="{width: '25px', height: '50px', position:'absolute'}" strokeWidth="5"
+                fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+            <div class="tatalCostDiv" *ngIf="finalCostBool">
+                <div style="display:inline-block">
+                    <label class="samllLbl" for="cost">
+                        <b>DBO Mechanical Auxialrie Cost:</b>
+                    </label>
+                    <input type="number" class="costField" name="cost" [(ngModel)]="finalMechCost" disabled />
+                </div>
+                <!-- <button type="button" class="ovrWriteBtn" *ngIf="finalMechCost > 0" (click)="enableOverWrite(j)">Overwrite</button>
+                <button type="button" class="ovrWriteBtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite(j)">Cancel</button>
+                <button type="button" class="ovrWriteBtn" (click)="getPrevComments()">Previous Comments</button> -->
+                <!-- <i style="position: absolute;margin-top: 25px;margin-left: 35px;" (click)="getPrevComments()" class="fa fa-comments-o" aria-hidden="true">
+                    Previous comments
+                </i> -->
+              
+                    <div *ngIf="enableOverwriteDiv || OverWrittenfinalMechCost>0">
+                        <label class="samllLbl" for="cost">
+                            <b>Overwrittten Cost :</b>
+                        </label>
+                        <input type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                         class="costField" name="cost" [disabled]="!enableOverwriteDiv" [(ngModel)]="OverWrittenfinalMechCost"
+                        />
+                    </div>
+                    <label class="samllLblIndCLose" *ngIf="enableOverwriteDiv" style="margin-left: 0px;" for="priceField">Remarks
+                        <span class="asterisk_input" style="margin-left:0px;">*</span>
+                    </label>
+                    <textarea class="remarkFieldsss" ngModel #remrk="ngModel" required [(ngModel)]="remarks" *ngIf="enableOverwriteDiv" name="remark"
+                        cols="20" rows="3"></textarea>
+                    <button class="savePriceBtn" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" *ngIf="finalCostBool"  (click) ="savePriceExel(j)" [disabled]=" (OverWrittenfinalMechCost== undefined || remarks==null || remarks=='')  && (finalcostflag==true)" type="submit">Save</button>
+               
+                <div *ngIf="message" class="msgDiv">
+                    {{successMsg}}
+                </div>
+            </div>
+
+
+
+</div>
+

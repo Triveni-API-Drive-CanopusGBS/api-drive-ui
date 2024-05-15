@@ -1,0 +1,42 @@
+<div class="example-container">
+  <form class="example-form" >
+    <h4>Scope Of Supply</h4> 
+    <button class="collapsible" (click)="displayOrientation()">Scope Components</button>
+    <div class="custStyl" >
+        <div>
+       <input style="border: 1px solid black; width:500px;" class="inpStyl"  type="text" ngModel name="scope" #scope="ngModel" placeholder="Type Scope"/>
+        <button class="addStyle" (click)="addScope(scope.value)" style="width:100px; background-color:green; color:white ; border:1px solid green;">Add</button>
+      </div>
+      <div class="tableStyle">
+       <p-table [value]="scopeArray"> 
+        <ng-template  pTemplate="body" let-scopeArray>
+            <tr  >
+                <div *ngIf="scopeArray.status==='active'">
+                        <td >
+                            <input [disabled]="scopeArray.edit" type="checkbox" checked="true" />
+                            <input [disabled]="scopeArray.edit" style="border: 1px solid black; width:150px;" class="inpStyl" value="{{scopeArray.name}}" type="text"  name="scope" />
+                            <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)" aria-hidden="true" (click)="editScope(scopeArray.name )"></i>
+                            <i class="fa fa-window-close fa-lg" aria-hidden="true" (click)="closeScope(scopeArray.name )"></i>
+                        </td>
+                    </div>
+                    <div *ngIf="scopeArray.status==='inactive'" >
+                            <td >
+                                <input [disabled]="scopeArray.edit" type="checkbox"  />
+                                <input [disabled]="scopeArray.edit" style="border: 1px solid black; width:150px;" class="inpStyl" value="{{scopeArray.name}}" type="text"  name="scope" />
+                                <i class="fa fa-pencil-square-o fa-lg" style="color:rgb(213,120,23)"  aria-hidden="true" (click)="editScope(scopeArray.name )"></i>
+                                <i class="fa fa-window-close fa-lg" aria-hidden="true" (click)="closeScope(scopeArray.name )"></i>
+                            </td>
+                        </div>
+          </tr>
+        </ng-template>
+    </p-table>
+    <div class='btnStylediv'>
+        <button   style="float:right; width:100px; border-radius:5px; background-color:rgb(213,120,23); color:white ; margin:5px;margin-top:0px;padding:3px; border:1px solid rgb(213,120,23);">Save</button> 
+
+    </div>
+  </div>
+</div>
+    
+  </form>
+</div>      
+

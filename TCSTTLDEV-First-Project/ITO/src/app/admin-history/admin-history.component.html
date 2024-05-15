@@ -1,0 +1,67 @@
+<div class="flexCollll">
+    <p-progressSpinner [hidden]="spinner" class="spinnerWidth" [style]="{width: '50px', height: '50px'}" strokeWidth="3" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+
+  <p class="quesLabel" style="width: 200px; font-weight: bold;font-size: 16px">Admin Type</p>
+                        
+  <select  class="widthInc"   #opts1 (change)="subListSelection(opts1.value)" [(ngModel)]="tableDEfault" ngModel>
+
+<option *ngFor="let Dropdown of tableDropDown; let j=index">{{tableDropDown[j].scopeCode}}</option>                                            
+
+</select>
+<p class="quesLabel" style="width: 200px; font-weight: bold;font-size: 16px">Table Type</p>
+
+<select  class="widthInc"  #opts2 (change)="subListSelectionSub(opts2.value)" [(ngModel)]="subListvalue" ngModel>
+
+    <option *ngFor="let Dropdown of tableDropDownSub; let j=index">{{tableDropDownSub[j].scopeDesc}}</option>                                            
+    
+    </select>
+
+</div>
+
+<button style="width:100px;"   (click)="getTable()" class="updateTrans"
+type="button" >Get Table</button>
+<div  *ngIf="tableBoolean">
+<p-table #dt [style]="{width:'100%','margin-left':'8%','margin-right':'20px'}" [scrollable]="false" [filterDelay]="0" scrollHeight="300px" [columns]="cols"
+    [value]="pTableList" selectionMode="single" [(selection)]="selectedRange" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="caption">
+      <div  class="ui-helper-clearfix">
+
+        <!-- <i type="button" class="fa fa-file-excel-o" label="All Data" (click)="dt.exportCSV()" style="float:right ;background-color:white; color:rgb(213,120,23) ; margin:25px;margin-top:0p;padding:8px; border:1px solid rgb(213,120,23);">
+          Export to Excel</i> -->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" style="width:250px;"[pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th class="secondHeader" *ngFor="let col of columns" [ngSwitch]="col.field">
+
+         
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="col.field" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">
+<!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="col.field" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">               
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="col.field" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">               
+<input class="localIp" placeholder="Search here.." *ngSwitchCase="col.field" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+(keyup)="searchSet(dt,$event.target.value)">                -->
+          <!-- <input class="localIp" placeholder="Search here.." *ngSwitchCase="'approxCostFlag'" pInputText type="number" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+            (keyup)="searchSet(dt,$event.target.value)"> -->
+        
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr #tr  id="{{rowData.pkgId}}"  class="datarow"  [pSelectableRow]="rowData">
+        <td  class="quesLabel" *ngFor="let col of columns;let i=index;">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+  </div>

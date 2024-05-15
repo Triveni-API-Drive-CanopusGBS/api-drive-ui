@@ -1,0 +1,149 @@
+<div class="quotCompleteContainer">
+  <div>
+    <div *ngIf="plusBool" class="frameDet" style="margin-left: 23px;">
+        <i type="button" class="fa fa-plus" label="All Data" (click)=" expandSupply()" style="background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+        title="Expand"></i>
+        <label class="QDstyle">Supply Cost</label>
+        <input class="ipStyle1" type="text" disabled [value]="supplyCost">
+    </div>
+    <div *ngIf="!plusBool" class="frameDet" style="margin-left: 23px;">
+      <i type="button" class="fa fa-minus" label="All Data" (click)=" expandSupply()" style="background-color: white; color:rgb(213,120,23); margin:10px; padding-top: 3px;"
+      title="Collapse"></i>
+      <label class="QDstyle">Supply Cost</label>
+      <input class="ipStyle1" type="text" disabled [value]="supplyCost">
+  </div>
+    <div *ngIf="expandSup" style="border: 1px solid;color: gray;width:50%;background-color:rgb(211,210,210);margin-left:29px;">
+       
+    <div class="subDet">
+      <label class="QDstyle">Total F2F Cost</label>
+      <input class="ipStyle1" type="text" disabled [value]="totalF2FCost">
+    </div>
+    <!-- <div class="subDet">
+      <label class="QDstyle">AddOn Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="addOnCost" />
+    </div> -->
+ 
+    <div class="subDet">
+      <label class="QDstyle">DBO Mechanical Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="dboMechCost" />
+    </div>
+    <div class="subDet">
+      <label class="QDstyle">DBO Electrical Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="dboEleCost" />
+    </div>
+    <div class="subDet">
+      <label class="QDstyle">DBO Control and Instrumentation Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="dboCiCost" />
+    </div>
+    
+    <div class="subDet">
+      <label class="QDstyle">Package Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="pkgCost" />
+    </div>
+    <div class="subDet">
+      <label class="QDstyle">Variable Cost</label>
+      <input class="ipStyle1" type=number disabled [(ngModel)]="variableCost" />
+    </div>
+
+  </div>
+  </div>
+  <!-- <hr style="width:58%;margin-top:5px;color:black"> -->
+  <div class="frameDet">
+    <label class="QDstyle">Services Price</label>
+    <input class="ipStyle1" type=number disabled [(ngModel)]="servicesPrice" />
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Services Cost</label>
+    <input class="ipStyle1" type=number disabled [(ngModel)]="ServicesCost" />
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Transportation Price</label>
+    <input class="ipStyle1" type=number disabled [(ngModel)]="transportPrice" />
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Transportation Cost</label>
+    <input class="ipStyle1" type=number disabled [(ngModel)]="transportCost" />
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Supply Price</label>
+    <input class="ipStyle1" type="text" disabled [value]="supplyPrice">
+  </div>
+
+  <div class="frameDet">
+    <label class="QDstyle">Cost For Turbine And Spares</label>
+    <input class="ipStyle1" disabled type="number" [(ngModel)]="totalProjectCost">
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Percent Profit</label>
+    <input class="ipStyle1" disabled type="number" [(ngModel)]="percentProfit">
+  </div>
+  <div class="frameDet">
+    <label class="QDstyle">Net Profit</label>
+    <input class="ipStyle1" type=number disabled [(ngModel)]="TotOrderCostNetProfit" />
+  </div>
+
+
+
+  <div class="btnClass" style="display: inline-block;">
+    <label class="samllLbl" style="margin-left: 55px;">Order Booking Price For Turbine And Spares
+    </label>
+    <div style="display: inline-block;margin-top: 10px;margin-bottom: 10px;margin-left:7px">
+      <input type="number" name="TurbineOrderBookCost" disabled [(ngModel)]="TurbineOrderBookCost" ngModel class="ipStyle">
+
+      <button class="savebtn" style="margin-left: 55px;" *ngIf="rewApp" (click)="enableOverwrite()" type="button">Overwrite</button>
+      <button class="savebtn" *ngIf="enableOverwriteDiv" (click)="disableOverWrite()" type="button">Cancel</button>
+      <button class="savebtn" (click)="getPrevComments()" *ngIf="rewApp" type="button">Previous comments</button>
+
+      <!-- <i (click)="getPrevComments()" class="fa fa-comments-o fa-2x" aria-hidden="true" title="Previous comments"></i> -->
+    </div>
+  </div>
+
+  <!-- <div class="newCostDiv" *ngIf="!enableOverwriteDiv  && overWrittenCost>0">
+    <label>Overwritten Price</label>
+    <input style="width: 168px;" class="inpStyle" disabled type="number" [(ngModel)]="overWrittenCost" name="overwrittenCst">
+	</div> -->
+    <div style="display:relative;" style="display:block">
+      <div class="newCostDiv" *ngIf="!enableOverwriteDiv && overWrittenCost>0">
+        <label class="samllLbl" style="width: 288px;" >Overwritten Cost
+          <span class="asterisk_input">*</span>
+        </label>
+        <input class="ipStyle" disabled type="number" [(ngModel)]="overWrittenCost" name="overwrittenCst">
+      </div>
+    </div>
+
+  <form #projectCostForm="ngForm" (ngSubmit)="saveProjectCost(projectCostForm.value)">
+    <div class="newCostDiv" *ngIf="enableOverwriteDiv">
+      <label>Overwritten Price
+        <span class="asterisk_input">*</span>
+      </label>
+      <input required class="inpStyle" placeholder="Enter Cost" *ngIf="enableOverwriteDiv" ngModel name="updatedCost" #updatedCost="ngModel"
+        [(ngModel)]="overWrittenCost" type="number" />
+      <label>Remaks
+        <span class="asterisk_input">*</span>
+      </label>
+      <textarea *ngIf="enableOverwriteDiv" name="remarks" class="remarkss" [(ngModel)]="remarksVal" (keyup)="checkRemarks()" #remarks="ngModel"
+        required ngModel placeholder="Enter remarks.."></textarea>
+    </div>
+    <div *ngIf="message" class="msgDiv">
+        {{successMsg}}
+      </div>
+    <div style="margin-left: 55px;" *ngIf="projSuc">
+      <button type="button" *ngIf="enableOverwriteDiv" class="btn2" [disabled]="(!projectCostForm.form.valid) || (disableBtn)"
+        (click)="CalCost(projectCostForm.value)">ReCalculate Cost</button>
+        <button class="ovrWriteBtn" style=" border-radius: 5px;color:white;padding:5px; width:80px;margin-right:10px;background-color:rgb(213,120,23);border:1px solid rgb(213,120,23);" 
+        *ngIf="backBtn" type="button" (click)="backButton()">Back</button> 
+      <button type="submit" class="btnSave" style="width: 80px;" *ngIf="enableComBtn" [ngStyle]="{ 'background-color':mainSave? 'rgb(213,120,23)' : 'green' }" [disabled]="(!projectCostForm.form.valid) || (disableBtn)">Save</button>
+      <!-- <button type="button" class="btnSave" *ngIf="enableWorkFlow" [disabled]="!projectCostForm.form.valid" (click)="proceedComplete()">Complete and Exit</button> -->
+    </div>
+  </form>
+
+  <p-dialog class="dialog" header="Alert" [closable]="false" [(visible)]="dispCompleteDialog" showEffect="fade" appendTo="body"
+    [modal]="true" [responsive]="true" [width]="500" [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+    Do you want to Complete the Quotation?
+    <p-footer>
+      <button type="button" class="header2btn" (click)="quotWorkFlow()">Yes</button>
+      <button type="button" class="header2btn" (click)="closeDialog()">Close</button>
+    </p-footer>
+  </p-dialog>
+ 
+</div>

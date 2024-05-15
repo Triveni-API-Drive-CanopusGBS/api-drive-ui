@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "title=http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<!-- Log4j Configuration file to log the messages into different logfiles -->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+
+
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="append" value="true" />
+		<param name="maxBackupIndex" value="30" />
+		<!-- Dev Server path for logs -->
+		<param name="file"
+		     value="D:/ITO DEV Deployment/apache-tomcat-9.0.0.M11/apache-tomcat-9.0.0.M11/logs_2022/ITO/ITO_PROD_2022.log" />
+		     <!--   value="D:/ITO DEV Deployment/apache-tomcat-9.0.0.M11/apache-tomcat-9.0.0.M11/logs_new/ITO/ITO_DEV.log" /> -->
+			 
+		
+		<param name="DatePattern" value=".yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+</log4j:configuration>
