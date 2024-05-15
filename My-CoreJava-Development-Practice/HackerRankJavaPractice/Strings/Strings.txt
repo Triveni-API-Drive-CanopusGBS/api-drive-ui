@@ -1,0 +1,4 @@
+String[] arr = new String[] //Initilization of strings
+String to StringBuffer using append() method
+StringBuffer to String using toString() method
+sc.next();

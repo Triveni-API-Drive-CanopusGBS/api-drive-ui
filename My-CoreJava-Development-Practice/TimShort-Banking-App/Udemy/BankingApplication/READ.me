@@ -1,0 +1,81 @@
+IBaseRate is an interface with a single default methods, that return a base interest rate of 2.5
+Account is an abstract class with 
+-  // create account number
+    public void createAccountNumber() 
+      
+    //Do deposit();
+    public void deposit(int deposit) 
+
+    protected void viewbalance()
+
+    //Do withdraw();
+    public void withdraw(int deposit)
+
+    //Do transfer();
+
+    public void showInfo()
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+- SavingsAccount - an impl of Account abstract class.
+- has few more methods only specific to this class
+
+- //Create checking Account Number from the account number.
+    public void setSavingAccountNumber() {
+        this.accountNumber = 1 + accountNumber;
+    }
+
+    //Create a safeBoxWithKeyandId;
+    public void createSafeBox() {
+        this.safeBoxId = (int) (Math.random() * Math.pow(10, 3));
+        this.safeBoxKey = (int) (Math.random() * Math.pow(10, 4));
+    }
+
+    //Create showInfo() to show the specific info of the Savings account
+    @Override
+    public void showInfo() {
+        System.out.println("Your savings account number info is: " + accountNumber);
+    }
+
+    public void calculateCompoundInterest(int months) {
+        this.savingIntRate = super.getBaseRate() - 0.25;
+        this.compoundedInterest = balance * ((1 + savingIntRate / 100));
+        this.setBalance(balance + compoundedInterest);
+        //System.out.println(compoundedInterest);
+        viewbalance();
+- CheckingAccount - an impl of Account class.
+- public void setCheckingAccountNumber() {
+        this.accountNumber = 2 + accountNumber;
+    }
+
+    // Override the Super class method, to write any code specific to Sub class
+    @Override
+    public void showInfo() {
+        System.out.println("Your checking account info is: " + accountNumber);
+    }
+    //CALCULATE  interest rate
+
+    public void calculateCompoundInterest(int months) {
+        this.checkingIntRate = this.getBaseRate() * 0.15;
+        this.compoundedInterest = balance * ((1 + checkingIntRate / 100));
+        this.setBalance(balance + compoundedInterest);
+        //System.out.println(compoundedInterest);
+        viewbalance();
+    }
