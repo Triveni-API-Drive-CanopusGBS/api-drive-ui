@@ -1,0 +1,11 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore Servers directory
+Servers/
+
+# Ignore .metadata directory
+.metadata/
+
+# Ignore .git directory
+.git/
