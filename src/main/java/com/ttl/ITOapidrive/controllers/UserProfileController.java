@@ -52,9 +52,13 @@ public class UserProfileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadUserProfiles(@RequestParam("file") MultipartFile file) {
-        userProfileService.createUsersFromExcel(file);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<String> uploadUserProfiles(@RequestParam("file") MultipartFile file) {
+        try {
+            userProfileService.createUsersFromExcel(file);
+            return new ResponseEntity<>("User profiles uploaded successfully!", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to upload user profiles: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
