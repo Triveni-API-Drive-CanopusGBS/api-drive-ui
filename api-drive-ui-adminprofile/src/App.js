@@ -6,6 +6,8 @@ import EditUser from './UserManagement/EditUser';
 import AllUsersInfo from './UserManagement/AllUsersInfo';
 import Profile from './UserManagement/Profile';
 import Footer from './Home/Footer';
+import Home from './Home/Home';
+import NotFound from './Home/NotFound';
 
 const App = () => {
   return (
@@ -14,11 +16,13 @@ const App = () => {
         <Header />
         <div className="container mt-3">
           <Routes>
-                 {/* You can either Componnet or Element.   */}
+                 {/* You can either Component or Element.   */}
+            <Route exact path="/" Component={Home} />
             <Route path="/profile" Component={Profile} />
             <Route path="/adduser" element={<AddUser />} />
             <Route path="/edituser" element={<EditUser />} />
             <Route path="/users" element={<AllUsersInfo />} />
+            <Route path= "*" Component={NotFound} /> {/* Fallback for 404 Not Found */}
           </Routes>
           <Footer />
         </div>

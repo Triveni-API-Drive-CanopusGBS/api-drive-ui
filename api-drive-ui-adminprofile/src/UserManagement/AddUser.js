@@ -11,7 +11,7 @@ const AddUser = () => {
     designation: '',
     roles: [],
     regions: [],
-    photo: null,
+    image: null,
   });
 
   const rolesList = [
@@ -32,7 +32,22 @@ const AddUser = () => {
   ];
 
   const departmentList = [
-    'Mktg_Sales', 'Proposals', 'Engineering', 'Production', 'Quality', 'Finance', 'HR', 'IT', 'Legal', 'Admin'
+    "DBO Electrical",
+    "DBO Mechanical",
+    "Engineering",
+    "Finance",
+    "Infotech",
+    "Manufacturing",
+    "Marketing",
+    "Mktg_Sales",
+    "Project_Sales",
+    "Projects",
+    "Proposals",
+    "Sales",
+    "Shipping",
+    "Sub-contracting & PPE",
+    "Transportation",
+    "UBO"
   ];
 
   const handleChange = (e) => {
@@ -46,7 +61,7 @@ const AddUser = () => {
       }
       setFormData({ ...formData, [name]: updatedArray });
     } else if (type === 'file') {
-      setFormData({ ...formData, photo: files[0] });
+      setFormData({ ...formData, image: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -69,7 +84,7 @@ const AddUser = () => {
       designation: '',
       roles: [],
       regions: [],
-      photo: null,
+      image: null,
     });
   };
 
@@ -77,7 +92,7 @@ const AddUser = () => {
     <div className="container mt-5">
       <h2>Upload Multiple Users From Excel</h2>
       <div className="mb-3">
-        <label htmlFor="photo" className="form-label">Upload ExcelSheet</label>
+        <label htmlFor="image" className="form-label">Upload ExcelSheet</label>
         <input className="form-control" type="file" id="excel" name="excel" onChange={handleChange} /><br />
         <button type="button" className="btn btn-success float-right" onClick={() => console.log('Submit Excel')}>Submit</button>
       </div>
@@ -101,7 +116,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="modifiedBy">Modified By:</label>
-          <input type="text" className="form-control" id="modifiedBy" name="modifiedBy" value={formData.modifiedBy} onChange={handleChange} required/>
+          <input type="text" className="form-control" id="modifiedBy" name="modifiedBy" value={5} disabled onChange={handleChange} required/>
         </div>
         <div className="mb-3">
           <label htmlFor="department" className="form-label">Department</label>
@@ -155,7 +170,7 @@ const AddUser = () => {
           ))}
         </div>
         <div className="mb-3">
-          <label htmlFor="photo" className="form-label">Upload Image</label>
+          <label htmlFor="image" className="form-label">Upload Image</label>
           <input className="form-control" type="file" id="image" name="image" onChange={handleChange} />
         </div>
         <button type="submit" className="btn btn-success">Submit</button>
