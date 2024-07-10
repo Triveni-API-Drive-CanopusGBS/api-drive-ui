@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TtlitoApiDriveApplication {
+public class ApiDriveBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TtlitoApiDriveApplication.class, args);
+		SpringApplication.run(ApiDriveBackendApplication.class, args);
 	}
 
 }
