@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { uploadExcelSheet, submitUserData } from './userService'; // adjust the import path as necessary
 
 const AddUser = () => {
   const [formData, setFormData] = useState({
@@ -69,8 +70,30 @@ const AddUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    submitUserData(formData)
+      .then(response => {
+        console.log('User data submitted successfully', response.data);
+        resetForm();
+      })
+      .catch(error => {
+        console.error('There was an error submitting the user data!', error);
+      });
+  };
+
+  const handleExcelSubmit = (e) => {
+    e.preventDefault();
+    if (formData.image) {
+      uploadExcelSheet(formData.image)
+        .then(response => {
+          console.log('Excel sheet uploaded successfully', response.data);
+          resetForm();
+        })
+        .catch(error => {
+          console.error('There was an error uploading the Excel sheet!', error);
+        });
+    } else {
+      console.error('No file selected for upload');
+    }
   };
 
   const resetForm = () => {
@@ -93,8 +116,8 @@ const AddUser = () => {
       <h2>Upload Multiple Users From Excel</h2>
       <div className="mb-3">
         <label htmlFor="image" className="form-label">Upload ExcelSheet</label>
-        <input className="form-control" type="file" id="excel" name="excel" onChange={handleChange} /><br />
-        <button type="button" className="btn btn-success float-right" onClick={() => console.log('Submit Excel')}>Submit</button>
+        <input className="form-control" type="file" id="excel" name="image" onChange={handleChange} /><br />
+        <button type="button" className="btn btn-success float-right" onClick={handleExcelSubmit}>Submit</button>
       </div>
       <h2>Single User Creation Using Form</h2>
       <form onSubmit={handleSubmit}>
@@ -108,7 +131,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="emailId" className="form-label">Email Id</label>
-          <input type="emailId" className="form-control" id="emailId" name="emailId " value={formData.emailId} onChange={handleChange} required />
+          <input type="email" className="form-control" id="emailId" name="emailId" value={formData.emailId} onChange={handleChange} required />
         </div>
         <div className="mb-3">
           <label htmlFor="contactNumber" className="form-label">Contact Number</label>
@@ -116,7 +139,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="modifiedBy">Modified By:</label>
-          <input type="text" className="form-control" id="modifiedBy" name="modifiedBy" value={5} disabled onChange={handleChange} required/>
+          <input type="text" className="form-control" id="modifiedBy" name="modifiedBy" value={formData.modifiedBy}  onChange={handleChange} required />
         </div>
         <div className="mb-3">
           <label htmlFor="department" className="form-label">Department</label>
@@ -171,7 +194,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">Upload Image</label>
-          <input className="form-control" type="file" id="image" name="image" onChange={handleChange} />
+          <input className="form-control" type="file" id="image" name="image" disabled onChange={handleChange} />
         </div>
         <button type="submit" className="btn btn-success">Submit</button>
         <button type="reset" className="btn btn-info" onClick={resetForm}>Reset</button>
