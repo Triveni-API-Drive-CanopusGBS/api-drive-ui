@@ -189,7 +189,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">Upload Image</label>
-          <input className="form-control" type="file" id="image" name="image" onChange={handleChange} />
+          <input className="form-control" type="file" id="image" name="image" disabled onChange={handleChange} />
         </div>
         <button type="submit" className="btn btn-success">Submit</button>
         <button type="reset" className="btn btn-info" onClick={resetForm}>Reset</button>
