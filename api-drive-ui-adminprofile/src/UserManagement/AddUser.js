@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { uploadExcelSheet, submitUserData } from './userService'; // adjust the import path as necessary
+import React, { useState, useEffect } from 'react';
+import { uploadExcelSheet, submitUserData, fetchDepartments, fetchRoles, fetchRegions } from './userProfileService'; // adjust the import path as necessary
 
 const AddUser = () => {
   const [formData, setFormData] = useState({
@@ -15,41 +15,32 @@ const AddUser = () => {
     image: null,
   });
 
-  const rolesList = [
-    'Admin', 'Cost Estimation Approver', 'Cost Estimation Engineer', 'Cost Estimation Reviewer', 
-    'DBO Electrical Approver', 'DBO Electrical Engineer', 'DBO Electrical Reviewer', 'DBO Mechanical Approver', 
-    'DBO Mechanical Engineer', 'DBO Mechanical Reviewer', 'Erection & Commission Approver', 'Erection & Commission Engineer', 
-    'Erection & Commission Reviewer', 'F2F Approver', 'F2F Engineer', 'F2F Reviewer', 'Finance Approver', 'Finance Engineer', 
-    'Packaging & Forwarding Approver', 'Packaging & Forwarding Engineer', 'Packaging & Forwarding Reviewer', 'Projects Admin', 
-    'Projects Executive', 'Sub-contracting & PPE Approver', 'Sub-contracting & PPE Engineer', 'Sub-contracting & PPE Reviewer', 
-    'Transportation Approver', 'Transportation Engineer', 'Transportation Reviewer', 'UBO Approver', 'UBO Engineer', 'UBO Reviewer'
-  ];
+  const [departmentList, setDepartmentList] = useState([]);
+  const [rolesList, setRolesList] = useState([]);
+  const [regionsList, setRegionsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const regionsList = [
-    'Africa (AFR)', 'Africa (WAFR)', 'Africa (EAFR)', 'Africa (SADC)', 'CSA (CSA)', 'East (EEQ)', 'Europe (EUR)', 
-    'Europe (WUR)', 'MENA (MEA)', 'Middle East region (MEN)', 'North (NEQ)', 'North America (CNA)', 'ROW (ROW)', 
-    'SAARC (ASA)', 'SAARC (BAN)', 'SAARC (PAK)', 'SEA2 (THA)', 'SEA2 (KOR)', 'SEA2 (SEA)', 'South (SEO)', 'Turkey (TUR)', 
-    'West Pune (WPQ)', 'West Mumbai (WMQ)'
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const departmentsData = await fetchDepartments();
+        setDepartmentList(departmentsData);
+        
+        const rolesData = await fetchRoles();
+        setRolesList(rolesData);
+        
+        const regionsData = await fetchRegions();
+        setRegionsList(regionsData);
+        
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
 
-  const departmentList = [
-    "DBO Electrical",
-    "DBO Mechanical",
-    "Engineering",
-    "Finance",
-    "Infotech",
-    "Manufacturing",
-    "Marketing",
-    "Mktg_Sales",
-    "Project_Sales",
-    "Projects",
-    "Proposals",
-    "Sales",
-    "Shipping",
-    "Sub-contracting & PPE",
-    "Transportation",
-    "UBO"
-  ];
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -110,6 +101,10 @@ const AddUser = () => {
       image: null,
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mt-5">
@@ -194,7 +189,7 @@ const AddUser = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">Upload Image</label>
-          <input className="form-control" type="file" id="image" name="image" disabled onChange={handleChange} />
+          <input className="form-control" type="file" id="image" name="image" onChange={handleChange} />
         </div>
         <button type="submit" className="btn btn-success">Submit</button>
         <button type="reset" className="btn btn-info" onClick={resetForm}>Reset</button>

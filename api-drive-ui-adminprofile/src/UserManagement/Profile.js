@@ -1,57 +1,40 @@
+
 import React, { useEffect, useState } from 'react';
+import { fetchProfile } from  './userProfileService';
 
-const Profile = () => {
-  const [profileData, setProfileData] = useState(null);
+const ProfilePage = () => {
+    const [profileData, setProfileData] = useState(null);
+    const emailId = 'Jayaseelan@triveniturbines.com'; // Replace with actual emailId
+    const userId = '5'; // Replace with actual userId
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const url = 'http://localhost:8080/api/userprofiles/profile';
-        const params = {
-          emailId: 'Jayaseelan@triveniturbines.com',
-          userId: '5'
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const data = await fetchProfile(emailId, userId);
+                setProfileData(data);
+            } catch (error) {
+                console.error('Error fetching profile:', error.message);
+            }
         };
 
-        const response = await fetch(`${url}?${new URLSearchParams(params)}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-            // Add other headers if needed (e.g., authorization token)
-          },
-          // If you need to send a body with JSON data:
-          // body: JSON.stringify({ /* your request body */ })
-        });
+        fetchUserProfile();
+    }, [emailId, userId]);
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        
-        const data = await response.json();
-        setProfileData(data);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        // Handle error state or display an error message to the user
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  return (
-    <div>
-      {profileData && (
+    return (
         <div>
-          <p>User ID: {profileData.userId}</p>
-          <p>Employee ID: {profileData.employeeId}</p>
-          <p>Name: {profileData.employeeName}</p>
-          <p>Email: {profileData.emailId}</p>
-          <p>Contact Number: {profileData.contactNumber}</p>
-          <p>Active/Inactive: {profileData.activeStatus ? 'Active' : 'Inactive'}</p>
-          {/* Display other profile fields */}
+            <h2>User Profile</h2>
+            {profileData ? (
+                <div>
+                    <p>User ID: {profileData.userId}</p>
+                    <p>EmailId:{profileData.emailId}</p>
+                    
+                    {/* Render other profile data as needed */}
+                </div>
+            ) : (
+                <p>Loading profile...</p>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
-export default Profile;
+export default ProfilePage;
