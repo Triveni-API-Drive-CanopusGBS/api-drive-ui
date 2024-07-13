@@ -32,6 +32,10 @@ public class UserProfileService {
     public UserProfile createUserProfile(UserProfile userProfile) {
         return userProfileRepository.save(userProfile);
     }
+    
+    public List<UserProfile> getUserProfilesByEmailIdAndUserId(String emailId, Long userId) {
+        return userProfileRepository.findByEmailIdAndUserId(emailId, userId);
+    }
 
     public UserProfile updateUserProfile(Long userId, UserProfile userProfile) {
         Optional<UserProfile> existingUserProfile = userProfileRepository.findById(userId);
@@ -42,7 +46,7 @@ public class UserProfileService {
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
     }
-
+    
     public void deleteUserProfile(Long userId) {
         userProfileRepository.deleteById(userId);
     }
@@ -81,12 +85,12 @@ public class UserProfileService {
                 }
 
                 UserProfile user = new UserProfile();
-                user.setEmpId(Double.parseDouble(getCellValueAsString(row.getCell(0))));
-                user.setEmpName(getCellValueAsString(row.getCell(1)));
+                user.setEmployeeId(Double.parseDouble(getCellValueAsString(row.getCell(0))));
+                user.setEmployeeName(getCellValueAsString(row.getCell(1)));
                 user.setEmailId(getCellValueAsString(row.getCell(2)));
                 user.setContactNumber(Double.parseDouble(getCellValueAsString(row.getCell(3))));
                 user.setGroupId(Double.parseDouble(getCellValueAsString(row.getCell(4))));
-                user.setImage(getCellValueAsString(row.getCell(5)));
+                //user.setImage(getCellValueAsString(row.getCell(5)));
                 user.setModifiedById(Double.parseDouble(getCellValueAsString(row.getCell(6))));
                 user.setDepartment(getCellValueAsString(row.getCell(7)));
                 user.setDesignation(getCellValueAsString(row.getCell(8)));
