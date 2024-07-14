@@ -15,10 +15,23 @@ export const uploadExcelSheet = (file) => {
       'Authorization': `Basic ${credentials}`
     }
   });
+
 };
 
-export const submitUserData = (userData) => {
-  return axios.post(BASE_URL, userData, {
+export const handleUploadImage = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    return axios.post(`${BASE_URL}/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Basic ${credentials}`
+      }
+    });
+    
+  };
+export const submitUserDataRawJson = (userData) => {
+  return axios.post(`${BASE_URL}/adduser`, userData, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Basic ${credentials}`
@@ -26,7 +39,14 @@ export const submitUserData = (userData) => {
   });
 };
 
-
+export const submitUserDataMultipart = (userData) => {
+    return axios.post(`${BASE_URL}/adduser`, userData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${credentials}`
+      }
+    });
+  };
 export const fetchRoles = async () => {
   const response = await fetch(`${BASE_URL}/rolenames`, {
     method: 'GET',
@@ -77,8 +97,7 @@ export const fetchProfile = async (emailId, userId) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Include Authorization header if needed
-                // 'Authorization': `Basic ${credentials}`
+                'Authorization': `Basic ${credentials}`
             }
         });
 
@@ -95,3 +114,16 @@ export const fetchProfile = async (emailId, userId) => {
     }
 };
 
+export const fetchUsersInfo = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/userprofiles');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch users info: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching users info:', error.message);
+        throw error;
+    }
+};
