@@ -18,7 +18,7 @@ const Header = () => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="userManagementDropdown">
                 <li><Link className="dropdown-item" to="/adduser">Add User</Link></li>
-                <li><Link className="dropdown-item" to="/edituser">Edit User</Link></li>
+                <li><Link className="dropdown-item" to="/edituser/id">Edit User</Link></li>
                 <li><Link className="dropdown-item" to="/users">All User Info</Link></li>
               </ul>
             </li>

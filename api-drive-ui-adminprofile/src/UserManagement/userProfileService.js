@@ -5,6 +5,28 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8080/api/userprofiles';
 const credentials = btoa('root:root');
 
+export const fetchUserProfilewithId = async (userId) => {
+    const response = await fetch(`http://localhost:8080/api/userprofiles/${userId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user profile');
+    }
+    return response.json();
+  };
+  
+  export const updateUserProfilewithId = async (userId, userData) => {
+    const response = await fetch(`http://localhost:8080/api/userprofiles/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update user profile');
+    }
+    return response.json();
+  };
+
 export const uploadExcelSheet = (file) => {
   const formData = new FormData();
   formData.append('file', file);

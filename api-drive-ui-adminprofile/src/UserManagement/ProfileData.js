@@ -39,17 +39,17 @@ const ProfilePage = () => {
 
     return (
         <div>
-            <h2>User Profile Inofrmation</h2>
+            <h3 style={{textAlign:'center',width:"100%",top:0}}>User Profile Inofrmation </h3>
             {profileData.length > 0 ? (
                 profileData.map((profile, index) => (
                     <div key={index}>
-                        <h3>Profile {index + 1}</h3>
+                        <h4>Profile {index + 1}</h4>
                         <p>User ID: {profile.userId}</p>
                         <p>Employee ID: {profile.employeeId}</p>
                         <p>Employee Name: {profile.employeeName}</p>
                         <p>Email: {profile.emailId}</p>
                         <p>Contact Number: {profile.contactNumber}</p>
-                        <button onClick={() => handleEditUser(profile.userId)}>Edit User</button>
+                        <button className="btn btn-success" onClick={() => handleEditUser(profile.userId)}>Edit User</button>
                         {/* Render other profile data as needed */}
                     </div>
                 ))

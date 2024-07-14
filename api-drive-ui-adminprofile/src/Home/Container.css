@@ -1,0 +1,5 @@
+/* Container.css */
+.content-container {
+    margin: 0 50px;
+    flex-grow: 1; /* Ensure it takes up available space */
+}

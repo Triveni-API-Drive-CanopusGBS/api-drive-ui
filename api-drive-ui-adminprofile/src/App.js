@@ -8,6 +8,7 @@ import ProfileData from './UserManagement/ProfileData';
 import Footer from './Home/Footer';
 import Home from './Home/Home';
 import NotFound from './Home/NotFound';
+import Container from './Home/ContainerComp';
 
 const App = () => {
   return (
@@ -15,15 +16,17 @@ const App = () => {
       <div className="App">
         <Header />
         <div className="container mt-3">
-          <Routes>
-                 {/* You can either Component or Element.   */}
-            <Route exact path="/" Component={Home} />
-            <Route path="/profile" Component={ProfileData} />
-            <Route path="/adduser" element={<AddUser />} />
-            <Route path="/edituser/:id" element={<EditUser />} />
-            <Route path="/users" element={<AllUsersInfo />} />
-            <Route path= "*" Component={NotFound} /> {/* Fallback for 404 Not Found */}
-          </Routes>
+         <Container>
+            <Routes>
+                   {/* You can either Component or Element.   */}
+              <Route exact path="/" Component={Home} />
+              <Route path="/profile" Component={ProfileData} />
+              <Route path="/adduser" element={<AddUser />} />
+              <Route path="/edituser/:id" element={<EditUser />} />
+              <Route path="/users" element={<AllUsersInfo />} />
+              <Route path= "*" Component={NotFound} /> {/* Fallback for 404 Not Found */}
+            </Routes>
+         </Container>
           <Footer />
         </div>
       </div>
